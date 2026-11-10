@@ -27,6 +27,8 @@
         <h1 class="text-base md:text-xl font-bold mt-1">Afrina M · AI Product Voice &amp; Growth Studio</h1>
       </div>
       <div class="flex items-center gap-2 text-xs">
+        <a href="apps/deck-factory/" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold hover:bg-[var(--secondary)]" title="Thursday's live build">Thu · Deck Factory ↗</a>
+        <a href="apps/release-to-demo/" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold hover:bg-[var(--secondary)]" title="Friday's live build">Fri · Release-to-Demo ↗</a>
         <span class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--secondary-foreground)] font-semibold">4.5K → 50K (26w)</span>
         <span id="header-voice-badge" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold">Voice DNA: 100%</span>
       </div>
@@ -1066,44 +1068,49 @@ You need a system that shows its sources.
         },
         {
           day: 'Friday',
-          track: 'Built with Antigravity #02 · Release Notes → Customer Demo Agent',
+          track: 'Built with Antigravity #02 · Release Notes → Customer Demo Agent (live link)',
           isGrowth: false,
           credit: '',
-          title: 'Built with Antigravity: Turning Raw Release Notes Into Customer Demos in 10 Minutes',
+          title: 'Built with Antigravity: Raw Release Notes → Customer Demo Pack in 10 Minutes (live link)',
           selectedHook: 0,
           hooks: [
-            'Engineering ships 30 updates on Tuesday. Sales still pitches last quarter’s deck 3 weeks later.\nBuilt with Antigravity: here is the GTM agent that closes that gap in 10 minutes 🚀',
-            'Shipping a product and building a business are not the same thing.\nBuilt with Antigravity: how I turn raw GitHub release notes into a customer-ready demo:',
-            'Shipping code is half the job. Helping customers adopt it is the other half.\nBuilt with Antigravity: the 3-step Release-to-Demo agent every product team needs:'
+            'Engineering ships 30 updates on Tuesday. Sales still pitches last quarter’s deck 3 weeks later.\nBuilt with Antigravity: a live agent that closes that gap in 10 minutes, link below 🚀',
+            'Most "AI release notes" tools write marketing fluff about a dependency bump.\nBuilt with Antigravity: I shipped an agent that filters the changelog first and shows its reasons (free, in your browser):',
+            'Shipping a feature and getting a customer to adopt it are not the same job.\nBuilt with Antigravity: paste release notes, get the demo script, the one-pager and the 4:5 card, live:'
           ],
           body: `Save this for your next product launch 🩵
 
-Years of running go-to-market enablement for enterprise products showed me where AI teams leak momentum:
+Years of running go-to-market for enterprise products showed me where AI teams leak momentum:
 
 Engineering ships daily.
-Customer enablement still runs manually.
+Customer enablement still runs by hand, 3 weeks later.
 
-Here is the 3-step GTM workflow I built with Antigravity to fix it in 10 minutes:
+So I built the Release-to-Demo agent as a live app (link in the first comment). Six stations, one orchestrator:
 
-Step 1. Filter what customers actually care about
- 👉 Antigravity reads raw GitHub release notes and filters out internal code cleanup—keeping only real speed, security, and workflow wins.
+Step 1. Filter before you write
+ 👉 It reads raw release notes or PR titles, keeps the speed, security and workflow wins, and drops the dependency bumps and refactors. Every drop shows its reason, and you can flip any line back in.
 
-Step 2. Translate tech into buyer outcomes
- 👉 Gemini rewrites one technical update for 3 audiences:
-• Executive buyer (ROI & risk reduction)
-• Daily user (time saved)
-• Partner / agency (repeatable use case)
+Step 2. Translate one change for three readers
+ 👉 Each win gets three lenses: the exec buyer (ROI and risk), the daily user (time saved) and the partner (a repeatable use case they can resell).
 
-Step 3. Package a 30-second visual demo + one-pager
- 👉 Playwright + Google Docs capture an auto-playing 4:5 demo GIF and a 1-page sales brief the same afternoon.
+Step 3. Package the 30-second demo
+ 👉 A beat-by-beat script (0:00 hook, 0:04 before, 0:10 after, 0:23 proof, 0:27 CTA), a 4:5 demo card you can post, a one-page customer brief, plus Slack, CRM and email snippets.
+
+Step 4. Trace every number
+ 👉 Every figure in every lens is matched back to the release notes. Anything the model adds gets a red ⚑. Superlatives get flagged too; "fastest" is not a feature.
+
+Step 5. A human decides what customers hear
+ 👉 Exports stay locked until you confirm you checked the claims and filled the "[needs confirmation]" answers on pricing, rollout and plans. The agent does not know those. You do.
+
+It runs in your browser. Nothing is uploaded. Add a free Gemini key and the translate station writes better prose; without one, templates do the job.
 
 Shipping code is half the job.
-Helping customers adopt it builds the business.
+Helping customers adopt it is the half that pays.
 
-💬 How long does it take your team to turn a shipped feature into a customer demo?
+💬 Comment DEMO and I'll send the 6-station spec you can paste into your own agent.
 ♻️ Repost this for a PM, PMM, or GTM leader on your team.
 👋 New here? I'm Afrina. 15+ years building product, now working on Gemini & AI agents at Google. Follow for practical playbooks on how AI products are built.`,
-          comment: `Built with Antigravity #02: Tomorrow morning (Saturday), Issue #01 of my newsletter breaks down both the Enterprise Deck workflow and this Release-to-Demo GTM agent step-by-step.`
+          comment: `Try it (free, runs in your browser, nothing uploaded): https://afrinam19.github.io/signal50/apps/release-to-demo/ · Source: https://github.com/Afrinam19/signal50/tree/main/apps/release-to-demo · Thursday's build, the Enterprise Deck Factory: https://afrinam19.github.io/signal50/apps/deck-factory/ · Both playbooks step by step in Saturday's Issue #01.`
         },
         {
           day: 'Saturday',
