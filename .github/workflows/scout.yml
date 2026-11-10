@@ -1,0 +1,47 @@
+name: Outlier Scout (every 12h)
+
+on:
+  schedule:
+    - cron: "17 6,18 * * *"   # 06:17 & 18:17 UTC ≈ 22:17 / 10:17 Pacific
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Comma-separated handles to scout (blank = full watchlist)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scout
+  cancel-in-progress: false
+
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Run scout
+        env:
+          HARVEST_API_KEY: ${{ secrets.HARVEST_API_KEY }}
+        run: |
+          if [ -n "${{ github.event.inputs.only }}" ]; then
+            node scout/scout.mjs --only "${{ github.event.inputs.only }}" --delay-ms 4000
+          else
+            node scout/scout.mjs --delay-ms 4000
+          fi
+      - name: Commit refreshed data
+        run: |
+          git config user.name "signal50-scout[bot]"
+          git config user.email "signal50-scout@users.noreply.github.com"
+          git add data/outliers.json
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          OK=$(node -e "const d=require('./data/outliers.json');console.log(d.summary.ok+'/'+d.summary.creators+' ok · '+d.summary.outliers+' outliers · '+d.summary.authwalled+' authwalled')")
+          git commit -m "scout: refresh outliers ($OK)"
+          git pull --rebase origin main
+          git push

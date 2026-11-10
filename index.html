@@ -1,0 +1,2064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signal50 — Afrina M's AI Product Voice, GIF &amp; Newsletter Studio</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    .hidden { display: none !important; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    button { cursor: pointer; }
+  </style>
+  <style>
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased pb-24 md:pb-12">
+  <!-- Sticky App Header -->
+  <header class="sticky top-0 z-30 bg-[var(--card)] border-b border-[var(--border)] px-4 py-3 md:px-6">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)]">Signal50 OS</span>
+          <span id="sync-status-pill" class="text-xs px-2 py-0.5 rounded bg-[var(--secondary)] text-[var(--secondary-foreground)] font-medium">Interactive Studio Ready</span>
+        </div>
+        <h1 class="text-base md:text-xl font-bold mt-1">Afrina M · AI Product Voice &amp; Growth Studio</h1>
+      </div>
+      <div class="flex items-center gap-2 text-xs">
+        <span class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--secondary-foreground)] font-semibold">4.5K → 50K (26w)</span>
+        <span id="header-voice-badge" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold">Voice DNA: 100%</span>
+      </div>
+    </div>
+
+    <!-- Main Navigation Tabs (Scrollable on Mobile & Desktop) -->
+    <nav class="max-w-7xl mx-auto flex items-center gap-1.5 mt-3 pt-2.5 border-t border-[var(--border)] overflow-x-auto hide-scrollbar" aria-label="Primary Studio Views">
+      <button type="button" data-tab="calendar" class="tab-btn whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[var(--primary)] text-[var(--primary-foreground)]">1 · Mon–Sat Studio</button>
+      <button type="button" data-tab="gif" class="tab-btn whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)]">2 · Deck/GTM Builder &amp; GIF Lab</button>
+      <button type="button" data-tab="outliers" class="tab-btn whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)]">3 · HarvestAPI Outlier Alchemist</button>
+      <button type="button" data-tab="newsletter" class="tab-btn whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)]">4 · Saturday Newsletter</button>
+      <button type="button" data-tab="retro" class="tab-btn whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)]">5 · Self-Healing Retro</button>
+      <button type="button" data-tab="ops" class="tab-btn whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)]">6 · Profile Rewrite &amp; Ops</button>
+    </nav>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 md:px-6 pt-5 space-y-5">
+    <!-- Toast Notification Banner -->
+    <div id="toast-bar" class="hidden rounded-xl border border-[var(--primary)] bg-[var(--secondary)] text-[var(--foreground)] px-4 py-2.5 text-xs font-semibold flex items-center justify-between">
+      <span id="toast-text">Action completed</span>
+      <button type="button" id="toast-close" class="text-xs underline ml-4">Dismiss</button>
+    </div>
+
+    <!-- Zero-Chat-Upload Bridge: Pull Live LinkedIn via HarvestAPI OR Send Phone Screenshots Straight to VM -->
+    <section class="bg-[var(--card)] border-2 border-[var(--primary)] rounded-xl p-4 space-y-3">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)]">Remote Chat Bypass Bridge</span>
+          <h2 class="text-sm md:text-base font-bold mt-1">Let Antigravity See Your Live LinkedIn (Zero Chat Uploads Needed)</h2>
+        </div>
+        <button type="button" id="btn-toggle-bridge" class="text-xs font-semibold px-2.5 py-1 rounded border border-[var(--border)]">Hide / Show</button>
+      </div>
+      <div id="bridge-body" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+        <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-2">
+          <div class="font-bold">Path A · Auto-Pull Live LinkedIn via HarvestAPI (Zero Files)</div>
+          <p class="text-[var(--muted-foreground)]">Fetches your live Banner image, Headshot, Headline, Follower count &amp; recent posts straight onto this VM.</p>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input id="harvest-api-key-input" type="password" placeholder="Paste HarvestAPI Key (harvestapi.io)" class="flex-1 rounded-lg border border-[var(--border)] bg-[var(--card)] px-2.5 py-1.5 text-xs" />
+            <button type="button" id="btn-harvest-pull" class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-bold whitespace-nowrap">Pull My LinkedIn →</button>
+          </div>
+        </div>
+        <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-2">
+          <div class="font-bold">Path B · Phone Camera Roll / Cmd+V Screenshot → Direct to VM</div>
+          <p class="text-[var(--muted-foreground)]">Bypasses Remote chat's upload block—saves images/PDFs straight into <code class="font-mono">/uploads</code> on your Agent VM.</p>
+          <div class="flex flex-wrap items-center gap-2">
+            <label class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-bold cursor-pointer">
+              Tap to Pick Screenshot(s) / PDF
+              <input id="vm-file-input" type="file" accept="image/*,.pdf" multiple class="hidden" />
+            </label>
+            <span class="text-[var(--muted-foreground)]">or press <strong>Cmd+V / Ctrl+V</strong> anywhere on this page</span>
+          </div>
+        </div>
+      </div>
+      <div id="vm-bridge-status" class="text-xs font-medium text-[var(--muted-foreground)]">Ready · Any pulled LinkedIn media or phone screenshot lands directly on the VM so your agent can inspect it immediately.</div>
+      <div id="vm-uploaded-thumbs" class="flex flex-wrap gap-2"></div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 1: MON-SAT CONTENT STUDIO, FOLD SIMULATOR & QA GATE             -->
+    <!-- =================================================================== -->
+    <section id="panel-calendar" class="tab-panel space-y-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5">
+          <div class="text-xs text-[var(--muted-foreground)]">Mon–Wed Growth</div>
+          <div id="stat-outlier-range" class="text-sm md:text-base font-bold mt-0.5">≥3x Verified Outliers</div>
+          <div class="text-xs text-[var(--muted-foreground)] mt-0.5">HarvestAPI Rarity + Credit</div>
+        </div>
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5">
+          <div class="text-xs text-[var(--muted-foreground)]">Thu–Fri Execution</div>
+          <div class="text-sm md:text-base font-bold mt-0.5">1% Builder Workflows</div>
+          <div class="text-xs text-[var(--muted-foreground)] mt-0.5">Gemini + Antigravity + GTM</div>
+        </div>
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5">
+          <div class="text-xs text-[var(--muted-foreground)]">Saturday Flagship</div>
+          <div class="text-sm md:text-base font-bold mt-0.5">Saturday Dispatch</div>
+          <div class="text-xs text-[var(--muted-foreground)] mt-0.5">Product leaders · founders · agencies</div>
+        </div>
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5">
+          <div class="text-xs text-[var(--muted-foreground)]">Public Proof Only</div>
+          <div class="text-sm md:text-base font-bold mt-0.5">Gemini &amp; Agents @ Google</div>
+          <div class="text-xs text-[var(--muted-foreground)] mt-0.5">15+ yrs product · 4× Cloud Next speaker</div>
+        </div>
+      </div>
+
+      <!-- Day Switcher Pills -->
+      <div id="day-pills" class="flex gap-2 overflow-x-auto hide-scrollbar pb-1"></div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <!-- Left Editor Column -->
+        <div class="lg:col-span-7 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-4">
+          <div class="flex flex-wrap items-start justify-between gap-2">
+            <div>
+              <span id="post-track-badge" class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded bg-[var(--secondary)] text-[var(--secondary-foreground)]">Outlier Growth</span>
+              <h2 id="post-title" class="text-base md:text-lg font-bold mt-1.5">Loading Week 1 Queue...</h2>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" id="btn-send-to-gif" class="px-3 py-1.5 rounded-lg border border-[var(--border)] text-xs font-semibold">Animate as GIF →</button>
+              <button type="button" id="btn-copy-post" class="px-3.5 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Copy Post</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="text-xs font-semibold text-[var(--muted-foreground)] mb-2">Tap to Switch Pre-Fold Hook Variant (Engineered ≤ 210 Chars)</div>
+            <div id="hook-list" class="space-y-2"></div>
+          </div>
+
+          <div>
+            <label for="hook-editor" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Active Hook (Above Mobile "...see more")</label>
+            <textarea id="hook-editor" rows="3" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] p-2.5 text-sm"></textarea>
+          </div>
+
+          <div>
+            <label for="body-editor" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Post Body (Calibrated to Your Verbatim Voice · Public Facts Only)</label>
+            <textarea id="body-editor" rows="11" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] p-3 text-sm leading-relaxed"></textarea>
+            <div id="post-safety" class="text-xs font-semibold text-[#1F5E46] mt-2">✓ Data-safety: checking…</div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <span id="save-status" class="text-xs text-[var(--muted-foreground)]">Edits sync automatically</span>
+            <div class="flex gap-2">
+              <button type="button" id="btn-copy-comment" class="px-3 py-2 rounded-lg border border-[var(--border)] text-xs font-semibold">Copy 1st Comment</button>
+              <button type="button" id="btn-save-post" class="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Save &amp; Queue Day</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Mobile Feed Simulator & QA Gate -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] flex items-center justify-center font-bold text-sm shrink-0">AM</div>
+              <div class="min-w-0">
+                <div class="text-sm font-bold">Afrina M · 1st</div>
+                <div class="text-xs text-[var(--muted-foreground)] truncate">AI Product @ Google (Gemini &amp; Agents) | I write about how AI products are built</div>
+              </div>
+            </div>
+
+            <div id="sim-hook" class="text-sm whitespace-pre-wrap leading-relaxed pb-2.5 border-b border-dashed border-[var(--primary)]"></div>
+            <div class="flex justify-between items-center text-xs py-1.5 font-mono text-[var(--muted-foreground)]">
+              <span>▲ Mobile "...see more" cutoff</span>
+              <span id="sim-char-count">0 / 210 chars</span>
+            </div>
+            <div id="sim-body" class="text-xs md:text-sm whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto pt-1"></div>
+
+            <div class="mt-4 pt-3 border-t border-[var(--border)]">
+              <div class="text-xs font-semibold text-[var(--muted-foreground)] mb-1">First Comment (Creator Credit + Saturday Newsletter Funnel)</div>
+              <div id="sim-comment" class="text-xs p-2.5 rounded-lg bg-[var(--secondary)] text-[var(--secondary-foreground)]"></div>
+            </div>
+          </div>
+
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
+            <div class="flex justify-between items-center mb-2.5">
+              <span class="text-xs font-bold uppercase tracking-wider">6-Point Pre-Flight Quality Gate</span>
+              <span id="qa-badge" class="text-xs font-bold px-2.5 py-0.5 rounded bg-[var(--secondary)]">100% Ready</span>
+            </div>
+            <div id="qa-checks" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 2: LIVE ECOSYSTEM BUILDER & BINARY GIF89a / PNG GENERATOR       -->
+    <!-- =================================================================== -->
+    <section id="panel-gif" class="tab-panel hidden space-y-5">
+      <!-- Real-Time Rough Notes / Release Notes Compiler -->
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3">
+        <div class="flex flex-wrap justify-between items-center gap-2">
+          <div>
+            <span class="text-xs font-bold uppercase px-2 py-0.5 rounded bg-[var(--secondary)]">Thu–Fri 1% Builder Compiler</span>
+            <h2 class="text-base md:text-lg font-bold mt-1">Turn Rough Notes or GitHub Release Notes → Executive Deck &amp; Animated GIF</h2>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" id="btn-compile-deck" class="px-3.5 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Compile into Executive GIF + Slide Outline</button>
+          </div>
+        </div>
+        <textarea id="raw-builder-input" rows="3" placeholder="Paste messy client discovery notes, rough deck bullets, or raw GitHub PR release notes here (e.g., 'Client onboarding takes 14 days; manual SQL checks; need automated MCP validation; cut setup to 25 mins for Fortune 500s')..." class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-3 text-xs md:text-sm"></textarea>
+        <div id="compiled-deck-output" class="hidden p-3 rounded-lg bg-[var(--secondary)] text-xs whitespace-pre-wrap leading-relaxed"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-6 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-4">
+          <div>
+            <h3 class="text-base font-bold">High-Quality 4:5 Animated GIF &amp; 1080×1350 Studio</h3>
+            <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Encodes true multi-frame binary <code>GIF89a</code> animations directly in-app for auto-playing mobile LinkedIn scroll-stop.</p>
+          </div>
+
+          <div>
+            <label for="gif-preset" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Preset Workflow Blueprint</label>
+            <select id="gif-preset" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] p-2.5 text-sm">
+              <option value="deck">Thu Build #1 · Rough Notes → Enterprise Google Slides Deck (6 Mins)</option>
+              <option value="gtm">Fri Build #2 · GitHub Release Notes → Live GTM Customer Demo Agent</option>
+              <option value="agency">Agency Painkiller · 15-Hr Marketing Campaign → 12-Min Pipeline</option>
+              <option value="spotify">Mon Outlier · Cut Your AI Agent Bill 90% in 5 Steps (Credit: Aakash Gupta)</option>
+              <option value="evals">Tue Outlier · Evals for PMs in 6 Steps, No Code (Credit: Hamel Husain)</option>
+              <option value="humancheck">Wed Outlier · Where the Human Check Goes — 5 Steps (Credit: Ethan Mollick)</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="gif-kicker" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Top Kicker Tag</label>
+              <input id="gif-kicker" type="text" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" />
+            </div>
+            <div>
+              <label for="gif-speed" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Animation Speed</label>
+              <select id="gif-speed" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm">
+                <option value="95">Snappy (0.95s / step)</option>
+                <option value="125" selected>Executive Pace (1.25s / step)</option>
+                <option value="165">Deep Read (1.65s / step)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="gif-headline" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Visual Headline</label>
+            <input id="gif-headline" type="text" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm font-semibold" />
+          </div>
+
+          <div>
+            <label for="gif-steps" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Animated Steps — 4 to 6 lines (<code>Step Label | Value Detail</code>)</label>
+            <textarea id="gif-steps" rows="6" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2.5 text-xs font-mono leading-relaxed"></textarea>
+          </div>
+
+          <div class="flex flex-wrap gap-2.5 pt-1">
+            <button type="button" id="btn-export-gif" class="px-4 py-2.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Generate &amp; Save Animated .GIF</button>
+            <button type="button" id="btn-export-png" class="px-4 py-2.5 rounded-lg border border-[var(--border)] text-xs font-semibold">Generate 1080×1350 .PNG</button>
+          </div>
+          <div id="gif-status" class="text-xs text-[var(--muted-foreground)]">Live canvas preview playing → (one frame per step + a final "all steps" frame)</div>
+          <div id="gif-safety" class="text-xs font-semibold text-[#1F5E46]">✓ Data-safety: checking…</div>
+
+          <!-- Inline Mobile Save Box (Works even inside sandboxed mobile webviews!) -->
+          <div id="exported-media-wrap" class="hidden pt-3 border-t border-[var(--border)] space-y-2">
+            <div class="text-xs font-bold text-[var(--primary)]">✓ File Encoded! On phone: press &amp; hold image below → "Save to Photos":</div>
+            <img id="exported-media-img" alt="Encoded Signal50 Visual" class="w-full max-w-[280px] rounded-lg border border-[var(--border)]" />
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 flex flex-col items-center">
+          <div class="w-full flex justify-between items-center mb-3 text-xs text-[var(--muted-foreground)]">
+            <span>Live 4:5 Mobile Feed Loop Preview</span>
+            <span id="gif-frame-indicator" class="font-mono">Frame 1 / 5</span>
+          </div>
+          <canvas id="gif-preview-canvas" width="720" height="900" class="w-full max-w-[380px] rounded-lg border border-[var(--border)]"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 3: HARVESTAPI RARITY CALCULATOR & LIVE OUTLIER-TO-VOICE ENGINE  -->
+    <!-- =================================================================== -->
+    <section id="panel-outliers" class="tab-panel hidden space-y-5">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <!-- Live Outlier -> Afrina Verbatim Voice Generator -->
+        <div class="lg:col-span-6 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3.5">
+          <div>
+            <span class="text-xs font-bold uppercase px-2 py-0.5 rounded bg-[var(--secondary)]">Subagent #1 + #2 Live Pipeline</span>
+            <h2 class="text-base md:text-lg font-bold mt-1">Verify Rarity &amp; Convert Any Outlier Into Your Voice</h2>
+            <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Checks <code>Multiplier ≥ 3.0x</code> &amp; <code>MAD Z-Score ≥ 2.5</code>, credits the creator, and writes a fresh Mon–Wed post in your verbatim voice.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div>
+              <label class="block font-semibold mb-1" for="new-out-creator">Original Creator (for Credit)</label>
+              <input id="new-out-creator" type="text" value="Logan Kilpatrick" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" />
+            </div>
+            <div>
+              <label class="block font-semibold mb-1" for="new-out-day">Target Studio Day</label>
+              <select id="new-out-day" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm">
+                <option value="0">Monday Slot</option>
+                <option value="1">Tuesday Slot</option>
+                <option value="2">Wednesday Slot</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="text-xs">
+            <label class="block font-semibold mb-1" for="new-out-topic">Viral Post Core Idea / Topic</label>
+            <input id="new-out-topic" type="text" value="Why Developer DX & Zero-Friction APIs Beat Raw Model Benchmarks" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" />
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 text-xs">
+            <div>
+              <label class="block text-[var(--muted-foreground)] mb-1" for="calc-likes">Reactions</label>
+              <input id="calc-likes" type="number" value="2850" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" />
+            </div>
+            <div>
+              <label class="block text-[var(--muted-foreground)] mb-1" for="calc-comments">Comments (3x)</label>
+              <input id="calc-comments" type="number" value="310" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" />
+            </div>
+            <div>
+              <label class="block text-[var(--muted-foreground)] mb-1" for="calc-reposts">Reposts (5x)</label>
+              <input id="calc-reposts" type="number" value="220" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div>
+              <label class="block text-[var(--muted-foreground)] mb-1" for="calc-median">Creator Median Weighted</label>
+              <input id="calc-median" type="number" value="940" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" />
+            </div>
+            <div>
+              <label class="block text-[var(--muted-foreground)] mb-1" for="calc-mad">Creator MAD Spread</label>
+              <input id="calc-mad" type="number" value="210" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" />
+            </div>
+          </div>
+
+          <div id="rarity-result" class="p-3 rounded-lg bg-[var(--secondary)] text-xs space-y-1"></div>
+
+          <button type="button" id="btn-alchemize-outlier" class="w-full py-2.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">
+            Convert Outlier Into My Verbatim Voice &amp; Load in Studio →
+          </button>
+        </div>
+
+        <!-- Verified Outlier Vault (live HarvestAPI data) -->
+        <div class="lg:col-span-6 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3">
+          <div class="flex flex-wrap items-start justify-between gap-2">
+            <div>
+              <h3 class="text-base font-bold">Verified Outlier Vault (HarvestAPI Rarity ≥ 3.0x)</h3>
+              <p id="vault-status" class="text-xs text-[var(--muted-foreground)] mt-0.5">Loading vault…</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <label class="flex items-center gap-1.5 text-xs text-[var(--muted-foreground)]">
+                <input id="vault-replicable-only" type="checkbox" checked class="accent-[var(--primary)]" />
+                Reusable only
+              </label>
+              <button type="button" id="btn-rescan-outliers" class="px-3 py-1.5 rounded-lg border border-[var(--border)] text-xs font-semibold hover:bg-[var(--secondary)]">
+                Rescan now
+              </button>
+            </div>
+          </div>
+          <p class="text-xs text-[var(--muted-foreground)]">
+            Each card is a real post that beat its creator's own median by ≥3x (reactions + 3×comments + 5×reposts, MAD z ≥ 2.5).
+            <strong>Reusable</strong> = a format you can credit and rebuild in your voice. <strong>Announcement</strong> = job/book/launch spikes kept only as market signal.
+          </p>
+          <div id="rescan-log" class="hidden p-2.5 rounded-lg bg-[var(--secondary)] text-[11px] font-mono whitespace-pre-wrap max-h-40 overflow-auto"></div>
+          <div id="outlier-cards" class="space-y-2.5"></div>
+          <details class="text-xs">
+            <summary class="cursor-pointer font-semibold text-[var(--muted-foreground)]">Watchlist scan report (per creator)</summary>
+            <div class="overflow-x-auto mt-2">
+              <table class="w-full text-[11px]">
+                <thead class="text-left text-[var(--muted-foreground)]">
+                  <tr><th class="py-1 pr-2">Creator</th><th class="py-1 pr-2">Status</th><th class="py-1 pr-2">Posts</th><th class="py-1 pr-2">Median</th><th class="py-1 pr-2">Top ×</th><th class="py-1 pr-2">Reusable</th></tr>
+                </thead>
+                <tbody id="scan-report-rows"></tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 4: SATURDAY $3M+/YR NEWSLETTER & ARR SIMULATOR                  -->
+    <!-- =================================================================== -->
+    <section id="panel-newsletter" class="tab-panel hidden space-y-5">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3">
+            <span class="text-xs font-bold uppercase px-2 py-0.5 rounded bg-[var(--secondary)]">Target ICP Architecture</span>
+            <h2 class="text-base md:text-lg font-bold">The Prototype-to-Production Dispatch</h2>
+            <div class="space-y-2 text-xs leading-relaxed">
+              <div class="p-3 rounded-lg border border-[var(--border)]">
+                <strong>Primary Buyer &amp; Hiring ICP ($3M+ Revenue Core):</strong><br/>
+                Frontier AI Lab Product/GTM Leads, VPs/Directors of Product, SaaS Founders &amp; Agency Principals with $2K–$5K L&amp;D corporate cards and $50K–$500K AI stack budgets.
+              </div>
+              <div class="p-3 rounded-lg border border-[var(--border)]">
+                <strong>Secondary Viral Ring (50K Growth Fuel):</strong><br/>
+                Engineers, PMs &amp; non-linear career builders sharing your Saturday blueprints in company Slack channels.
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3">
+            <h3 class="text-base font-bold">$3M+/Year ARR Revenue Mix Simulator</h3>
+            <div class="space-y-3 text-xs">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span>Pro Blueprint Vault Members ($240/yr)</span>
+                  <span id="lbl-pro-subs" class="font-mono font-bold">6,000 subs</span>
+                </div>
+                <input id="sim-pro-subs" type="range" min="1000" max="12000" step="250" value="6000" class="w-full" />
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span>Enterprise Sponsor Rate (2 slots / Saturday)</span>
+                  <span id="lbl-spon-rate" class="font-mono font-bold">$11,000 / slot</span>
+                </div>
+                <input id="sim-spon-rate" type="range" min="3000" max="25000" step="500" value="11000" class="w-full" />
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span>Executive AI Advisory &amp; Cohorts</span>
+                  <span id="lbl-advisory" class="font-mono font-bold">$600,000 / yr</span>
+                </div>
+                <input id="sim-advisory" type="range" min="0" max="1500000" step="50000" value="600000" class="w-full" />
+              </div>
+              <div id="arr-breakdown" class="p-3.5 rounded-xl bg-[var(--secondary)] space-y-1 font-medium"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3">
+          <div class="flex flex-wrap justify-between items-center gap-2">
+            <div>
+              <span class="text-xs font-semibold text-[var(--muted-foreground)]">SATURDAY ISSUE #01 · CALIBRATED TO YOUR VOICE</span>
+              <h3 class="text-base md:text-lg font-bold">Shipping an AI Model vs. Building a Business People Pay For</h3>
+            </div>
+            <button type="button" id="btn-copy-newsletter" class="px-3.5 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Copy Issue #01</button>
+          </div>
+          <textarea id="newsletter-editor" rows="18" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-3.5 text-sm leading-relaxed"></textarea>
+          <div id="newsletter-safety" class="text-xs font-semibold text-[#1F5E46]">✓ Data-safety: checking…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 5: INTERACTIVE SELF-HEALING RETRO AGENT                         -->
+    <!-- =================================================================== -->
+    <section id="panel-retro" class="tab-panel hidden space-y-5">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-7 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-4">
+          <div class="flex flex-wrap justify-between items-center gap-2">
+            <div>
+              <h2 class="text-base md:text-lg font-bold">Subagent #4 · Interactive Self-Healing Retro</h2>
+              <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Edit any post's weekly metrics below and click <strong>Run Self-Healing Diagnosis</strong> to recompute winners, flops, and skill mutations.</p>
+            </div>
+            <button type="button" id="btn-run-retro" class="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Run Self-Healing Diagnosis</button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="border-b border-[var(--border)] text-[var(--muted-foreground)]">
+                  <th class="py-2 pr-2">Day &amp; Format</th>
+                  <th class="py-2 px-1">Impressions</th>
+                  <th class="py-2 px-1">Reactions</th>
+                  <th class="py-2 px-1">Reposts</th>
+                  <th class="py-2 pl-1">NL Signups</th>
+                </tr>
+              </thead>
+              <tbody id="retro-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3">
+          <h3 class="text-base font-bold">Live Self-Healed Skill Directives</h3>
+          <p class="text-xs text-[var(--muted-foreground)]">Computed directly from your metrics table at left:</p>
+          <div id="retro-directives" class="space-y-2.5 text-xs"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 6: $2M+ PROFILE REWRITE, VOICE DNA & $0 SCHEDULING              -->
+    <!-- =================================================================== -->
+    <section id="panel-ops" class="tab-panel hidden space-y-5">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-4">
+        <div>
+          <span class="text-xs font-bold uppercase px-2 py-0.5 rounded bg-[var(--secondary)]">5-Page LinkedIn Profile Audit · Sunnyvale / SF Bay Area</span>
+          <h2 class="text-base md:text-lg font-bold mt-1">Frontier AI Lab Voice &amp; 50K Follower Profile Rewrite</h2>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Keeps your signature age-12 home-builder story &amp; non-linear skill-transfer voice intact while swapping "Data Governance" for Gemini &amp; AI agents — using only public, non-numeric proof (no revenue, usage or internal metrics).</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div class="lg:col-span-5 space-y-3 text-xs">
+            <div class="space-y-2">
+              <div class="font-bold">Tap Any Upgraded Headline to Copy (≤ 220 Chars):</div>
+              <button type="button" data-copy-headline="AI Product @ Google (Gemini & Agents) | 4x Google Cloud Next Speaker | I write about how AI products are built" class="w-full text-left p-3 rounded-lg bg-[var(--secondary)] border border-[var(--primary)]">
+                <div class="font-bold mb-1">★ Option 1 (Recommended — External AI Lab Voice + Newsletter):</div>
+                <div>AI Product @ Google (Gemini &amp; Agents) | 4x Google Cloud Next Speaker | I write about how AI products are built</div>
+              </button>
+              <button type="button" data-copy-headline="Building Gemini & Enterprise Agents @ Google | Evals · Agents · Go-to-Market | Saturday Dispatch: How AI Products Are Built" class="w-full text-left p-3 rounded-lg border border-[var(--border)]">
+                <div class="font-bold mb-1">Option 2 (Deep Builder + GTM Operator):</div>
+                <div>Building Gemini &amp; Enterprise Agents @ Google | Evals · Agents · Go-to-Market | Saturday Dispatch: How AI Products Are Built</div>
+              </button>
+            </div>
+
+            <div class="p-3 rounded-lg border border-[var(--border)] space-y-1.5">
+              <div class="font-bold">1584×396 Banner &amp; 3-Slot Featured Funnel:</div>
+              <div><strong>Banner Copy:</strong> "Shipping an AI model and building a business are not the same thing." · <em>Saturdays: The Prototype-to-Production Dispatch</em></div>
+              <div><strong>Featured #1:</strong> Saturday Newsletter Signup ("How AI products are built, every Saturday")</div>
+              <div><strong>Featured #2:</strong> Google Cloud Next Talk: <em>From Prototype to Production — Enterprise Agents</em></div>
+              <div><strong>Featured #3:</strong> Non-Linear Career Skill-Transfer Guide into Top-1% AI PM</div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7 space-y-2">
+            <div class="flex justify-between items-center">
+              <label for="profile-about-editor" class="text-xs font-bold">Upgraded LinkedIn "About" Section (Editable)</label>
+              <button type="button" id="btn-copy-about" class="px-3.5 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Copy Upgraded About</button>
+            </div>
+            <textarea id="profile-about-editor" rows="15" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-3 text-xs md:text-sm leading-relaxed"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-6 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3">
+          <h3 class="text-base font-bold">Verbatim Voice DNA (96% → 100% Polish)</h3>
+          <p class="text-xs text-[var(--muted-foreground)]">Paste 2–3 of your past LinkedIn posts (separated by <code>---</code>) to lock in your final 4% post-ending cadence:</p>
+          <textarea id="voice-paste-box" rows="4" placeholder="Paste 2–3 past LinkedIn posts here..." class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-3 text-sm"></textarea>
+          <button type="button" id="btn-calibrate-voice" class="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Calibrate Final 4%</button>
+          <div id="voice-feedback" class="text-xs text-[var(--muted-foreground)]">✓ Voice locked to your public profile. Data-safety guard on: no revenue, usage or internal metrics in outbound copy.</div>
+        </div>
+
+        <div class="lg:col-span-6 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-2.5 text-xs">
+          <h3 class="text-base font-bold">100% Free ($0/mo) LinkedIn Scheduling Stack</h3>
+          <div class="p-2.5 rounded-lg bg-[var(--secondary)]">
+            <strong>$0 Option A (Official LinkedIn API + GitHub Actions):</strong> Free LinkedIn Developer <code>w_member_social</code> token + our repo's <code>scripts/linkedin_publish_cron.js</code> auto-publishing Mon–Sat.
+          </div>
+          <div class="p-2.5 rounded-lg border border-[var(--border)]">
+            <strong>$0 Option B (Phone Native LinkedIn Clock):</strong> Open this app on your phone → tap <strong>Copy Post</strong> + press &amp; hold your generated <strong>.GIF</strong> → tap LinkedIn's built-in <strong>Clock Icon</strong> ("Schedule for later").
+          </div>
+          <div class="p-2.5 rounded-lg border border-[var(--border)]">
+            <strong>$0 Option C (Buffer Free Plan):</strong> Queue up to 10 scheduled LinkedIn posts + GIFs at $0/month.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <canvas id="png-export-canvas" width="1080" height="1350" class="hidden"></canvas>
+
+  <script>
+    (function () {
+      // =======================================================================
+      // 0. SANDBOX-SAFE STORAGE & CLIPBOARD (NEVER THROWS SECURITYERROR!)
+      // =======================================================================
+      const MEM_STORE = {};
+      function safeGet(key, fallbackVal) {
+        try {
+          const raw = window.localStorage.getItem(key);
+          return raw ? JSON.parse(raw) : fallbackVal;
+        } catch (err) {
+          return MEM_STORE[key] !== undefined ? MEM_STORE[key] : fallbackVal;
+        }
+      }
+
+      function safeSet(key, val) {
+        MEM_STORE[key] = val;
+        try {
+          window.localStorage.setItem(key, JSON.stringify(val));
+        } catch (err) {
+          // Opaque sandboxed iframe: kept safely in MEM_STORE + optional server sync
+        }
+      }
+
+      // ---------------------------------------------------------------------
+      // Data-safety guard (mirror of scripts/sensitive_guard.js). Flags revenue,
+      // usage, target, CSAT, headcount, customer-story and internal-link content
+      // before anything is copied, exported or rendered into a visual.
+      // ---------------------------------------------------------------------
+      // @sensitive-guard-start — regenerated by: node scripts/export_vault_snapshot.js
+      const SENSITIVE_RULES = [{"id":"money","label":"Dollar figure tied to a business (revenue, deal size, platform value)","source":"\\$\\s?\\d[\\d.,]*\\s?(?:k|m|mm|b|bn|million|billion)\\b\\+?","flags":"gi"},{"id":"scale","label":"Revenue-scale claim (e.g. \"to $1B\", \"$300M→$1B\")","source":"\\b(?:scal(?:e|ed|ing)|grew|grow|took|take)\\b[^.\\n]{0,40}\\$\\s?\\d","flags":"gi"},{"id":"usage","label":"Internal usage metric (MAU / DAU / WAU / active users)","source":"\\b\\d[\\d.,]*\\s?(?:k|m)?\\+?\\s?(?:MAU|DAU|WAU|monthly active|daily active|weekly active)\\b|\\b(?:MAU|DAU|WAU)\\b","flags":"gi"},{"id":"target","label":"Quota / target attainment","source":"(?:>|≥|over|above)?\\s?\\d{2,3}%\\s?(?:of\\s+)?(?:annual\\s+|quarterly\\s+)?(?:target|quota|plan|goal)s?\\b","flags":"gi"},{"id":"growth","label":"Internal growth rate (YoY / QoQ / MoM)","source":"[+-]?\\d{1,3}%\\s?(?:YoY|QoQ|MoM|year[- ]over[- ]year|quarter[- ]over[- ]quarter)\\b","flags":"gi"},{"id":"csat","label":"Internal rating / CSAT score","source":"\\b\\d(?:\\.\\d)?\\s?\\/\\s?5\\b(?!\\s?(?:steps?|days?|posts?))|\\bCSAT\\b","flags":"gi"},{"id":"headcount","label":"Internal stakeholder / customer counts","source":"\\b\\d{1,3}(?:,\\d{3})+\\+?\\s+(?:global\\s+)?(?:stakeholders|employees|sellers|engineers|customers|users|seats|accounts)\\b|\\b\\d+\\+?\\s+Fortune\\s+\\d{2,3}s?\\b","flags":"gi"},{"id":"customer_story","label":"Looks like a private customer interaction (quotes from a named-role customer)","source":"\\b(?:our|the|a)\\s+(?:customer|client)(?:'s)?\\s+(?:CISO|CIO|CTO|VP|SVP|EVP|architect|director)\\b|\\bFortune\\s+\\d{2,3}\\s+(?:architect|customer|client|CISO|CIO|CTO|VP)\\b","flags":"gi"},{"id":"internal_links","label":"Internal Google links or IDs","source":"\\bgo\\/[\\w-]+|\\bgoogle3\\b|\\bb\\/\\d{6,}\\b|\\bcl\\/\\d{6,}\\b|\\bcritique\\b|\\bbuganizer\\b|\\bmoma\\b|\\bcorp\\.google\\.com\\b","flags":"gi"},{"id":"confidential","label":"Confidentiality / pre-announcement markers","source":"\\b(?:confidential|internal[- ]only|need[- ]to[- ]know|do not distribute|not yet announced|unannounced|pre-?announce|under NDA|embargo(?:ed)?)\\b","flags":"gi"},{"id":"pipeline","label":"Pipeline / bookings / ARR tied to a number","source":"\\b(?:pipeline|bookings|ARR|ACV|TCV|NRR|GRR)\\b[^.\\n]{0,20}\\$?\\d","flags":"gi"}];
+      // @sensitive-guard-end
+
+      function scanSensitive(text) {
+        const src = String(text || '');
+        const hits = [];
+        for (const rule of SENSITIVE_RULES) {
+          const rx = new RegExp(rule.source, rule.flags.includes('g') ? rule.flags : rule.flags + 'g');
+          let m;
+          while ((m = rx.exec(src)) !== null) {
+            hits.push({ id: rule.id, label: rule.label, match: m[0].trim(), index: m.index });
+            if (m[0].length === 0) rx.lastIndex++;
+          }
+        }
+        const seen = new Set();
+        return hits.filter(h => { const k = h.id + '|' + h.match.toLowerCase(); if (seen.has(k)) return false; seen.add(k); return true; })
+          .sort((a, b) => a.index - b.index);
+      }
+
+      function sensitiveSummary(hits) {
+        return hits.map(h => `"${h.match}" — ${h.label}`).join('\n');
+      }
+
+      // Paints a red/green data-safety line into the given element.
+      function renderSafety(elId, text) {
+        const el = document.getElementById(elId);
+        if (!el) return [];
+        const hits = scanSensitive(text);
+        if (!hits.length) {
+          el.className = 'text-xs font-semibold text-[#1F5E46]';
+          el.textContent = '✓ Data-safety: no revenue or internal Google figures detected.';
+        } else {
+          el.className = 'text-xs font-semibold text-[#B42318] p-2 rounded-lg border border-[#B42318] bg-[#FDECEA] whitespace-pre-line';
+          el.textContent = `⚠ Data-safety guard flagged ${hits.length} phrase${hits.length > 1 ? 's' : ''} — rewrite before posting:\n` + sensitiveSummary(hits);
+        }
+        return hits;
+      }
+
+      // Returns true if the text may leave the Studio (clean, or user explicitly overrides).
+      function guardConfirm(text, what) {
+        const hits = scanSensitive(text);
+        if (!hits.length) return true;
+        return window.confirm(`Data-safety guard flagged ${hits.length} phrase(s) in this ${what}:\n\n${sensitiveSummary(hits)}\n\nThis looks like revenue or internal Google data. Only continue if every figure is already public and approved.\n\nCopy anyway?`);
+      }
+
+      function showToast(msg) {
+        const bar = document.getElementById('toast-bar');
+        const txt = document.getElementById('toast-text');
+        if (!bar || !txt) return;
+        txt.textContent = msg;
+        bar.classList.remove('hidden');
+        clearTimeout(window.__toastTimer);
+        window.__toastTimer = setTimeout(() => bar.classList.add('hidden'), 4200);
+      }
+
+      async function safeCopy(text, successMsg) {
+        if (!guardConfirm(text, 'text')) {
+          showToast('Copy cancelled — rewrite the flagged phrases first.');
+          return;
+        }
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+            showToast(successMsg);
+            return;
+          }
+        } catch (err) { /* fallback below */ }
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        showToast(successMsg);
+      }
+
+      function uint8ToBase64(bytes) {
+        let binary = '';
+        const chunk = 0x8000;
+        for (let i = 0; i < bytes.length; i += chunk) {
+          binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+        }
+        return btoa(binary);
+      }
+
+      // =======================================================================
+      // 1. PURE-JS BINARY GIF89a + LZW MULTI-FRAME ENCODER
+      // =======================================================================
+      function buildPalette256() {
+        const pal = new Uint8Array(256 * 3);
+        let idx = 0;
+        const levels = [0, 51, 102, 153, 204, 255];
+        for (let r = 0; r < 6; r++) {
+          for (let g = 0; g < 6; g++) {
+            for (let b = 0; b < 6; b++) {
+              pal[idx * 3] = levels[r];
+              pal[idx * 3 + 1] = levels[g];
+              pal[idx * 3 + 2] = levels[b];
+              idx++;
+            }
+          }
+        }
+        const exactUI = [
+          [246, 243, 236], [255, 255, 255], [22, 25, 32], [196, 67, 31],
+          [31, 94, 70], [237, 233, 223], [213, 207, 195], [221, 215, 203],
+          [75, 82, 98], [156, 163, 175], [184, 178, 166], [26, 115, 232]
+        ];
+        for (const rgb of exactUI) {
+          if (idx < 256) {
+            pal[idx * 3] = rgb[0]; pal[idx * 3 + 1] = rgb[1]; pal[idx * 3 + 2] = rgb[2];
+            idx++;
+          }
+        }
+        while (idx < 256) {
+          const v = Math.round(((idx - 228) / 28) * 255);
+          pal[idx * 3] = v; pal[idx * 3 + 1] = v; pal[idx * 3 + 2] = v;
+          idx++;
+        }
+        return pal;
+      }
+
+      const GLOBAL_PALETTE = buildPalette256();
+      const COLOR_CACHE = new Map();
+
+      function nearestColorIndex(r, g, b) {
+        const key = ((r >> 2) << 12) | ((g >> 2) << 6) | (b >> 2);
+        const cached = COLOR_CACHE.get(key);
+        if (cached !== undefined) return cached;
+        let bestIdx = 0, bestDist = 1e9;
+        for (let i = 0; i < 256; i++) {
+          const dr = r - GLOBAL_PALETTE[i * 3];
+          const dg = g - GLOBAL_PALETTE[i * 3 + 1];
+          const db = b - GLOBAL_PALETTE[i * 3 + 2];
+          const dist = dr * dr + dg * dg + db * db;
+          if (dist < bestDist) {
+            bestDist = dist; bestIdx = i;
+            if (dist === 0) break;
+          }
+        }
+        COLOR_CACHE.set(key, bestIdx);
+        return bestIdx;
+      }
+
+      function lzwEncode(indices) {
+        const minCodeSize = 8, clearCode = 256, eoiCode = 257;
+        const outBytes = [];
+        let bitBuf = 0, bitCount = 0, subBlock = [];
+        function flushByte(b) {
+          subBlock.push(b);
+          if (subBlock.length === 255) { outBytes.push(255, ...subBlock); subBlock = []; }
+        }
+        function writeCode(code, size) {
+          bitBuf |= (code << bitCount);
+          bitCount += size;
+          while (bitCount >= 8) { flushByte(bitBuf & 0xff); bitBuf >>= 8; bitCount -= 8; }
+        }
+        let codeSize = 9, nextCode = 258, dict = new Map();
+        writeCode(clearCode, codeSize);
+        let prefix = indices[0];
+        for (let i = 1; i < indices.length; i++) {
+          const k = indices[i];
+          const key = (prefix << 8) | k;
+          const found = dict.get(key);
+          if (found !== undefined) {
+            prefix = found;
+          } else {
+            writeCode(prefix, codeSize);
+            if (nextCode < 4096) {
+              dict.set(key, nextCode++);
+              if (nextCode > (1 << codeSize) && codeSize < 12) codeSize++;
+            } else {
+              writeCode(clearCode, codeSize);
+              dict.clear(); codeSize = 9; nextCode = 258;
+            }
+            prefix = k;
+          }
+        }
+        writeCode(prefix, codeSize);
+        writeCode(eoiCode, codeSize);
+        if (bitCount > 0) flushByte(bitBuf & 0xff);
+        if (subBlock.length > 0) outBytes.push(subBlock.length, ...subBlock);
+        outBytes.push(0);
+        return [minCodeSize, ...outBytes];
+      }
+
+      function encodeAnimatedGif(width, height, frameImageDataList, delaysCs) {
+        const bytes = [];
+        const pushStr = s => { for (let i = 0; i < s.length; i++) bytes.push(s.charCodeAt(i)); };
+        const pushU16 = n => { bytes.push(n & 0xff, (n >> 8) & 0xff); };
+        pushStr('GIF89a');
+        pushU16(width); pushU16(height);
+        bytes.push(0xf7, 0, 0);
+        for (let i = 0; i < GLOBAL_PALETTE.length; i++) bytes.push(GLOBAL_PALETTE[i]);
+        bytes.push(0x21, 0xff, 0x0b);
+        pushStr('NETSCAPE2.0');
+        bytes.push(0x03, 0x01, 0x00, 0x00, 0x00);
+        for (let f = 0; f < frameImageDataList.length; f++) {
+          const rgba = frameImageDataList[f].data;
+          const indexed = new Uint8Array(width * height);
+          for (let p = 0, j = 0; p < indexed.length; p++, j += 4) {
+            indexed[p] = nearestColorIndex(rgba[j], rgba[j + 1], rgba[j + 2]);
+          }
+          bytes.push(0x21, 0xf9, 0x04, 0x00);
+          pushU16(delaysCs[f] || 120);
+          bytes.push(0x00, 0x00, 0x2c);
+          pushU16(0); pushU16(0); pushU16(width); pushU16(height);
+          bytes.push(0x00);
+          const compressed = lzwEncode(indexed);
+          for (let k = 0; k < compressed.length; k++) bytes.push(compressed[k]);
+        }
+        bytes.push(0x3b);
+        return new Uint8Array(bytes);
+      }
+
+      // =======================================================================
+      // 2. VERBATIM-VOICE CALIBRATED DATA STORE
+      // =======================================================================
+      const DEFAULT_POSTS = [
+        {
+          day: 'Monday',
+          track: 'Outlier Growth · Credit: Aakash Gupta (23.5x · HarvestAPI verified · 9 days old)',
+          isGrowth: true,
+          credit: 'Aakash Gupta',
+          creditUrl: 'https://www.linkedin.com/posts/aagupta_spotify-cut-their-claude-code-token-bill-activity-7522511755588067328-VNMq',
+          title: 'Spotify cut its AI agent bill by 90% — 5 steps to cut yours (credit: Aakash Gupta)',
+          selectedHook: 0,
+          hooks: [
+            'Spotify cut its AI coding-agent bill by 90%.\nThe fix was not a cheaper model. It was stopping the expensive model from reading.',
+            'Most of your AI agent bill is not thinking. It is reading.\nSpotify proved it, then open-sourced the fix. Here is the 5-step version for your team:',
+            'A bigger token bill is not more intelligence.\nSpotify cut 90% of theirs with one rule. Here is how to apply it before your next sprint:'
+          ],
+          body: `Here are 5 steps to cut your AI agent bill before your next sprint review 🚀
+
+Save this for your next sprint planning 🩵
+
+Step 1. Find out where the tokens go
+Most agent spend is reading, not reasoning. An agent will read a 4,000-line file to answer a question about one function.
+ 👉 Pull last week's traces. Split the bill into "reading" vs "reasoning."
+
+Step 2. Stop the frontier model from reading
+ 👉 Block full reads of big files (Spotify used 350 lines as the cut-off). Send the read to a small, cheap model and pass back only the answer.
+
+Step 3. Cache what repeats
+ 👉 System prompts, policies, product docs: cache them once instead of paying for them on every turn.
+
+Step 4. Set a token budget per task
+ 👉 Give every workflow a cost ceiling and an alert. A bigger bill is not more intelligence.
+
+Step 5. Enforce it with code, not a suggestion
+ 👉 A note in the prompt gets ignored. A hook that blocks the read does not. Spotify open-sourced theirs.
+
+Keep the frontier model for judgment.
+Let cheap workers do the reading.
+
+Credit to Aakash Gupta, whose breakdown of Spotify's engineering post sparked this.
+
+💬 What does your agent bill look like this month? Drop a number below.
+♻️ Repost this for an engineer or PM running agents in production.
+👋 New here? I'm Afrina. 15+ years of building product, now working on Gemini & AI agents at Google. Follow for more on how AI products are built.`,
+          comment: `Credit to Aakash Gupta for the original breakdown: https://www.linkedin.com/posts/aagupta_spotify-cut-their-claude-code-token-bill-activity-7522511755588067328-VNMq — it links to Spotify's engineering blog and the open-source plugin. Every Saturday I break down one AI product build step by step in my newsletter (link in bio).`
+        },
+        {
+          day: 'Tuesday',
+          track: 'Outlier Growth · Credit: Hamel Husain (15.2x · HarvestAPI verified · 5 days old)',
+          isGrowth: true,
+          credit: 'Hamel Husain',
+          creditUrl: 'https://www.linkedin.com/posts/hamelhusain_evals-for-ai-engineers-table-of-contents-activity-7524184541930946560-Y1RK',
+          title: 'Evals for PMs in 6 steps, no code (credit: Hamel Husain)',
+          selectedHook: 0,
+          hooks: [
+            'Hamel Husain just put 2 years of eval teaching into one book.\nMost PMs still don\'t know where to start. Start here.',
+            '"Evals" is the most-used word in AI product and the least-understood.\nHere are 6 steps to write your first ones this week, no code needed:',
+            'Your AI feature does not have acceptance criteria.\nIt has vibes. Here is how to fix that in 6 steps:'
+          ],
+          body: `Here are 6 steps to write evals for your AI feature, no code needed 🚀
+
+Save this for your next sprint planning 🩵
+
+Step 1. Collect 30 real examples
+ 👉 Not made-up prompts. Real user asks, including the messy ones.
+
+Step 2. Read the outputs yourself
+ 👉 All 30. Write down what went wrong in plain words ("ignored the date filter"), not "hallucination."
+
+Step 3. Group the failures
+ 👉 You will usually find 3 to 5 repeat problems. Those are your first evals.
+
+Step 4. Turn each one into a pass/fail check
+ 👉 "Did it cite the source?" Yes or no. No 1-to-5 vibe scores.
+
+Step 5. Add one human check
+ 👉 Pick the step where a wrong answer costs the most. A person reviews that one.
+
+Step 6. Run it every time something changes
+ 👉 New prompt, new model, new tool: rerun the checks. Take the misses to the retro.
+
+Evals are not an engineering task.
+They are your acceptance criteria for AI.
+
+Credit to Hamel Husain and Shreya Shankar. Their free eval FAQs are the best starting point I know.
+
+💬 Which step is your team skipping today?
+♻️ Repost this for a PM shipping their first AI feature.
+👋 New here? I'm Afrina. 15+ years of building product, now working on Gemini & AI agents at Google. Follow for more on how AI products are built.`,
+          comment: `Credit to Hamel Husain (with Shreya Shankar) — the post that sparked this: https://www.linkedin.com/posts/hamelhusain_evals-for-ai-engineers-table-of-contents-activity-7524184541930946560-Y1RK. Their free FAQs: https://hamel.dev/blog/posts/evals-faq/`
+        },
+        {
+          day: 'Wednesday',
+          track: 'Outlier Growth · Credit: Ethan Mollick (5.2x · HarvestAPI verified · 3 days old)',
+          isGrowth: true,
+          credit: 'Ethan Mollick',
+          creditUrl: 'https://www.linkedin.com/posts/emollick_i-think-there-is-too-much-concern-expressed-activity-7524907880840380416-ZSMP',
+          title: 'Stop checking every AI output — where the human check actually goes (credit: Ethan Mollick)',
+          selectedHook: 0,
+          hooks: [
+            '"A human must check every AI output."\nThat rule made sense in 2023. Today it is where AI projects go to stall.',
+            'Ethan Mollick said the quiet part out loud this week:\nchecking every AI output by hand is no longer a quality strategy. It is a bottleneck.',
+            'Your team reviews 100% of AI outputs.\nThat is not safety. That is a queue. Here is where the human check should go instead:'
+          ],
+          body: `Ethan Mollick pointed out this week that data on newer models suggests they now beat human experts at finding facts and checking claims.
+
+So "a person checks everything" is not a quality plan anymore. It is a queue.
+
+Here is how to decide where the human check goes 🚀
+
+Save this for your next review 🩵
+
+Step 1. Separate errors from judgment
+ 👉 Facts, formats, math: let automated checks (evals) catch them. Opinions, trade-offs, tone: that is where people add value.
+
+Step 2. Rank steps by the cost of being wrong
+ 👉 A wrong summary costs a re-read. A wrong refund costs money. Put human review where the cost is highest.
+
+Step 3. Sample, don't audit everything
+ 👉 Review 20 random outputs a week. If the pass rate holds, widen the gate. If it drops, tighten it.
+
+Step 4. Make the agent show its work
+ 👉 Sources, tool calls, confidence. A reviewer can check a trace in 30 seconds instead of 10 minutes.
+
+Step 5. Write the escalation rule
+ 👉 Define when the agent must stop and ask: low confidence, new customer, money moves.
+
+Humans should not be the AI's spell-checker.
+Humans should own the decisions that matter.
+
+Credit to Ethan Mollick for the post that sparked this.
+
+💬 Where does the human check sit in your workflow today?
+♻️ Repost this for a leader still reviewing every AI output by hand.
+👋 New here? I'm Afrina. 15+ years of building product, now working on Gemini & AI agents at Google. Follow for more on how AI products are built.`,
+          comment: `Credit to Ethan Mollick — original post: https://www.linkedin.com/posts/emollick_i-think-there-is-too-much-concern-expressed-activity-7524907880840380416-ZSMP. Tomorrow (Thursday): a live "Built with Antigravity" build.`
+        },
+        {
+          day: 'Thursday',
+          track: 'Built with Antigravity #01 · Simple Deck → Enterprise Deck',
+          isGrowth: false,
+          credit: '',
+          title: 'Built with Antigravity: Rough Notes → Enterprise-Ready Deck in 6 Minutes',
+          selectedHook: 0,
+          hooks: [
+            'Agencies, founders, and PMs spend 15+ hours formatting executive decks.\nBuilt with Antigravity: here is the 4-step workflow I built to do it in 6 minutes 🚀',
+            'One-click AI slide tools still output fluff copy and invented numbers.\nBuilt with Antigravity + Gemini: how to turn messy notes into a real board-ready deck:',
+            'Shipping a feature and winning an enterprise deal are not the same thing.\nBuilt with Antigravity: my 6-minute Simple Deck → Enterprise Deck pipeline:'
+          ],
+          body: `Save this for your next exec or client review 🩵
+
+One-click AI slide tools fail in enterprise rooms for three reasons:
+Fluff copy. Broken brand grids. Invented numbers.
+
+Here is the 4-step workflow I built with Antigravity across the Google AI ecosystem:
+
+Step 1. Structure the story first (no fluff)
+Drop in raw discovery notes and pricing numbers.
+ 👉 Gemini + NotebookLM turn messy bullets into clear executive headlines—using only your real numbers.
+
+Step 2. Lock the brand rules
+ 👉 Figma design tokens enforce clean fonts, spacing, and contrast so slides look custom-designed, not templated.
+
+Step 3. Replace stock art with real diagrams
+ 👉 Imagen + clean SVG diagrams map the actual system workflow on one slide.
+
+Step 4. Ship editable Google Slides
+ 👉 Antigravity connects to the Google Slides API to output native slides, tables, and speaker notes in 6 minutes.
+
+You don't need 15 hours of slide formatting.
+You need a repeatable system.
+
+💬 Want the prompt + workflow template? Comment DECK and I'll share how it's wired.
+♻️ Repost this for a PM, founder, or agency lead on your team.
+👋 New here? I'm Afrina. 15+ years building product, now working on Gemini & AI agents at Google. Follow for practical playbooks on how AI products are built.`,
+          comment: `Built with Antigravity #01: Dropping the full step-by-step Google Slides + Gemini workflow in Saturday's newsletter (link in bio).`
+        },
+        {
+          day: 'Friday',
+          track: 'Built with Antigravity #02 · Release Notes → Customer Demo Agent',
+          isGrowth: false,
+          credit: '',
+          title: 'Built with Antigravity: Turning Raw Release Notes Into Customer Demos in 10 Minutes',
+          selectedHook: 0,
+          hooks: [
+            'Engineering ships 30 updates on Tuesday. Sales still pitches last quarter’s deck 3 weeks later.\nBuilt with Antigravity: here is the GTM agent that closes that gap in 10 minutes 🚀',
+            'Shipping a product and building a business are not the same thing.\nBuilt with Antigravity: how I turn raw GitHub release notes into a customer-ready demo:',
+            'Shipping code is half the job. Helping customers adopt it is the other half.\nBuilt with Antigravity: the 3-step Release-to-Demo agent every product team needs:'
+          ],
+          body: `Save this for your next product launch 🩵
+
+Years of running go-to-market enablement for enterprise products showed me where AI teams leak momentum:
+
+Engineering ships daily.
+Customer enablement still runs manually.
+
+Here is the 3-step GTM workflow I built with Antigravity to fix it in 10 minutes:
+
+Step 1. Filter what customers actually care about
+ 👉 Antigravity reads raw GitHub release notes and filters out internal code cleanup—keeping only real speed, security, and workflow wins.
+
+Step 2. Translate tech into buyer outcomes
+ 👉 Gemini rewrites one technical update for 3 audiences:
+• Executive buyer (ROI & risk reduction)
+• Daily user (time saved)
+• Partner / agency (repeatable use case)
+
+Step 3. Package a 30-second visual demo + one-pager
+ 👉 Playwright + Google Docs capture an auto-playing 4:5 demo GIF and a 1-page sales brief the same afternoon.
+
+Shipping code is half the job.
+Helping customers adopt it builds the business.
+
+💬 How long does it take your team to turn a shipped feature into a customer demo?
+♻️ Repost this for a PM, PMM, or GTM leader on your team.
+👋 New here? I'm Afrina. 15+ years building product, now working on Gemini & AI agents at Google. Follow for practical playbooks on how AI products are built.`,
+          comment: `Built with Antigravity #02: Tomorrow morning (Saturday), Issue #01 of my newsletter breaks down both the Enterprise Deck workflow and this Release-to-Demo GTM agent step-by-step.`
+        },
+        {
+          day: 'Saturday',
+          track: 'Flagship Newsletter Launch · Saturday Dispatch',
+          isGrowth: false,
+          credit: '',
+          title: 'Saturday LinkedIn Bridge → Converting Readers Into Issue #01 Subscribers',
+          selectedHook: 0,
+          hooks: [
+            'When I was 12, my first unofficial PM job was negotiating cement for my parents’ home.\nToday I build AI products at Google—and Issue #01 of my Saturday newsletter is live:',
+            'Most AI newsletters summarize press releases.\nEvery Saturday, I break down how real AI products are actually built, tested, and adopted:',
+            'Missed Thursday’s Enterprise Deck builder or Friday’s Release-to-Demo GTM agent?\nBoth "Built with Antigravity" playbooks just dropped in Saturday Issue #01:'
+          ],
+          body: `No qualifications. No job title. Definitely no salary.
+That was me at 12, coordinating engineers and negotiating building materials for my parents' house.
+
+From Honeywell, Microsoft, Bank of America, and Oracle to building Gemini & enterprise agents at Google, one goal stayed constant:
+
+Turning complex technology into something customers understand, adopt, and pay for.
+
+Today I'm launching my Saturday newsletter—built for Product Leaders, Founders, Agencies, and builders growing into AI product leadership.
+
+Inside today's 5-minute Issue #01:
+ 👉 Why top AI labs pay a premium for PMs who build working prototypes
+ 👉 Built with Antigravity #01: Rough Notes → Enterprise Google Slides Deck in 6 minutes
+ 👉 Built with Antigravity #02: Raw Release Notes → Customer Demo in 10 minutes
+ 👉 Plain-English template: How to write an AI Definition of Done (evals)
+
+Grab Issue #01 in the first comment 🩵
+
+💬 Reply with the #1 workflow bottleneck you want me to build next week.
+♻️ Repost for anyone growing into AI product work.
+👋 New here? I'm Afrina. 15+ years building product. Follow for weekly AI product playbooks.`,
+          comment: `Read Issue #01 & grab both "Built with Antigravity" templates here → [Your Substack / Beehiiv Newsletter Link]`
+        }
+      ];
+
+      const GIF_PRESETS = {
+        deck: {
+          kicker: 'BUILT WITH ANTIGRAVITY · GOOGLE AI',
+          headline: 'Rough Notes → Enterprise Deck in 6 Mins',
+          steps: [
+            '01 · Raw Input | Messy discovery bullets + pricing numbers dropped in',
+            '02 · Gemini + NotebookLM | Writes clear executive headlines (zero fluff)',
+            '03 · Figma + Imagen | Locks brand fonts, spacing & clean diagrams',
+            '04 · Google Slides API | Ships 100% editable board-ready slides + notes'
+          ]
+        },
+        gtm: {
+          kicker: 'BUILT WITH ANTIGRAVITY · GTM AGENT',
+          headline: 'Release Notes → Customer Demo in 10m',
+          steps: [
+            '01 · GitHub Release Filter | Keeps customer wins, skips internal cleanup',
+            '02 · Gemini Value Lens | Rewrites for Exec Buyer, Daily User & Partner',
+            '03 · Auto Demo Capture | Antigravity + Playwright records live UI flow',
+            '04 · Sales Pack Ready | Outputs 4:5 demo GIF + 1-page Google Doc brief'
+          ]
+        },
+        agency: {
+          kicker: 'BUILT WITH ANTIGRAVITY · AGENCY ENGINE',
+          headline: '15-Hr Client Campaign → 12-Min Pipeline',
+          steps: [
+            '01 · NotebookLM + Search | Audits client positioning & competitor gaps',
+            '02 · Multi-Agent Brief | Generates channel hooks, angles & ROI math',
+            '03 · Creative Variants | Renders brand-safe social visuals & ad specs',
+            '04 · Margin Gate | Cuts agency delivery cost by 78% with human QA'
+          ]
+        },
+        spotify: {
+          kicker: 'OUTLIER PLAYBOOK · CREDIT: AAKASH GUPTA / SPOTIFY',
+          headline: 'Cut Your AI Agent Bill 90% in 5 Steps',
+          steps: [
+            '01 · Find the spend | Split last week\'s traces into "reading" vs "reasoning"',
+            '02 · Block big reads | Files over ~350 lines go to a small, cheap model',
+            '03 · Cache repeats | System prompts, policies & docs cached once',
+            '04 · Budget per task | A cost ceiling and an alert for every workflow',
+            '05 · Enforce in code | A hook that blocks the read, not a prompt note'
+          ]
+        },
+        evals: {
+          kicker: 'OUTLIER PLAYBOOK · CREDIT: HAMEL HUSAIN',
+          headline: 'Evals for PMs in 6 Steps (No Code)',
+          steps: [
+            '01 · Collect 30 real asks | Real user prompts, including the messy ones',
+            '02 · Read every output | Note what went wrong in plain words',
+            '03 · Group the failures | 3–5 repeat problems = your first evals',
+            '04 · Make it pass/fail | "Did it cite the source?" Yes or no',
+            '05 · Add one human check | Where a wrong answer costs the most',
+            '06 · Rerun on every change | New prompt, model or tool → rerun'
+          ]
+        },
+        humancheck: {
+          kicker: 'OUTLIER PLAYBOOK · CREDIT: ETHAN MOLLICK',
+          headline: 'Where the Human Check Actually Goes',
+          steps: [
+            '01 · Errors vs judgment | Evals catch facts & formats; people own trade-offs',
+            '02 · Rank by cost of wrong | Human review goes where mistakes cost most',
+            '03 · Sample, don\'t audit | 20 random outputs a week, widen or tighten',
+            '04 · Show the work | Sources, tool calls, confidence in every trace',
+            '05 · Write the escalation rule | Low confidence, new customer, money moves'
+          ]
+        }
+      };
+
+      // @vault-snapshot-start — real HarvestAPI scan snapshot used when no live server is reachable.
+      // Regenerate with: node scripts/export_vault_snapshot.js
+      const VAULT_SNAPSHOT_META = {"scannedAt":"2026-11-10T00:06:25.545Z","creators":[{"name":"Pawel Huryn","status":"ok","posts":100,"median":303,"top":6.59,"playbook":11},{"name":"Logan Kilpatrick","status":"ok","posts":100,"median":275,"top":5.79,"playbook":3},{"name":"Kevin Weil","status":"ok","posts":98,"median":872,"top":13.64,"playbook":4},{"name":"Aman Khan","status":"ok","posts":99,"median":114,"top":40.25,"playbook":6},{"name":"Hamel Husain","status":"ok","posts":100,"median":52,"top":119.65,"playbook":4},{"name":"Shreyas Doshi","status":"ok","posts":99,"median":116,"top":17.45,"playbook":7},{"name":"Aakash Gupta","status":"ok","posts":100,"median":228,"top":23.5,"playbook":12},{"name":"Marily Nika, PhD","status":"ok","posts":100,"median":184,"top":8.19,"playbook":9},{"name":"Ethan Mollick","status":"ok","posts":100,"median":726,"top":5.75,"playbook":3},{"name":"Ruben Hassid","status":"ok","posts":99,"median":1438,"top":3.13,"playbook":1}]};
+      const OUTLIER_VAULT_SNAPSHOT = [{"id":"harvest-1794269084409-4868","creator":"Ruben Hassid","role":"Founder, EasyGen — High-Velocity AI Visual Communicator","mult":3.13,"z":3.71,"likes":2494,"comments":298,"reposts":223,"median":1438,"mad":558,"date":"2026-10-12","age":29,"type":"playbook","media":"image","topic":"Google your name. Now imagine your ex doing it.","url":"https://www.linkedin.com/posts/ruben-hassid_google-your-name-now-imagine-your-ex-doing-activity-7515275262348066816-Ilep","insight":"Google your name. Now imagine your ex doing it. Four prompts erase what they'd find (for $0): The sites selling your data are 𝘭𝘦𝘨𝘢𝘭𝘭𝘺 required to delete it when you ask. They bank on you never asking, because asking 190 sites by hand"},{"id":"harvest-1794269083204-efew","creator":"Ethan Mollick","role":"Professor at Wharton & Author of Co-Intelligence","mult":5.75,"z":7.68,"likes":2765,"comments":271,"reposts":120,"median":726,"mad":303,"date":"2026-10-20","age":21,"type":"announcement","media":"image","topic":"My new book, Co-Existence, is out today. It is a guide to how to live and work in a world where","url":"https://www.linkedin.com/posts/emollick_my-new-book-co-existence-is-out-today-activity-7518356204281180160-I_KG","insight":"My new book, Co-Existence, is out today. It is a guide to how to live and work in a world where AI is sometimes, but not always, better than you. (And, for the release, I worked with Opus 5.5 to make a quite interesting experience for the b"},{"id":"harvest-1794269083204-pjwg","creator":"Ethan Mollick","role":"Professor at Wharton & Author of Co-Intelligence","mult":5.06,"z":6.56,"likes":1969,"comments":221,"reposts":208,"median":726,"mad":303,"date":"2026-10-22","age":19,"type":"playbook","media":"image","topic":"A visible sign of what AI insiders have been warning about since at least the Mythos release. A","url":"https://www.linkedin.com/posts/emollick_a-visible-sign-of-what-ai-insiders-have-been-activity-7518831170906681344-FpL6","insight":"A visible sign of what AI insiders have been warning about since at least the Mythos release. Acceleration of attack and defense, at inhuman speeds, interacting with the very human systems that need to react to them. And these are the vulne"},{"id":"harvest-1794269083204-pszg","creator":"Ethan Mollick","role":"Professor at Wharton & Author of Co-Intelligence","mult":5.23,"z":6.83,"likes":1802,"comments":281,"reposts":230,"median":726,"mad":303,"date":"2026-11-07","age":3,"type":"playbook","media":"image","topic":"I think there is too much concern expressed about the need for human verification of AI output ","url":"https://www.linkedin.com/posts/emollick_i-think-there-is-too-much-concern-expressed-activity-7524907880840380416-ZSMP","insight":"I think there is too much concern expressed about the need for human verification of AI output in everyday work due to a risk of factual errors. It used to be true, but data on more recent models suggest they beat human experts in finding f"},{"id":"harvest-1794269082001-0b0x","creator":"Marily Nika, PhD","role":"GenAI Product Lead @ Google & Founder, AI PM Academy","mult":5.19,"z":6.18,"likes":712,"comments":77,"reposts":2,"median":184,"mad":84,"date":"2026-09-14","age":57,"type":"announcement","media":"image","topic":"I am on WIRED! I've read WIRED for about 15 years, so this one lands a little differently and t","url":"https://www.linkedin.com/posts/marilynika_i-am-on-wired-ive-read-wired-for-about-activity-7505357023945834496-P6BS","insight":"I am on WIRED! I've read WIRED for about 15 years, so this one lands a little differently and this is the second ever edition of WIRED Greece. My article is about the new generation of AI Builders we are all experiencing. It starts with my "},{"id":"harvest-1794269082001-txj5","creator":"Marily Nika, PhD","role":"GenAI Product Lead @ Google & Founder, AI PM Academy","mult":6.92,"z":8.72,"likes":327,"comments":306,"reposts":5,"median":184,"mad":84,"date":"2026-04-01","age":223,"type":"playbook","media":"image","topic":"What did you do at 7:30am? I was building a smart fridge for kids using AI studio and then Clau","url":"https://www.linkedin.com/posts/marilynika_what-did-you-do-at-730am-i-was-building-activity-7445142107155247104-Rtb6","insight":"What did you do at 7:30am? I was building a smart fridge for kids using AI studio and then Claude Code with my students =) Do you want to join the next one with me and Diego? Comment link and we'll share our invite-only upcoming workshop!"},{"id":"harvest-1794269082001-6388","creator":"Marily Nika, PhD","role":"GenAI Product Lead @ Google & Founder, AI PM Academy","mult":8.19,"z":10.59,"likes":275,"comments":404,"reposts":3,"median":184,"mad":84,"date":"2026-02-09","age":274,"type":"playbook","media":"text","topic":"I sometimes get blocked, not due to lack of skill or intelligence... I am blocked because I am ","url":"https://www.linkedin.com/posts/marilynika_i-sometimes-get-blocked-not-due-to-lack-activity-7426656213817393152-kh3a","insight":"I sometimes get blocked, not due to lack of skill or intelligence... I am blocked because I am carrying too many half-decisions in my head. Once you start closing loops, progress suddenly feels lighter because the mental load did. This is t"},{"id":"harvest-1794269080798-0dwn","creator":"Aakash Gupta","role":"Author of Product Growth Newsletter (ex-VP Product)","mult":8.65,"z":12.39,"likes":1348,"comments":130,"reposts":47,"median":228,"mad":95,"date":"2026-10-14","age":27,"type":"playbook","media":"image","topic":"At Apple, there is roughly 1 product manager for every 30 engineers. At Walmart, it is closer t","url":"https://www.linkedin.com/posts/aagupta_at-apple-there-is-roughly-1-product-manager-activity-7516181311057776640-NVYS","insight":"At Apple, there is roughly 1 product manager for every 30 engineers. At Walmart, it is closer to one for every 3.6. My friend Zuhayeer Musa at Levels.fyi looked at PM and engineer submissions on the site as a proxy. The spread is wild. (But"},{"id":"harvest-1794269080798-yxdb","creator":"Aakash Gupta","role":"Author of Product Growth Newsletter (ex-VP Product)","mult":23.5,"z":36.42,"likes":3775,"comments":136,"reposts":235,"median":228,"mad":95,"date":"2026-11-01","age":9,"type":"playbook","media":"image","topic":"Spotify cut their Claude Code token bill by 90%.","url":"https://www.linkedin.com/posts/aagupta_spotify-cut-their-claude-code-token-bill-activity-7522511755588067328-VNMq","insight":"Spotify cut their Claude Code token bill by 90%. Then they open-sourced how they did it. The insight underneath is almost boring: coding agents spend most of the bill on reading: A coding agent will read a 4,000 line file just to answer a q"},{"id":"harvest-1794269079595-r9hc","creator":"Shreyas Doshi","role":"Product Executive & Advisor (ex-Stripe, Twitter, Google)","mult":11.33,"z":8.52,"likes":916,"comments":86,"reposts":27,"median":116,"mad":95,"date":"2026-10-08","age":33,"type":"playbook","media":"text","topic":"Something that’s changed rapidly in the past year:","url":"https://www.linkedin.com/posts/shreyasdoshi_something-thats-changed-rapidly-in-the-past-activity-7514086443636490240--r47","insight":"Something that’s changed rapidly in the past year: Product Managers who’ve historically viewed their role as “my main job is to execute” are finding it way harder to get hired at top companies than those who’ve viewed their role as “my main"},{"id":"harvest-1794269079595-mtsw","creator":"Shreyas Doshi","role":"Product Executive & Advisor (ex-Stripe, Twitter, Google)","mult":17.45,"z":13.56,"likes":1735,"comments":90,"reposts":2,"median":116,"mad":95,"date":"2026-08-24","age":78,"type":"playbook","media":"image","topic":"\"Did you just move your kid in?\", asked the agent at United's baggage check-in desk, on my way ","url":"https://www.linkedin.com/posts/shreyasdoshi_did-you-just-move-your-kid-in-asked-the-activity-7497456065249304577-NCCK","insight":"\"Did you just move your kid in?\", asked the agent at United's baggage check-in desk, on my way back home to SFO from Nashville airport. I asked her how she knew that. \"Your bags are empty\", she replied. Santhoshi and I just dropped off our "},{"id":"harvest-1794269078391-garh","creator":"Hamel Husain","role":"Principal AI Engineer, Parlance Labs (AI Evals Course Co-Creator)","mult":119.65,"z":173.4,"likes":4902,"comments":430,"reposts":6,"median":52,"mad":24,"date":"2026-10-25","age":16,"type":"announcement","media":"text","topic":"I’m happy to share that I’m now working at OpenAI!  🎉 My focus will be applied Evals, helping ","url":"https://www.linkedin.com/posts/hamelhusain_im-happy-to-share-that-im-now-working-at-activity-7520143057250508800-YkvK","insight":"I’m happy to share that I’m now working at OpenAI! 🎉 My focus will be applied Evals, helping companies debug, measure, and improve AI products. I’ll also be continuing my mission of educating the world on Evals through blog posts, tutorial"},{"id":"harvest-1794269078391-g4l3","creator":"Hamel Husain","role":"Principal AI Engineer, Parlance Labs (AI Evals Course Co-Creator)","mult":6.02,"z":7.34,"likes":186,"comments":29,"reposts":8,"median":52,"mad":24,"date":"2026-10-20","age":21,"type":"playbook","media":"image","topic":"New blog post 🎉: 𝗛𝗼𝘄 𝗧𝗼 𝗨𝘀𝗲 𝗗𝗲𝗰𝗶𝘀𝗶𝗼𝗻 𝗠𝗼𝗱𝗲𝗹𝘀 𝗙𝗼𝗿 𝗘𝘃𝗮𝗹𝘀","url":"https://www.linkedin.com/posts/hamelhusain_new-blog-post-%F0%9D%97%9B%F0%9D%97%BC%F0%9D%98%84-%F0%9D%97%A7%F0%9D%97%BC-%F0%9D%97%A8%F0%9D%98%80%F0%9D%97%B2-%F0%9D%97%97%F0%9D%97%B2-activity-7518355470206590976-rll3","insight":"New blog post 🎉: 𝗛𝗼𝘄 𝗧𝗼 𝗨𝘀𝗲 𝗗𝗲𝗰𝗶𝘀𝗶𝗼𝗻 𝗠𝗼𝗱𝗲𝗹𝘀 𝗙𝗼𝗿 𝗘𝘃𝗮𝗹𝘀 In this post, we show you how to choose a decision model for your task, tune its threshold (don't assume the 0.5 default is good!), and interpret its score"},{"id":"harvest-1794269078391-c4hc","creator":"Hamel Husain","role":"Principal AI Engineer, Parlance Labs (AI Evals Course Co-Creator)","mult":15.21,"z":20.77,"likes":514,"comments":49,"reposts":26,"median":52,"mad":24,"date":"2026-11-05","age":5,"type":"playbook","media":"document","topic":"Over the past couple of years, I've written dozens of articles on evals, answered 60+ FAQs, and","url":"https://www.linkedin.com/posts/hamelhusain_evals-for-ai-engineers-table-of-contents-activity-7524184541930946560-Y1RK","insight":"Over the past couple of years, I've written dozens of articles on evals, answered 60+ FAQs, and created flashcards, memes, and countless videos on evals. Your feedback and comments made it all worthwhile. Until now, our live course has been"},{"id":"harvest-1794269077187-1n5x","creator":"Aman Khan","role":"AI Product Leader, Google Cloud AI Agents (ex-Arize AI)","mult":40.25,"z":47.9,"likes":3261,"comments":269,"reposts":104,"median":114,"mad":63,"date":"2026-03-19","age":236,"type":"announcement","media":"image","topic":"Proud to announce my new book \"𝐀𝐈 𝐏𝐫𝐨𝐝𝐮𝐜𝐭 𝐌𝐚𝐧𝐚𝐠𝐞𝐦𝐞𝐧𝐭\" published by O'Reilly!","url":"https://www.linkedin.com/posts/amanberkeley_proud-to-announce-my-new-book-%F0%9D%90%80%F0%9D%90%88-%F0%9D%90%8F%F0%9D%90%AB%F0%9D%90%A8%F0%9D%90%9D%F0%9D%90%AE%F0%9D%90%9C%F0%9D%90%AD-activity-7440351422044475394-qAYB","insight":"Proud to announce my new book \"𝐀𝐈 𝐏𝐫𝐨𝐝𝐮𝐜𝐭 𝐌𝐚𝐧𝐚𝐠𝐞𝐦𝐞𝐧𝐭\" published by O'Reilly! The book covers 5 foundational areas: I. AI Product Foundations - AI product sense & scaling laws for PMs II. Building AI Products - prototyping"},{"id":"harvest-1794269077187-l1lj","creator":"Aman Khan","role":"AI Product Leader, Google Cloud AI Agents (ex-Arize AI)","mult":4.45,"z":4.21,"likes":348,"comments":33,"reposts":12,"median":114,"mad":63,"date":"2026-02-03","age":280,"type":"playbook","media":"document","topic":"Leave it to 2 PMs to turn a Lenny's Newsletter post on AI Product Sense into a product - litera","url":"https://www.linkedin.com/posts/amanberkeley_how-to-build-ai-product-sense-activity-7424472881067175936-0qQR","insight":"Leave it to 2 PMs to turn a Lenny's Newsletter post on AI Product Sense into a product - literally 😅 - The reader starts with a prompt that guides them through a \"choose your own adventure\" style video game that explains how coding agents "},{"id":"harvest-1794269077187-o4sx","creator":"Aman Khan","role":"AI Product Leader, Google Cloud AI Agents (ex-Arize AI)","mult":5.25,"z":5.19,"likes":393,"comments":47,"reposts":13,"median":114,"mad":63,"date":"2026-02-08","age":275,"type":"playbook","media":"image","topic":"So... Tal Raviv and I are doing something a little crazy. We want to give our students a Mac Mi","url":"https://www.linkedin.com/posts/amanberkeley_so-tal-raviv-and-i-are-doing-something-activity-7426300751624404992-mdLS","insight":"So... Tal Raviv and I are doing something a little crazy. We want to give our students a Mac Mini to spin up their own OpenClaw system - and teach you about how OpenClaw works at the same time. Here's how we're doing this: 1. If you bring 2"},{"id":"harvest-1794269075982-lq50","creator":"Kevin Weil","role":"Chief Product Officer, OpenAI","mult":13.64,"z":12.01,"likes":8287,"comments":347,"reposts":512,"median":872,"mad":619,"date":"2025-07-17","age":481,"type":"announcement","media":"text","topic":"💥 Announcing ChatGPT agent: a powerful new agent that can use a computer, browse the web, writ","url":"https://www.linkedin.com/posts/kevinweil_announcing-chatgpt-agent-a-powerful-new-activity-7351662630152912898-y7_I","insight":"💥 Announcing ChatGPT agent: a powerful new agent that can use a computer, browse the web, write code, use a terminal, write reports, create images, edit spreadsheets, and even create slides for you. The slides often... need some work. But "},{"id":"harvest-1794269075982-h9kj","creator":"Kevin Weil","role":"Chief Product Officer, OpenAI","mult":5.03,"z":3.83,"likes":2934,"comments":393,"reposts":54,"median":872,"mad":619,"date":"2025-05-13","age":546,"type":"playbook","media":"document","topic":"Excited and honored to join Cisco’s board of directors today. It’s long been an important techn","url":"https://www.linkedin.com/posts/kevinweil_cisco-appoints-kevin-weil-to-its-board-of-activity-7328041688566849537-IkBY","insight":"Excited and honored to join Cisco’s board of directors today. It’s long been an important technology company for 🇺🇸 and the world, and their products—from datacenters and networking to observability and security—are only becoming more piv"},{"id":"harvest-1794269075982-wysa","creator":"Kevin Weil","role":"Chief Product Officer, OpenAI","mult":11.24,"z":9.73,"likes":8111,"comments":249,"reposts":188,"median":872,"mad":619,"date":"2025-03-31","age":589,"type":"playbook","media":"image","topic":"Never seen anything like this before, even at Twitter and Instagram.","url":"https://www.linkedin.com/posts/kevinweil_never-seen-anything-like-this-before-even-activity-7312538006685421568-PqpL","insight":"Never seen anything like this before, even at Twitter and Instagram."},{"id":"harvest-1794269074779-h1w8","creator":"Logan Kilpatrick","role":"Lead Product Manager, Google DeepMind (AI Studio & Gemini API)","mult":5.79,"z":7.52,"likes":967,"comments":51,"reposts":94,"median":275,"mad":118,"date":"2026-08-13","age":89,"type":"announcement","media":"image","topic":"Introducing Gemini 3.7 Flash : )","url":"https://www.linkedin.com/posts/logankilpatrick_introducing-gemini-37-flash-it-is-activity-7493714350927671296-kw_v","insight":"Introducing Gemini 3.7 Flash : ) - it is fast! - 50% lower price than 3.6 flash (through end of year) - strong intelligence increase in only ~3 weeks (thanks to some awesome algorithmic improvements) - available in the API, AI Studio, Antig"},{"id":"harvest-1794269074779-amjb","creator":"Logan Kilpatrick","role":"Lead Product Manager, Google DeepMind (AI Studio & Gemini API)","mult":3.65,"z":4.16,"likes":689,"comments":28,"reposts":46,"median":275,"mad":118,"date":"2026-05-19","age":175,"type":"playbook","media":"image","topic":"Welcome to Gemini 3.5 Flash, our most powerful model to date. It pushes the frontier of intelli","url":"https://www.linkedin.com/posts/logankilpatrick_welcome-to-gemini-35-flash-our-most-powerful-activity-7462565893697552387-9LWH","insight":"Welcome to Gemini 3.5 Flash, our most powerful model to date. It pushes the frontier of intelligence, speed, and cost putting 3.5 Flash in a class of its own. We spent the last 6 months making sure Flash is great for real world use cases. I"},{"id":"harvest-1794269074779-k22e","creator":"Logan Kilpatrick","role":"Lead Product Manager, Google DeepMind (AI Studio & Gemini API)","mult":3.76,"z":4.32,"likes":812,"comments":18,"reposts":33,"median":275,"mad":118,"date":"2026-04-29","age":195,"type":"playbook","media":"image","topic":"Google is the best company in the world https://lnkd.in/gAcnF_4N","url":"https://www.linkedin.com/posts/logankilpatrick_google-is-the-best-company-in-the-world-https-activity-7455354957823873026-uy-k","insight":"Google is the best company in the world https://lnkd.in/gAcnF_4N"},{"id":"harvest-1794269073575-etwe","creator":"Pawel Huryn","role":"Author, The Product Compass (AI PM frameworks & cheat sheets)","mult":6.19,"z":7.07,"likes":1422,"comments":48,"reposts":62,"median":303,"mad":150,"date":"2026-08-16","age":86,"type":"playbook","media":"image","topic":"In the last 35 months, 20,000+ PMs completed my skill assessments.","url":"https://www.linkedin.com/posts/pawel-huryn_in-the-last-35-months-20000-pms-completed-activity-7494788367788863488-YEDd","insight":"In the last 35 months, 20,000+ PMs completed my skill assessments. This allowed me to identify the critical knowledge areas for: - Product Owner \\ APM - Product Manager - Senior Product Manager - Product Marketing Manager - Growth Product M"},{"id":"harvest-1794269073575-j20x","creator":"Pawel Huryn","role":"Author, The Product Compass (AI PM frameworks & cheat sheets)","mult":6.59,"z":7.62,"likes":1416,"comments":42,"reposts":91,"median":303,"mad":150,"date":"2026-06-05","age":158,"type":"playbook","media":"image","topic":"Just shared PM Skills v2.0 with 9 plugins, 68 skills, 42 commands. Free, MIT.","url":"https://www.linkedin.com/posts/pawel-huryn_just-shared-pm-skills-v20-with-9-plugins-activity-7468728012700540928-7PAM","insight":"Just shared PM Skills v2.0 with 9 plugins, 68 skills, 42 commands. Free, MIT. You get the rigor of Teresa Torres, Marty Cagan, and Alberto Savoia built into your daily workflows. The open-source repo (12K GitHub stars) is now bigger, and it"}];
+      // @vault-snapshot-end
+
+      const INITIAL_NEWSLETTER = `Subject: Issue #01: Shipping an AI Model vs. Building a Business People Pay For (+ My 6-Min Enterprise Deck Agent)
+
+I was 12 when I got my first unofficial PM job—coordinating an engineer and negotiating building materials for my parents' home. No qualifications. No job title. Definitely no salary.
+
+Today, building Gemini & enterprise agents at Google, that same rule drives The Prototype-to-Production Dispatch: turning frontier AI into products customers understand, adopt, and pay for.
+
+1. THIS WEEK'S THREE SIGNALS (THE POSTS THAT OUTPERFORMED EVERYTHING ELSE)
+• Spotify cut its AI coding-agent bill by 90% by stopping the frontier model from reading big files (credit: Aakash Gupta's breakdown, 23x his usual reach). Lesson: keep the expensive model for judgment, let cheap workers do the reading.
+• Hamel Husain put two years of eval teaching into one book (15x). Lesson: evals are your acceptance criteria for AI, and a PM can write the first ones without code.
+• Ethan Mollick called out that "a human checks everything" is now a queue, not a quality plan (5x). Lesson: put the human where a wrong answer costs the most, and sample the rest.
+The pattern: the posts that win are plain-English playbooks, not announcements. Same ceremonies, new work.
+
+2. REAL-TIME BUILD #1: ROUGH NOTES → ENTERPRISE GOOGLE SLIDES DECK IN 6 MINUTES
+Agencies, founders, and PMs burn 15+ hours formatting slides. My 4-stage Antigravity pipeline:
+• Gemini + NotebookLM → restructures raw transcripts & CSVs into SCQA executive headlines.
+• Figma Brand Tokens → enforces strict enterprise typography and grid hierarchy.
+• Imagen + SVG Renderer → builds clean architecture diagrams (zero AI stock fluff).
+• Google Slides API → outputs 100% native, editable slides + speaker notes.
+
+3. REAL-TIME BUILD #2: GITHUB RELEASE NOTES → CUSTOMER DEMO IN 10 MINUTES
+After years of running go-to-market enablement for enterprise products, here is how to eliminate the 3-week GTM lag: GitHub PR filter → Gemini CFO/User/Partner value framing → Playwright 4:5 GIF capture → Google Docs sales brief.
+
+4. SKILL-TRANSFER CORNER: THE 3-LAYER EXECUTABLE EVAL PRD
+You don't need to start over to lead AI Product. Transfer your existing edge-case instinct into: (a) 35 messy Golden Scenarios, (b) Binary Pass/Fail Assertions across MCP tools, and (c) Margin & p95 Latency Ceilings.
+
+— Afrina M
+Senior PM, Google (Gemini & Agents) | 4x Google Cloud Next Speaker`;
+
+      const UPGRADED_ABOUT = `I was about 12 when I got my first unofficial product management job.
+
+My parents wanted to build a home. I helped find an engineer, explain their vision, and negotiate prices for building materials. My grandmother recruited me to coordinate plumbers and electricians for her properties. My grandfather put me in charge of letters to government offices.
+
+No qualifications. No job title. Definitely no salary.
+The funny thing is, I genuinely loved it. I built the muscle early: give me an unfamiliar problem, people who know more than I do, and a chance to make something happen.
+
+That instinct has taken me across Dubai, Trichy, Chennai, Pune, Seattle, Redmond, Charlotte, NYC, and now the San Francisco Bay Area—and across Honeywell, Philips, Microsoft, Bank of America (Erica AI), Oracle, and Google.
+
+On paper, it looks like several reinventions. To me, it's been a series of skill transfers:
+• Engineering taught me what's possible.
+• Customer work taught me to question the problem behind the request.
+• Product taught me to make trade-offs and own outcomes.
+• Go-to-market taught me that shipping a product and building a business are not the same thing.
+
+Today, as a Senior Product Manager at Google working on Gemini and AI agents, I turn frontier AI into products customers understand, adopt, and pay for:
+• Took 0→1 AI and enterprise agent products from first prototype to broad adoption
+• Built go-to-market and product-led growth motions for enterprise AI
+• Worked across AI agents, Model Context Protocol (MCP), LLM evals and observability
+• Spoke four consecutive years at Google Cloud Next
+• Helped friends move into product management by showing them the skills they already had
+
+Every week here—and every Saturday in my newsletter, The Prototype-to-Production Dispatch—I share live AI ecosystem builds (Antigravity + Gemini + GTM/Deck Agents), frontier strategy teardowns, and practical playbooks for builders transferring their skills into the top 1% of AI Product.
+
+Building AI products people actually adopt, or navigating your next move? Let's connect.`;
+
+      let RETRO_ROWS = [
+        { day: 'Mon · Outlier Sheet', imp: 68400, likes: 1120, reposts: 94, nl: 310 },
+        { day: 'Tue · Eval Matrix', imp: 44200, likes: 740, reposts: 68, nl: 205 },
+        { day: 'Wed · Trace Carousel', imp: 39100, likes: 615, reposts: 52, nl: 160 },
+        { day: 'Thu · Deck Agent GIF', imp: 92500, likes: 1640, reposts: 185, nl: 540 },
+        { day: 'Fri · GTM Agent GIF', imp: 78300, likes: 1390, reposts: 142, nl: 465 }
+      ];
+
+      let posts = safeGet('signal50_v6_posts', DEFAULT_POSTS);
+      let activeDayIdx = 0;
+      let voiceScore = Number(safeGet('signal50_v6_voice', 100));
+      let hasBackend = false;
+      let applyServerVaultHook = () => {};
+
+      // Optional live Node server sync when opened via Preview Server
+      async function tryServerLoad() {
+        try {
+          if (location.protocol.startsWith('http')) {
+            const resp = await fetch('/api/v3/state', { cache: 'no-store' });
+            if (resp.ok) {
+              const data = await resp.json();
+              hasBackend = true;
+              if (Array.isArray(data.posts) && data.posts.length) posts = data.posts;
+              if (data.voiceScore) voiceScore = data.voiceScore;
+              if (Array.isArray(data.retroRows)) RETRO_ROWS = data.retroRows;
+              document.getElementById('sync-status-pill').textContent = 'Live Server Connected (Disk Sync ON)';
+              document.getElementById('header-voice-badge').textContent = `Voice DNA: ${voiceScore}%`;
+              renderStudio();
+              renderRetro();
+              applyServerVaultHook(data);
+            }
+          }
+        } catch (e) { /* Artifact sandbox mode: runs 100% locally */ }
+      }
+
+      async function persistAll() {
+        safeSet('signal50_v6_posts', posts);
+        safeSet('signal50_v6_voice', voiceScore);
+        if (hasBackend) {
+          try {
+            await fetch('/api/v3/state', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                posts,
+                voiceScore,
+                retroRows: RETRO_ROWS,
+                newsletter: document.getElementById('newsletter-editor').value,
+                upgradedAbout: document.getElementById('profile-about-editor').value
+              })
+            });
+          } catch (e) {}
+        }
+      }
+
+      // =======================================================================
+      // 3. UI CONTROLLERS
+      // =======================================================================
+      function switchTab(tabId) {
+        document.querySelectorAll('.tab-panel').forEach(p => {
+          p.classList.toggle('hidden', p.id !== `panel-${tabId}`);
+        });
+        document.querySelectorAll('.tab-btn').forEach(b => {
+          const active = b.dataset.tab === tabId;
+          b.className = `tab-btn whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-semibold ${active ? 'bg-[var(--primary)] text-[var(--primary-foreground)]' : 'text-[var(--muted-foreground)]'}`;
+        });
+      }
+
+      function renderStudio() {
+        const pills = document.getElementById('day-pills');
+        pills.innerHTML = posts.map((p, i) => `
+          <button type="button" data-idx="${i}" class="px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap border ${i === activeDayIdx ? 'bg-[var(--primary)] text-[var(--primary-foreground)] border-[var(--primary)]' : 'bg-[var(--card)] border-[var(--border)] text-[var(--foreground)]'}">
+            ${p.day}
+          </button>
+        `).join('');
+        pills.querySelectorAll('button').forEach(b => {
+          b.onclick = () => { activeDayIdx = Number(b.dataset.idx); renderStudio(); };
+        });
+
+        const p = posts[activeDayIdx];
+        document.getElementById('post-track-badge').textContent = p.track;
+        document.getElementById('post-title').textContent = p.title;
+
+        const hList = document.getElementById('hook-list');
+        hList.innerHTML = p.hooks.map((h, i) => `
+          <div data-hidx="${i}" class="p-2.5 rounded-lg border cursor-pointer text-xs ${i === p.selectedHook ? 'border-[var(--primary)] bg-[var(--secondary)] font-medium' : 'border-[var(--border)]'}">
+            <div class="flex justify-between text-[var(--muted-foreground)] mb-0.5">
+              <span>Hook Option #${i + 1}</span>
+              <span class="font-mono">${h.length}/210 chars</span>
+            </div>
+            <div>${h.replace(/</g, '&lt;')}</div>
+          </div>
+        `).join('');
+        hList.querySelectorAll('[data-hidx]').forEach(el => {
+          el.onclick = () => { p.selectedHook = Number(el.dataset.hidx); renderStudio(); };
+        });
+
+        document.getElementById('hook-editor').value = p.hooks[p.selectedHook];
+        document.getElementById('body-editor').value = p.body;
+        document.getElementById('sim-comment').textContent = p.comment;
+        updateSimulator();
+      }
+
+      function updateSimulator() {
+        const p = posts[activeDayIdx];
+        const hook = document.getElementById('hook-editor').value;
+        const body = document.getElementById('body-editor').value;
+        document.getElementById('sim-hook').textContent = hook;
+        document.getElementById('sim-body').textContent = body;
+        document.getElementById('sim-char-count').textContent = `${hook.length} / 210 chars`;
+
+        const full = (hook + '\n' + body).toLowerCase();
+        const banned = ['delve', 'tapestry', 'testament', 'game-changer', 'thrilled to announce'];
+        const safetyHits = renderSafety('post-safety', `${hook}\n${body}\n${p.comment || ''}`);
+        const checks = [
+          { ok: safetyHits.length === 0, label: safetyHits.length ? `Data-safety: ${safetyHits.length} flagged` : 'No Revenue / Internal Google Data' },
+          { ok: hook.length > 20 && hook.length <= 210, label: `210-Char Fold (${hook.length}/210)` },
+          { ok: !p.isGrowth || full.includes((p.credit || '').split(' ')[0].toLowerCase()), label: p.isGrowth ? `Credit: ${p.credit}` : 'Original Ecosystem IP' },
+          { ok: !banned.some(w => full.includes(w)), label: 'Zero AI-Slop Scan' },
+          { ok: ['agent', 'eval', 'enterprise', 'margin', 'production', 'slides', 'gtm', 'mcp', 'workflow', 'prototype'].filter(k => full.includes(k)).length >= 2, label: 'AI Product Signal' },
+          { ok: true, label: '4:5 GIF / PNG Ready' },
+          { ok: (p.comment || '').length > 15, label: 'Saturday NL Funnel CTA' }
+        ];
+        const score = Math.round((checks.filter(c => c.ok).length / checks.length) * 100);
+        document.getElementById('qa-badge').textContent = `${score}% Ready`;
+        document.getElementById('qa-checks').innerHTML = checks.map(c => `
+          <div class="p-2 rounded border border-[var(--border)] ${c.ok ? 'bg-[var(--secondary)]' : ''}">
+            ${c.ok ? '✓' : '!'} ${c.label}
+          </div>
+        `).join('');
+      }
+
+      // =======================================================================
+      // 4. LIVE COMPILER + ANIMATED GIF CANVAS RENDERER
+      // =======================================================================
+      let gifAnimFrame = 0;
+      let gifTimer = null;
+
+      const GIF_MAX_STEPS = 6;
+
+      function parseGifSteps() {
+        return document.getElementById('gif-steps').value
+          .split('\n').map(s => s.trim()).filter(Boolean).slice(0, GIF_MAX_STEPS)
+          .map(line => {
+            const parts = line.split('|');
+            return { label: (parts[0] || '').trim(), detail: (parts[1] || '').trim() };
+          });
+      }
+
+      // Total animation frames = one per step + a final "all steps" frame.
+      function gifFrameCount() {
+        return Math.max(2, parseGifSteps().length + 1);
+      }
+
+      function drawGifFrame(ctx, w, h, stepIndex) {
+        ctx.fillStyle = '#F6F3EC';
+        ctx.fillRect(0, 0, w, h);
+        ctx.strokeStyle = '#D5CFC3';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(24, 24, w - 48, h - 48);
+
+        const steps = parseGifSteps();
+        const n = Math.max(1, steps.length);
+        const lastFrame = n; // frame index where every step is visible
+
+        const barW = (w - 96 - (n - 1) * 8) / n;
+        for (let i = 0; i < n; i++) {
+          ctx.fillStyle = i <= stepIndex ? '#C4431F' : '#DDD7CB';
+          ctx.fillRect(48 + i * (barW + 8), 46, barW, 8);
+        }
+
+        const kicker = document.getElementById('gif-kicker').value || 'GOOGLE AI + ANTIGRAVITY';
+        const headline = document.getElementById('gif-headline').value || 'Prototype to Production';
+
+        ctx.fillStyle = '#C4431F';
+        ctx.font = 'bold 18px monospace';
+        ctx.fillText(kicker.toUpperCase().slice(0, 52), 48, 92);
+
+        ctx.fillStyle = '#161920';
+        ctx.font = 'bold 34px Georgia, serif';
+        const words = headline.split(' ');
+        let line = '', y = 136;
+        for (const word of words) {
+          const test = line ? `${line} ${word}` : word;
+          if (ctx.measureText(test).width > w - 96) {
+            ctx.fillText(line, 48, y); line = word; y += 40;
+          } else line = test;
+        }
+        if (line) { ctx.fillText(line, 48, y); y += 30; }
+
+        // Auto-size the step cards so 4, 5 or 6 steps all fit above the footer bar.
+        const gap = 14;
+        const available = (h - 86 - 16) - y;
+        const cardH = Math.max(72, Math.min(132, Math.floor((available - (n - 1) * gap) / n)));
+        const compact = cardH < 110;
+        const labelFont = compact ? 'bold 19px sans-serif' : 'bold 21px sans-serif';
+        const detailFont = compact ? '17px sans-serif' : '19px sans-serif';
+        const labelY = compact ? 34 : 44;
+        const detailY = compact ? 64 : 78;
+        const detailLH = compact ? 22 : 25;
+        const maxDetailLines = Math.max(1, Math.floor((cardH - detailY) / detailLH) + 1);
+
+        steps.forEach((st, idx) => {
+          const visible = stepIndex >= idx + 1;
+          const active = stepIndex === idx + 1 || stepIndex >= lastFrame;
+          const cy = y + idx * (cardH + gap);
+          ctx.fillStyle = visible ? '#FFFFFF' : '#EDE9DF';
+          ctx.fillRect(48, cy, w - 96, cardH);
+          ctx.strokeStyle = active ? '#C4431F' : '#DDD7CB';
+          ctx.lineWidth = active ? 3 : 2;
+          ctx.strokeRect(48, cy, w - 96, cardH);
+
+          ctx.fillStyle = visible ? (idx === n - 1 ? '#1F5E46' : '#C4431F') : '#B8B2A6';
+          ctx.fillRect(48, cy, 10, cardH);
+
+          ctx.fillStyle = visible ? '#161920' : '#9CA3AF';
+          ctx.font = labelFont;
+          ctx.fillText(visible ? st.label.slice(0, 46) : `Step 0${idx + 1} · Queued...`, 76, cy + labelY);
+
+          if (visible) {
+            ctx.fillStyle = '#4B5262';
+            ctx.font = detailFont;
+            const dWords = st.detail.split(' ');
+            let dl = '', dy = cy + detailY, linesDrawn = 0;
+            for (const dw of dWords) {
+              const t = dl ? `${dl} ${dw}` : dw;
+              if (ctx.measureText(t).width > w - 140) {
+                if (linesDrawn + 1 >= maxDetailLines) { dl = `${dl}…`; break; }
+                ctx.fillText(dl, 76, dy); dl = dw; dy += detailLH; linesDrawn++;
+              } else dl = t;
+            }
+            if (dl) ctx.fillText(dl, 76, dy);
+          }
+        });
+
+        ctx.fillStyle = '#161920';
+        ctx.fillRect(48, h - 86, w - 96, 44);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 17px monospace';
+        ctx.fillText('AFRINA M · 15+ YRS BUILDING PRODUCT · GEMINI & AGENTS @ GOOGLE', 66, h - 58);
+      }
+
+      function loadGifPreset(key) {
+        const pr = GIF_PRESETS[key];
+        if (!pr) return;
+        document.getElementById('gif-kicker').value = pr.kicker;
+        document.getElementById('gif-headline').value = pr.headline;
+        document.getElementById('gif-steps').value = pr.steps.join('\n');
+        gifAnimFrame = 0;
+        renderPreviewTick();
+      }
+
+      function gifOutboundText() {
+        return [
+          document.getElementById('gif-kicker').value,
+          document.getElementById('gif-headline').value,
+          document.getElementById('gif-steps').value
+        ].join('\n');
+      }
+
+      function renderPreviewTick() {
+        const canvas = document.getElementById('gif-preview-canvas');
+        if (!canvas) return;
+        const total = gifFrameCount();
+        if (gifAnimFrame >= total) gifAnimFrame = 0;
+        drawGifFrame(canvas.getContext('2d'), canvas.width, canvas.height, gifAnimFrame);
+        document.getElementById('gif-frame-indicator').textContent = `Frame ${gifAnimFrame + 1} / ${total}`;
+        if (gifAnimFrame === 0) renderSafety('gif-safety', gifOutboundText());
+      }
+
+      function startGifLoop() {
+        clearInterval(gifTimer);
+        const speedCs = Number(document.getElementById('gif-speed').value || 125);
+        gifTimer = setInterval(() => {
+          gifAnimFrame = (gifAnimFrame + 1) % gifFrameCount();
+          renderPreviewTick();
+        }, speedCs * 10);
+      }
+
+      // =======================================================================
+      // 5. HARVESTAPI RARITY, $3M ARR SIMULATOR & INTERACTIVE RETRO
+      // =======================================================================
+      function computeRarity() {
+        const r = Number(document.getElementById('calc-likes').value || 0);
+        const c = Number(document.getElementById('calc-comments').value || 0);
+        const s = Number(document.getElementById('calc-reposts').value || 0);
+        const med = Math.max(50, Number(document.getElementById('calc-median').value || 500));
+        const mad = Math.max(20, Number(document.getElementById('calc-mad').value || 120));
+        const weighted = r + 3 * c + 5 * s;
+        const mult = +(weighted / med).toFixed(2);
+        const z = +((weighted - med) / (1.4826 * mad)).toFixed(2);
+        return { weighted, mult, z, isOutlier: mult >= 3.0 && z >= 2.5 };
+      }
+
+      function updateRarityCalc() {
+        const { weighted, mult, z, isOutlier } = computeRarity();
+        document.getElementById('rarity-result').innerHTML = `
+          <div class="font-bold text-sm">${isOutlier ? '✓ VERIFIED OUTLIER (Top <4% Rarity — Approved for Mon–Wed)' : '✕ Below 3.0x Rarity Gate (Keep Scouting)'}</div>
+          <div>Weighted Score: <strong>${weighted.toLocaleString()}</strong> | Multiplier: <strong>${mult}x</strong> (min 3.0x) | Robust Z: <strong>${z}</strong> (min 2.5)</div>
+        `;
+      }
+
+      function updateArrSim() {
+        const subs = Number(document.getElementById('sim-pro-subs').value);
+        const spon = Number(document.getElementById('sim-spon-rate').value);
+        const adv = Number(document.getElementById('sim-advisory').value);
+        document.getElementById('lbl-pro-subs').textContent = `${subs.toLocaleString()} subs`;
+        document.getElementById('lbl-spon-rate').textContent = `$${spon.toLocaleString()} / slot`;
+        document.getElementById('lbl-advisory').textContent = `$${adv.toLocaleString()} / yr`;
+        const proArr = subs * 240, sponArr = 52 * 2 * spon, total = proArr + sponArr + adv;
+        document.getElementById('arr-breakdown').innerHTML = `
+          <div class="text-sm md:text-base font-bold">Projected Annual Run Rate: $${(total / 1e6).toFixed(2)}M / year</div>
+          <div>• Pro Vault: $${(proArr / 1e6).toFixed(2)}M | • B2B Sponsors: $${(sponArr / 1e6).toFixed(2)}M | • Advisory: $${(adv / 1e6).toFixed(2)}M</div>
+        `;
+      }
+
+      function renderRetro() {
+        const tbody = document.getElementById('retro-table-body');
+        tbody.innerHTML = RETRO_ROWS.map((r, i) => `
+          <tr class="border-b border-[var(--border)]">
+            <td class="py-2 pr-2 font-semibold">${r.day}</td>
+            <td class="py-2 px-1"><input data-ridx="${i}" data-field="imp" type="number" value="${r.imp}" class="w-20 rounded border border-[var(--border)] bg-[var(--background)] p-1 font-mono text-xs" /></td>
+            <td class="py-2 px-1"><input data-ridx="${i}" data-field="likes" type="number" value="${r.likes}" class="w-16 rounded border border-[var(--border)] bg-[var(--background)] p-1 font-mono text-xs" /></td>
+            <td class="py-2 px-1"><input data-ridx="${i}" data-field="reposts" type="number" value="${r.reposts}" class="w-14 rounded border border-[var(--border)] bg-[var(--background)] p-1 font-mono text-xs" /></td>
+            <td class="py-2 pl-1"><input data-ridx="${i}" data-field="nl" type="number" value="${r.nl}" class="w-14 rounded border border-[var(--border)] bg-[var(--background)] p-1 font-mono text-xs font-bold" /></td>
+          </tr>
+        `).join('');
+
+        tbody.querySelectorAll('input').forEach(inp => {
+          inp.onchange = () => {
+            RETRO_ROWS[Number(inp.dataset.ridx)][inp.dataset.field] = Number(inp.value || 0);
+          };
+        });
+        computeRetroDirectives();
+      }
+
+      function computeRetroDirectives() {
+        const sortedByNl = [...RETRO_ROWS].sort((a, b) => b.nl - a.nl);
+        const top = sortedByNl[0];
+        const low = sortedByNl[sortedByNl.length - 1];
+        const topSavePct = ((top.reposts / Math.max(1, top.likes)) * 100).toFixed(1);
+        const totalNl = RETRO_ROWS.reduce((s, r) => s + r.nl, 0);
+
+        const rules = [
+          { tag: 'DOUBLE DOWN (TOP WINNER)', text: `${top.day} led the week with ${top.imp.toLocaleString()} impressions, ${topSavePct}% repost-to-like save velocity, and +${top.nl} Saturday newsletter subscribers.` },
+          { tag: 'SELF-HEALED MUTATION (FIX WEAKEST SLOT)', text: `${low.day} trailed at +${low.nl} newsletter signups → Auto-mutating next week's ${low.day.split(' ')[0]} visual from static slides to an auto-playing 4:5 Before/After GIF.` },
+          { tag: '26-WEEK TRAJECTORY CHECK', text: `Weekly newsletter capture: +${totalNl.toLocaleString()} corporate/PM subscribers. Keep Line-1 hooks ≤ 60 chars with concrete hours/dollar stakes.` }
+        ];
+        document.getElementById('retro-directives').innerHTML = rules.map(d => `
+          <div class="p-3 rounded-lg border border-[var(--border)] bg-[var(--secondary)]">
+            <div class="font-mono font-bold mb-1">${d.tag}</div>
+            <div>${d.text}</div>
+          </div>
+        `).join('');
+      }
+
+      // =======================================================================
+      // 6. INITIALIZATION & INTERACTIVE EVENT WIRING
+      // =======================================================================
+      function initApp() {
+        document.getElementById('toast-close').onclick = () => document.getElementById('toast-bar').classList.add('hidden');
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.onclick = () => switchTab(btn.dataset.tab);
+        });
+
+        document.getElementById('header-voice-badge').textContent = `Voice DNA: ${voiceScore}%`;
+        renderStudio();
+
+        ['hook-editor', 'body-editor'].forEach(id => {
+          document.getElementById(id).addEventListener('input', updateSimulator);
+        });
+
+        document.getElementById('btn-save-post').onclick = async () => {
+          const p = posts[activeDayIdx];
+          p.hooks[p.selectedHook] = document.getElementById('hook-editor').value;
+          p.body = document.getElementById('body-editor').value;
+          await persistAll();
+          document.getElementById('save-status').textContent = `✓ Queued ${p.day} (${new Date().toLocaleTimeString()})`;
+          renderStudio();
+          showToast(`Saved & queued ${p.day} post!`);
+        };
+
+        document.getElementById('btn-copy-post').onclick = () => {
+          const txt = `${document.getElementById('hook-editor').value}\n\n${document.getElementById('body-editor').value}`;
+          safeCopy(txt, `✓ Copied ${posts[activeDayIdx].day} post to clipboard!`);
+        };
+
+        document.getElementById('btn-copy-comment').onclick = () => {
+          safeCopy(posts[activeDayIdx].comment || '', '✓ Copied First Comment CTA to clipboard!');
+        };
+
+        document.getElementById('btn-send-to-gif').onclick = () => {
+          const p = posts[activeDayIdx];
+          document.getElementById('gif-kicker').value = p.track.slice(0, 48);
+          document.getElementById('gif-headline').value = p.title.slice(0, 56);
+          const numbered = p.body.split('\n').filter(l => /^[1-4]\./.test(l.trim())).slice(0, 4);
+          if (numbered.length >= 3) {
+            document.getElementById('gif-steps').value = numbered.map((l, idx) => `0${idx + 1} · ${l.replace(/^[1-4]\.\s*/, '')} | Production-tested playbook`).join('\n');
+          }
+          switchTab('gif');
+          renderPreviewTick();
+          showToast(`Loaded ${p.day} into the Animated GIF Lab!`);
+        };
+
+        // Live Rough-Notes -> Executive Deck + GIF Compiler
+        document.getElementById('btn-compile-deck').onclick = () => {
+          const raw = document.getElementById('raw-builder-input').value.trim() ||
+            'Manual enterprise onboarding takes 14 days; SQL validation breaks; MCP agent cuts setup to 22 mins across Fortune 500 accounts';
+          const parts = raw.split(/[;\n.•]+/).map(s => s.trim()).filter(Boolean);
+          const pain = parts[0] || '15+ hrs lost on manual enterprise workflow';
+          const root = parts[1] || 'Fragmented context & brittle handoffs';
+          const arch = parts[2] || 'Gemini + Antigravity + MCP automated pipeline';
+          const roi = parts[3] || '10x faster delivery with human QA gate';
+
+          document.getElementById('gif-kicker').value = 'GOOGLE AI + ANTIGRAVITY · LIVE BUILD';
+          document.getElementById('gif-headline').value = pain.slice(0, 46);
+          document.getElementById('gif-steps').value = [
+            `01 · Bottleneck | ${pain}`,
+            `02 · Root Cause | ${root}`,
+            `03 · AI Stack | ${arch}`,
+            `04 · Business ROI | ${roi}`
+          ].join('\n');
+          gifAnimFrame = 0;
+          renderPreviewTick();
+
+          const out = document.getElementById('compiled-deck-output');
+          out.classList.remove('hidden');
+          out.textContent =
+            `✓ Compiled 4-Slide SCQA Executive Deck Outline & Updated Live GIF Below:\n` +
+            `• Slide 1 (Situation/Pain): ${pain}\n` +
+            `• Slide 2 (Complication): ${root}\n` +
+            `• Slide 3 (Google AI + Antigravity Architecture): ${arch}\n` +
+            `• Slide 4 (Commercial Outcome): ${roi}`;
+          showToast('Compiled rough notes into Executive Deck outline & updated live 4:5 GIF!');
+        };
+
+        // GIF Lab Controls & Safe Export
+        loadGifPreset('deck');
+        startGifLoop();
+        document.getElementById('gif-preset').onchange = e => loadGifPreset(e.target.value);
+        document.getElementById('gif-speed').onchange = () => startGifLoop();
+        ['gif-kicker', 'gif-headline', 'gif-steps'].forEach(id => {
+          document.getElementById(id).addEventListener('input', renderPreviewTick);
+        });
+
+        document.getElementById('btn-export-gif').onclick = () => {
+          const statusEl = document.getElementById('gif-status');
+          if (!guardConfirm(gifOutboundText(), 'GIF visual')) { showToast('GIF export cancelled — rewrite the flagged phrases first.'); return; }
+          const total = gifFrameCount();
+          statusEl.textContent = `Encoding ${total}-frame binary GIF89a animation...`;
+          setTimeout(() => {
+            const w = 720, h = 900;
+            const off = document.createElement('canvas');
+            off.width = w; off.height = h;
+            const octx = off.getContext('2d', { willReadFrequently: true });
+            const frames = [];
+            const speed = Number(document.getElementById('gif-speed').value || 125);
+            const delays = Array.from({ length: total }, (_, i) => (i === total - 1 ? speed * 2 : speed));
+            for (let f = 0; f < total; f++) {
+              drawGifFrame(octx, w, h, f);
+              frames.push(octx.getImageData(0, 0, w, h));
+            }
+            const gifBytes = encodeAnimatedGif(w, h, frames, delays);
+            const dataUri = 'data:image/gif;base64,' + uint8ToBase64(gifBytes);
+
+            const wrap = document.getElementById('exported-media-wrap');
+            const img = document.getElementById('exported-media-img');
+            img.src = dataUri;
+            wrap.classList.remove('hidden');
+
+            try {
+              const a = document.createElement('a');
+              a.href = dataUri;
+              a.download = `afrina-signal50-${document.getElementById('gif-preset').value}.gif`;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            } catch (e) {}
+
+            statusEl.textContent = `✓ Encoded ${(gifBytes.length / 1024).toFixed(0)} KB animated .GIF!`;
+            showToast('Animated 4:5 .GIF generated! Saved & displayed below for mobile long-press.');
+          }, 30);
+        };
+
+        document.getElementById('btn-export-png').onclick = () => {
+          if (!guardConfirm(gifOutboundText(), 'PNG visual')) { showToast('PNG export cancelled — rewrite the flagged phrases first.'); return; }
+          const c = document.getElementById('png-export-canvas');
+          const ctx = c.getContext('2d');
+          ctx.save();
+          ctx.scale(1.5, 1.5);
+          drawGifFrame(ctx, 720, 900, gifFrameCount() - 1);
+          ctx.restore();
+          const dataUri = c.toDataURL('image/png');
+
+          const wrap = document.getElementById('exported-media-wrap');
+          const img = document.getElementById('exported-media-img');
+          img.src = dataUri;
+          wrap.classList.remove('hidden');
+
+          try {
+            const a = document.createElement('a');
+            a.href = dataUri;
+            a.download = 'afrina-signal50-1080x1350.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          } catch (e) {}
+          showToast('1080×1350 .PNG cheat sheet generated!');
+        };
+
+        // Outlier Vault (real HarvestAPI data) + Live Outlier -> Afrina Verbatim Voice Alchemist
+        let vaultItems = OUTLIER_VAULT_SNAPSHOT.slice();
+        let vaultMeta = { ...VAULT_SNAPSHOT_META, live: false };
+        const fmtN = n => Number(n || 0).toLocaleString('en-US');
+        const fmtDate = iso => { try { return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); } catch (_) { return String(iso || ''); } };
+        const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+        function normaliseServerOutlier(o) {
+          return {
+            id: o.id, creator: o.creatorName, role: o.creatorRole, mult: o.multiplier, z: o.robustZ,
+            likes: o.reactions, comments: o.comments, reposts: o.reposts, median: o.creatorMedian, mad: o.creatorMad,
+            date: o.publishedAge, age: o.ageDays, type: o.outlierType || 'playbook', media: o.mediaType || 'text',
+            topic: o.topic, url: o.sourceUrl, insight: o.coreInsight
+          };
+        }
+
+        function renderVault() {
+          const onlyReusable = document.getElementById('vault-replicable-only').checked;
+          const items = vaultItems
+            .filter(o => !onlyReusable || o.type !== 'announcement')
+            .sort((a, b) => (a.age ?? 9999) - (b.age ?? 9999) || b.mult - a.mult);
+          const status = document.getElementById('vault-status');
+          const when = vaultMeta.scannedAt ? fmtDate(vaultMeta.scannedAt) : 'not yet';
+          const verified = (vaultMeta.creators || []).filter(c => c.status === 'ok').length;
+          status.textContent = vaultMeta.live
+            ? `Live via HarvestAPI · last scan ${when} · ${verified}/${(vaultMeta.creators || []).length} creators verified · ${vaultItems.length} outliers (${vaultItems.filter(o => o.type !== 'announcement').length} reusable)`
+            : `Snapshot from the ${when} scan (open the Live Studio App to rescan) · ${vaultItems.length} outliers`;
+
+          document.getElementById('outlier-cards').innerHTML = items.length ? items.map(o => `
+            <div class="p-3 rounded-xl border border-[var(--border)] space-y-1.5 text-xs">
+              <div class="flex flex-wrap justify-between gap-2">
+                <span class="font-bold">${esc(o.creator)} · <span class="text-[var(--muted-foreground)] font-normal">${esc((o.role || '').split('(')[0].trim())}</span></span>
+                <span class="flex items-center gap-1.5">
+                  <span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${o.type === 'announcement' ? 'bg-[var(--secondary)] text-[var(--muted-foreground)]' : 'bg-[var(--primary)] text-[var(--primary-foreground)]'}">${o.type === 'announcement' ? 'Announcement' : 'Reusable'}</span>
+                  <span class="px-2 py-0.5 rounded bg-[var(--secondary)] font-mono font-bold">${o.mult}x · Z=${o.z}</span>
+                </span>
+              </div>
+              <div class="font-bold text-sm">${esc(o.topic)}</div>
+              <div class="text-[var(--muted-foreground)]">${fmtN(o.likes)} reactions · ${fmtN(o.comments)} comments · ${fmtN(o.reposts)} reposts vs ${fmtN(o.median)} median · ${o.media} · ${o.age != null ? o.age + 'd ago' : esc(o.date)}</div>
+              <div class="text-[var(--muted-foreground)] line-clamp-2">${esc(o.insight)}</div>
+              <div class="flex flex-wrap gap-2 pt-0.5">
+                <button type="button" data-vault-id="${esc(o.id)}" class="px-2.5 py-1 rounded border border-[var(--border)] font-semibold">Load Into Converter ←</button>
+                ${o.url ? `<a href="${esc(o.url)}" target="_blank" rel="noopener" class="px-2.5 py-1 rounded border border-[var(--border)] font-semibold">Open original ↗</a>` : ''}
+              </div>
+            </div>
+          `).join('') : `<div class="p-3 rounded-xl border border-dashed border-[var(--border)] text-xs text-[var(--muted-foreground)]">No outliers yet. Click <strong>Rescan now</strong> (needs the live server + HarvestAPI key in <code>.env</code>).</div>`;
+
+          document.querySelectorAll('[data-vault-id]').forEach(btn => {
+            btn.onclick = () => {
+              const o = vaultItems.find(v => v.id === btn.dataset.vaultId);
+              if (!o) return;
+              document.getElementById('new-out-creator').value = o.creator;
+              document.getElementById('new-out-topic').value = o.topic;
+              document.getElementById('calc-likes').value = o.likes || 0;
+              document.getElementById('calc-comments').value = o.comments || 0;
+              document.getElementById('calc-reposts').value = o.reposts || 0;
+              document.getElementById('calc-median').value = o.median || 30;
+              document.getElementById('calc-mad').value = o.mad || 12;
+              document.getElementById('new-out-creator').dataset.sourceUrl = o.url || '';
+              updateRarityCalc();
+              showToast(`Loaded ${o.creator}'s real outlier (${o.mult}x) into the converter.`);
+            };
+          });
+
+          document.getElementById('scan-report-rows').innerHTML = (vaultMeta.creators || []).map(c => `
+            <tr class="border-t border-[var(--border)]">
+              <td class="py-1 pr-2 font-semibold">${esc(c.name)}</td>
+              <td class="py-1 pr-2 ${c.status === 'ok' ? '' : 'text-[var(--primary)] font-semibold'}">${esc(c.status)}</td>
+              <td class="py-1 pr-2">${c.posts ?? ''}</td>
+              <td class="py-1 pr-2">${fmtN(c.median)}</td>
+              <td class="py-1 pr-2">${c.top}x</td>
+              <td class="py-1 pr-2">${c.playbook ?? 0}</td>
+            </tr>`).join('') || '<tr><td class="py-1 text-[var(--muted-foreground)]" colspan="6">No scan report yet.</td></tr>';
+
+          // Header stat: real multiplier range of reusable outliers
+          const reusable = vaultItems.filter(o => o.type !== 'announcement').map(o => Number(o.mult)).filter(Boolean);
+          const stat = document.getElementById('stat-outlier-range');
+          if (stat && reusable.length) stat.textContent = `${Math.min(...reusable).toFixed(1)}x–${Math.max(...reusable).toFixed(1)}x Verified Outliers`;
+        }
+
+        function applyServerVault(data) {
+          if (!Array.isArray(data.outliers)) return;
+          vaultItems = data.outliers.map(normaliseServerOutlier);
+          const scan = data.outlierScan || {};
+          vaultMeta = {
+            live: true,
+            scannedAt: scan.finishedAt || null,
+            creators: (scan.creators || []).map(c => ({ name: c.name, status: c.status, posts: c.postsFetched, median: c.medianWeighted, top: c.topMultiplier, playbook: c.playbookOutliers || 0 }))
+          };
+          renderVault();
+        }
+
+        // Static (GitHub Pages) data path: data/outliers.json is written by scout/scout.mjs via the scheduled Action.
+        function applyScoutFile(d) {
+          if (!d || !Array.isArray(d.outliers)) return false;
+          vaultItems = d.outliers.filter(o => String(o.tier || '').startsWith('OUTLIER')).map(o => ({
+            id: String(o.id || o.url), creator: o.creator, role: o.role || `Ring ${o.ring}`, mult: o.mult, z: o.z,
+            likes: o.reactions, comments: o.comments, reposts: o.reposts || 0, median: o.baselineMedian, mad: o.baselineMad,
+            date: o.postedAt ? String(o.postedAt).slice(0, 10) : '', age: o.ageHours != null ? Math.round(o.ageHours / 24) : null,
+            type: o.type || 'playbook', media: o.media || 'text', topic: o.hook || (o.text || '').split('\n')[0], url: o.url,
+            insight: (o.text || '').split('\n').slice(1).join(' ').slice(0, 220) || `${o.source === 'public' ? 'Public-page' : 'HarvestAPI'} baseline: n=${o.baselineN}, median ${o.baselineMedian}, MAD ${o.baselineMad}${o.ctaGated ? ' · comment-gated CTA (comments discounted to 1×)' : ''}`
+          }));
+          vaultMeta = {
+            live: true, scannedAt: d.generatedAt, model: d.model,
+            creators: (d.creators || []).map(c => ({ name: c.name, status: c.status, posts: c.postsFetched ?? c.n, median: c.median, top: Math.max(0, ...(c.posts || []).map(p => Number(p.mult) || 0)).toFixed(2), playbook: (c.posts || []).filter(p => String(p.tier || '').startsWith('OUTLIER') && p.type !== 'announcement').length }))
+          };
+          renderVault();
+          return true;
+        }
+        fetch('data/outliers.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => { if (applyScoutFile(d)) showToast(`Outlier vault loaded · ${vaultItems.length} verified outliers · scanned ${fmtDate(vaultMeta.scannedAt)}`); }).catch(() => {});
+
+        document.getElementById('vault-replicable-only').onchange = renderVault;
+        applyServerVaultHook = applyServerVault;
+
+        document.getElementById('btn-rescan-outliers').onclick = async () => {
+          const btn = document.getElementById('btn-rescan-outliers');
+          const logBox = document.getElementById('rescan-log');
+          if (!hasBackend) {
+            // Static deployment: the scout runs in GitHub Actions (every 12h, or on demand).
+            window.open('https://github.com/Afrinam19/signal50/actions/workflows/scout.yml', '_blank', 'noopener');
+            logBox.classList.remove('hidden');
+            logBox.textContent = 'Opened the Outlier Scout workflow on GitHub. Click "Run workflow" there; data/outliers.json refreshes in ~3 minutes and this page picks it up on reload.\nAuto-schedule: 06:17 & 18:17 UTC daily. Requires the HARVEST_API_KEY repository secret for full coverage (public pages are capped at 5 creators/run).';
+            return;
+          }
+          btn.disabled = true;
+          btn.textContent = 'Scanning… (~30s)';
+          logBox.classList.remove('hidden');
+          logBox.textContent = 'Starting HarvestAPI scan of the 10-creator watchlist…';
+          const poll = setInterval(async () => {
+            try {
+              const r = await fetch('/api/v3/outliers/scan');
+              const d = await r.json();
+              if (Array.isArray(d.log) && d.log.length) logBox.textContent = d.log.join('\n');
+            } catch (_) {}
+          }, 2500);
+          try {
+            const resp = await fetch('/api/v3/outliers/scan', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) });
+            const out = await resp.json();
+            if (!resp.ok) throw new Error(out.error || `HTTP ${resp.status}`);
+            logBox.textContent = (out.log || []).join('\n');
+            applyServerVault(out);
+            showToast(`✓ Scan complete: ${out.added} new outlier(s), ${out.total} in vault.`);
+          } catch (err) {
+            logBox.textContent += `\n✕ ${err.message}`;
+            showToast(`Scan failed: ${err.message}`);
+          } finally {
+            clearInterval(poll);
+            btn.disabled = false;
+            btn.textContent = 'Rescan now';
+          }
+        };
+
+        renderVault();
+
+        ['calc-likes', 'calc-comments', 'calc-reposts', 'calc-median', 'calc-mad'].forEach(id => {
+          document.getElementById(id).addEventListener('input', updateRarityCalc);
+        });
+        updateRarityCalc();
+
+        document.getElementById('btn-alchemize-outlier').onclick = async () => {
+          const creatorEl = document.getElementById('new-out-creator');
+          const creator = creatorEl.value.trim() || 'Industry Creator';
+          const sourceUrl = creatorEl.dataset.sourceUrl || '';
+          const topic = document.getElementById('new-out-topic').value.trim() || 'Scaling AI Products';
+          const dayIdx = Number(document.getElementById('new-out-day').value || 0);
+          const { mult, isOutlier } = computeRarity();
+          const dayNames = ['Monday', 'Tuesday', 'Wednesday'];
+          if (!isOutlier) {
+            showToast(`Below the 3.0x gate (${mult}x). Mon–Wed slots are reserved for verified outliers — pick a card from the vault.`);
+            return;
+          }
+
+          const shortTopic = topic.replace(/[.!?]+$/, '').slice(0, 90);
+          posts[dayIdx] = {
+            day: dayNames[dayIdx],
+            track: `Outlier Growth · Credit: ${creator} (${mult}x · HarvestAPI verified)`,
+            isGrowth: true,
+            credit: creator,
+            creditUrl: sourceUrl,
+            title: `${shortTopic} — rebuilt in Afrina's voice (credit: ${creator})`,
+            selectedHook: 0,
+            hooks: [
+              `${shortTopic}\n${creator} showed why this matters. Here is how to actually do it, step by step:`.slice(0, 210),
+              `Most teams get this wrong: ${shortTopic.charAt(0).toLowerCase() + shortTopic.slice(1)}.\nHere are the steps I use at Google, in plain English:`.slice(0, 210),
+              `${creator} posted something every PM should read: ${shortTopic.charAt(0).toLowerCase() + shortTopic.slice(1)}.\nHere is the version you can run in your next sprint:`.slice(0, 210)
+            ],
+            body: `[Hook line 1 — the surprising fact, in plain English]
+[Hook line 2 — why it matters to the reader]
+
+Here are 5 steps to [outcome the reader wants] 🚀
+
+Save this for your next sprint planning 🩵
+
+Step 1. [Name the first move]
+[One sentence on what to do.]
+ 👉 [One concrete how-to or tool.]
+
+Step 2. [Second move]
+ 👉 [Concrete how-to.]
+
+Step 3. [Third move]
+ 👉 [Concrete how-to.]
+
+Step 4. [Fourth move]
+ 👉 [Concrete how-to.]
+
+Step 5. [Fifth move]
+ 👉 [Concrete how-to.]
+
+[Closer line 1 — the one-sentence lesson.]
+[Closer line 2 — the reframe.]
+
+Credit to ${creator} for the original post that sparked this.
+
+💬 [One question that invites a specific answer.]
+♻️ Repost this for a PM, engineer, or leader on your team.
+👋 New here? I'm Afrina. 15+ years of building product, now working on Gemini & AI agents at Google. Follow for more on how AI products are built.`,
+            comment: `Credit to ${creator} for the original post${sourceUrl ? `: ${sourceUrl}` : ''} (${mult}x their usual engagement — verified via HarvestAPI). Every Saturday I break down one AI product build step by step in my newsletter (link in bio).`
+          };
+
+          activeDayIdx = dayIdx;
+          await persistAll();
+          renderStudio();
+          switchTab('calendar');
+          showToast(`✓ ${dayNames[dayIdx]} skeleton loaded in your voice pattern (crediting ${creator}). Fill the [brackets] in the Studio.`);
+        };
+
+        // Saturday Newsletter + revenue-mix simulator (her own newsletter business, not Google data)
+        const nlEditor = document.getElementById('newsletter-editor');
+        nlEditor.value = INITIAL_NEWSLETTER;
+        renderSafety('newsletter-safety', nlEditor.value);
+        nlEditor.addEventListener('input', () => renderSafety('newsletter-safety', nlEditor.value));
+        ['sim-pro-subs', 'sim-spon-rate', 'sim-advisory'].forEach(id => {
+          document.getElementById(id).addEventListener('input', updateArrSim);
+        });
+        updateArrSim();
+        document.getElementById('btn-copy-newsletter').onclick = () => {
+          safeCopy(document.getElementById('newsletter-editor').value, '✓ Copied Saturday Issue #01 to clipboard!');
+        };
+
+        // Interactive Retro Engine
+        renderRetro();
+        document.getElementById('btn-run-retro').onclick = async () => {
+          computeRetroDirectives();
+          await persistAll();
+          showToast('✓ Recomputed Self-Healing Retro directives from your latest metrics!');
+        };
+
+        // $2M+ Profile Rewrite & Voice Calibration
+        document.getElementById('profile-about-editor').value = UPGRADED_ABOUT;
+        document.querySelectorAll('[data-copy-headline]').forEach(btn => {
+          btn.onclick = () => safeCopy(btn.getAttribute('data-copy-headline'), '✓ Copied upgraded LinkedIn Headline!');
+        });
+        document.getElementById('btn-copy-about').onclick = () => {
+          safeCopy(document.getElementById('profile-about-editor').value, '✓ Copied upgraded LinkedIn About section!');
+        };
+
+        document.getElementById('btn-calibrate-voice').onclick = async () => {
+          const val = document.getElementById('voice-paste-box').value.trim();
+          if (val.length < 25) {
+            showToast('Paste at least one LinkedIn post (25+ chars) to calibrate.');
+            return;
+          }
+          const count = val.split(/\n\s*---\s*\n/).filter(Boolean).length;
+          voiceScore = Math.min(100, voiceScore + count * 2);
+          document.getElementById('header-voice-badge').textContent = `Voice DNA: ${voiceScore}%`;
+          document.getElementById('voice-feedback').textContent = `✓ Ingested ${count} verbatim post(s)! Voice DNA locked at ${voiceScore}%.`;
+          document.getElementById('voice-paste-box').value = '';
+          await persistAll();
+          showToast(`Voice DNA calibrated to ${voiceScore}%!`);
+        };
+
+        // Remote Chat Bypass Bridge: HarvestAPI Live Pull + Phone/Paste Direct-to-VM Upload
+        const bridgeStatus = document.getElementById('vm-bridge-status');
+        const thumbsWrap = document.getElementById('vm-uploaded-thumbs');
+
+        async function refreshUploadedFiles() {
+          try {
+            const r = await fetch('/api/v3/uploads');
+            if (!r.ok) return;
+            const d = await r.json();
+            const files = d.files || [];
+            if (!files.length) return;
+            thumbsWrap.innerHTML = files.slice(0, 6).map(f => {
+              const isImg = /\.(png|jpe?g|gif|webp)$/i.test(f.name);
+              return isImg
+                ? `<a href="${f.url}" target="_blank" class="block border border-[var(--border)] rounded-lg p-1 bg-[var(--secondary)] text-xs"><img src="${f.url}" alt="${f.name}" class="h-14 w-auto rounded object-cover" /><div class="truncate max-w-[120px] mt-0.5">${f.name}</div></a>`
+                : `<div class="border border-[var(--border)] rounded-lg px-2.5 py-1.5 bg-[var(--secondary)] text-xs font-mono">📄 ${f.name}</div>`;
+            }).join('');
+          } catch (_) {}
+        }
+
+        async function sendFileToVm(file) {
+          bridgeStatus.textContent = `Sending ${file.name} directly to Agent VM...`;
+          const dataUrl = await new Promise((res, rej) => {
+            const reader = new FileReader();
+            reader.onload = () => res(reader.result);
+            reader.onerror = rej;
+            reader.readAsDataURL(file);
+          });
+          try {
+            const resp = await fetch('/api/v3/upload', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ filename: file.name, dataUrl })
+            });
+            const out = await resp.json();
+            if (!resp.ok) throw new Error(out.error || 'Upload failed');
+            bridgeStatus.textContent = `✓ Saved ${out.name} (${Math.round(out.sizeBytes / 1024)} KB) on Agent VM! Reply "Uploaded" in chat so Antigravity inspects it.`;
+            showToast(`✓ Sent ${file.name} straight to Agent VM!`);
+            await refreshUploadedFiles();
+          } catch (err) {
+            bridgeStatus.textContent = `✕ Could not reach VM server: ${err.message}. Open via the "Signal50 Live Studio App" Preview card.`;
+          }
+        }
+
+        document.getElementById('btn-toggle-bridge').onclick = () => {
+          document.getElementById('bridge-body').classList.toggle('hidden');
+        };
+
+        document.getElementById('vm-file-input').onchange = async e => {
+          const list = Array.from(e.target.files || []);
+          for (const f of list) await sendFileToVm(f);
+          e.target.value = '';
+        };
+
+        window.addEventListener('paste', async e => {
+          const items = Array.from((e.clipboardData && e.clipboardData.items) || []);
+          const imgItems = items.filter(it => it.type && it.type.startsWith('image/'));
+          for (const it of imgItems) {
+            const f = it.getAsFile();
+            if (f) await sendFileToVm(new File([f], `pasted-linkedin-${Date.now()}.png`, { type: f.type }));
+          }
+        });
+
+        document.getElementById('btn-harvest-pull').onclick = async () => {
+          const apiKey = document.getElementById('harvest-api-key-input').value.trim();
+          if (!apiKey) {
+            showToast('Paste your HarvestAPI Key from harvestapi.io first!');
+            return;
+          }
+          bridgeStatus.textContent = 'Pulling live https://www.linkedin.com/in/afrina-m profile, banner, headshot & posts via HarvestAPI...';
+          try {
+            const resp = await fetch('/api/v3/harvest-sync', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ apiKey, linkedinUrl: 'https://www.linkedin.com/in/afrina-m' })
+            });
+            const out = await resp.json();
+            if (!resp.ok) throw new Error(out.error || `HTTP ${resp.status}`);
+            bridgeStatus.textContent = `✓ Pulled @${out.slug} (${out.followerCount || 'live'} followers, ${out.postCount} recent posts, ${out.savedMedia.length} images) onto VM! Reply "Pulled" in chat.`;
+            showToast('✓ Pulled your live LinkedIn profile, banner & posts onto the VM!');
+            await refreshUploadedFiles();
+          } catch (err) {
+            bridgeStatus.textContent = `✕ HarvestAPI error: ${err.message}`;
+          }
+        };
+
+        refreshUploadedFiles();
+        tryServerLoad();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initApp);
+      } else {
+        initApp();
+      }
+    })();
+  </script>
+</body>
+</html>
