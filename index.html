@@ -228,11 +228,14 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label for="gif-kicker" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Top Kicker Tag</label>
-              <input id="gif-kicker" type="text" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" />
+              <label for="gif-layout" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Visual Density</label>
+              <select id="gif-layout" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm">
+                <option value="factory" selected>Factory · dense B2B system map (hub + 5 stations, tool chips, workers, belts)</option>
+                <option value="classic">Classic · 4–6 step cards</option>
+              </select>
             </div>
             <div>
-              <label for="gif-speed" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Animation Speed</label>
+              <label for="gif-speed" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Animation Speed <span class="font-normal">(Classic only — Factory loops 32 frames at 10fps)</span></label>
               <select id="gif-speed" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm">
                 <option value="95">Snappy (0.95s / step)</option>
                 <option value="125" selected>Executive Pace (1.25s / step)</option>
@@ -241,14 +244,30 @@
             </div>
           </div>
 
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="gif-kicker" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Brand Pill / Kicker</label>
+              <input id="gif-kicker" type="text" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" />
+            </div>
+            <div>
+              <label for="gif-cta" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Footer CTA Pill (<code>Comment "KEY" to …</code>)</label>
+              <input id="gif-cta" type="text" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" placeholder='Comment "DECK" to get the full setup' />
+            </div>
+          </div>
+
           <div>
-            <label for="gif-headline" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Visual Headline</label>
+            <label for="gif-headline" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Visual Headline <span class="font-normal">(wrap ONE phrase in <code>{braces}</code> for the terracotta accent)</span></label>
             <input id="gif-headline" type="text" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm font-semibold" />
           </div>
 
           <div>
-            <label for="gif-steps" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Animated Steps — 4 to 6 lines (<code>Step Label | Value Detail</code>)</label>
-            <textarea id="gif-steps" rows="6" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2.5 text-xs font-mono leading-relaxed"></textarea>
+            <label for="gif-subtitle" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Subtitle <span class="font-normal">(numbers auto-bold, or wrap in <code>**…**</code>)</span></label>
+            <input id="gif-subtitle" type="text" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" />
+          </div>
+
+          <div>
+            <label for="gif-steps" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">System Spec — <code>HUB: Title | sub | Tools</code> then 5 stations <code>Title | sub | Tool1, Tool2 | Worker1, Worker2</code> <span class="font-normal">(Classic reads <code>Label | detail</code>)</span></label>
+            <textarea id="gif-steps" rows="8" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2.5 text-xs font-mono leading-relaxed"></textarea>
           </div>
 
           <div class="flex flex-wrap gap-2.5 pt-1">
@@ -552,6 +571,7 @@
 
   <canvas id="png-export-canvas" width="1080" height="1350" class="hidden"></canvas>
 
+  <script src="assets/factory.js"></script>
   <script>
     (function () {
       // =======================================================================
@@ -707,17 +727,74 @@
       }
 
       const GLOBAL_PALETTE = buildPalette256();
-      const COLOR_CACHE = new Map();
+      let COLOR_CACHE = new Map();
 
-      function nearestColorIndex(r, g, b) {
+      // Adaptive 256-colour palette (weighted median cut) built from the frames actually being exported.
+      // The fixed web-safe cube turned the Factory pastels (sage / mauve / dusty blue) into grey.
+      function buildAdaptivePalette(frameImageDataList) {
+        const n = frameImageDataList.length;
+        if (!n) return GLOBAL_PALETTE;
+        const picks = [...new Set([0, Math.floor(n / 2), n - 1])];
+        const counts = new Map();
+        for (const fi of picks) {
+          const d = frameImageDataList[fi].data;
+          for (let j = 0; j < d.length; j += 12) { // every 3rd pixel
+            const key = (d[j] << 16) | (d[j + 1] << 8) | d[j + 2];
+            counts.set(key, (counts.get(key) || 0) + 1);
+          }
+        }
+        const colors = Array.from(counts.keys());
+        if (colors.length <= 256) {
+          const pal = new Uint8Array(256 * 3);
+          colors.forEach((c, i) => { pal[i * 3] = c >> 16; pal[i * 3 + 1] = (c >> 8) & 255; pal[i * 3 + 2] = c & 255; });
+          return pal;
+        }
+        const ch = (c, s) => (c >> s) & 255;
+        const boxes = [{ items: colors }];
+        const boxStats = box => {
+          let w = 0, mn = [255, 255, 255], mx = [0, 0, 0];
+          for (const c of box.items) {
+            w += counts.get(c);
+            for (let k = 0, s = 16; k < 3; k++, s -= 8) { const v = ch(c, s); if (v < mn[k]) mn[k] = v; if (v > mx[k]) mx[k] = v; }
+          }
+          const ranges = [mx[0] - mn[0], mx[1] - mn[1], mx[2] - mn[2]];
+          const axis = ranges.indexOf(Math.max(...ranges));
+          box.weight = w; box.range = ranges[axis]; box.axis = axis;
+          return box;
+        };
+        boxStats(boxes[0]);
+        while (boxes.length < 256) {
+          let bi = -1, best = -1;
+          boxes.forEach((b, i) => { if (b.items.length > 1 && b.range > 0) { const score = b.weight * (b.range + 1); if (score > best) { best = score; bi = i; } } });
+          if (bi < 0) break;
+          const box = boxes[bi], shift = 16 - box.axis * 8;
+          box.items.sort((a, b) => ch(a, shift) - ch(b, shift));
+          let acc = 0, cut = 0; const half = box.weight / 2;
+          for (; cut < box.items.length - 1; cut++) { acc += counts.get(box.items[cut]); if (acc >= half) { cut++; break; } }
+          if (cut <= 0 || cut >= box.items.length) cut = Math.floor(box.items.length / 2);
+          const a = { items: box.items.slice(0, cut) }, b = { items: box.items.slice(cut) };
+          boxes.splice(bi, 1, boxStats(a), boxStats(b));
+        }
+        const pal = new Uint8Array(256 * 3);
+        boxes.forEach((box, i) => {
+          let r = 0, g = 0, bl = 0, w = 0, topC = box.items[0], topW = 0;
+          for (const c of box.items) { const cw = counts.get(c); w += cw; r += ch(c, 16) * cw; g += ch(c, 8) * cw; bl += ch(c, 0) * cw; if (cw > topW) { topW = cw; topC = c; } }
+          // Flat fills (one colour dominating the box) stay pixel-exact; gradients/anti-aliasing use the weighted mean.
+          if (topW / w >= 0.5) { pal[i * 3] = ch(topC, 16); pal[i * 3 + 1] = ch(topC, 8); pal[i * 3 + 2] = ch(topC, 0); }
+          else { pal[i * 3] = Math.round(r / w); pal[i * 3 + 1] = Math.round(g / w); pal[i * 3 + 2] = Math.round(bl / w); }
+        });
+        return pal;
+      }
+
+      function nearestColorIndex(r, g, b, pal = GLOBAL_PALETTE) {
         const key = ((r >> 2) << 12) | ((g >> 2) << 6) | (b >> 2);
         const cached = COLOR_CACHE.get(key);
         if (cached !== undefined) return cached;
         let bestIdx = 0, bestDist = 1e9;
         for (let i = 0; i < 256; i++) {
-          const dr = r - GLOBAL_PALETTE[i * 3];
-          const dg = g - GLOBAL_PALETTE[i * 3 + 1];
-          const db = b - GLOBAL_PALETTE[i * 3 + 2];
+          const dr = r - pal[i * 3];
+          const dg = g - pal[i * 3 + 1];
+          const db = b - pal[i * 3 + 2];
           const dist = dr * dr + dg * dg + db * db;
           if (dist < bestDist) {
             bestDist = dist; bestIdx = i;
@@ -771,13 +848,15 @@
       }
 
       function encodeAnimatedGif(width, height, frameImageDataList, delaysCs) {
+        const pal = buildAdaptivePalette(frameImageDataList);
+        COLOR_CACHE = new Map();
         const bytes = [];
         const pushStr = s => { for (let i = 0; i < s.length; i++) bytes.push(s.charCodeAt(i)); };
         const pushU16 = n => { bytes.push(n & 0xff, (n >> 8) & 0xff); };
         pushStr('GIF89a');
         pushU16(width); pushU16(height);
         bytes.push(0xf7, 0, 0);
-        for (let i = 0; i < GLOBAL_PALETTE.length; i++) bytes.push(GLOBAL_PALETTE[i]);
+        for (let i = 0; i < pal.length; i++) bytes.push(pal[i]);
         bytes.push(0x21, 0xff, 0x0b);
         pushStr('NETSCAPE2.0');
         bytes.push(0x03, 0x01, 0x00, 0x00, 0x00);
@@ -785,7 +864,7 @@
           const rgba = frameImageDataList[f].data;
           const indexed = new Uint8Array(width * height);
           for (let p = 0, j = 0; p < indexed.length; p++, j += 4) {
-            indexed[p] = nearestColorIndex(rgba[j], rgba[j + 1], rgba[j + 2]);
+            indexed[p] = nearestColorIndex(rgba[j], rgba[j + 1], rgba[j + 2], pal);
           }
           bytes.push(0x21, 0xf9, 0x04, 0x00);
           pushU16(delaysCs[f] || 120);
@@ -1320,22 +1399,60 @@ Building AI products people actually adopt, or navigating your next move? Let's 
       let gifTimer = null;
 
       const GIF_MAX_STEPS = 6;
+      const FACTORY = window.Signal50Factory || null;
+
+      function gifLayout() {
+        const sel = document.getElementById('gif-layout');
+        return (FACTORY && sel && sel.value === 'factory') ? 'factory' : 'classic';
+      }
+
+      // Builds the dense Factory spec from the panel fields (kicker → brand pill, headline → {accent} title, etc.).
+      function factorySpec() {
+        const v = id => (document.getElementById(id) || {}).value || '';
+        const parsed = FACTORY.parseSpec(v('gif-steps'));
+        return {
+          brand: (v('gif-kicker') || 'BUILT WITH ANTIGRAVITY').toUpperCase().slice(0, 60),
+          title: v('gif-headline') || 'The {Enterprise Deck} Factory',
+          subtitle: v('gif-subtitle') || '1 orchestrator for 14 AI workers. Rough notes → board-ready Slides in 6 minutes.',
+          cta: v('gif-cta') || 'Comment "SETUP" to get the full setup',
+          author: 'Afrina M', initials: 'AM',
+          authorLine: 'Gemini & AI agents @ Google · $300M→$1B+',
+          hub: parsed.hub, stations: parsed.stations
+        };
+      }
 
       function parseGifSteps() {
         return document.getElementById('gif-steps').value
-          .split('\n').map(s => s.trim()).filter(Boolean).slice(0, GIF_MAX_STEPS)
+          .split('\n').map(s => s.trim()).filter(Boolean)
+          .filter(l => !/^HUB\s*:/i.test(l)).slice(0, GIF_MAX_STEPS)
           .map(line => {
             const parts = line.split('|');
             return { label: (parts[0] || '').trim(), detail: (parts[1] || '').trim() };
           });
       }
 
-      // Total animation frames = one per step + a final "all steps" frame.
+      // Classic: one frame per step + a final "all steps" frame. Factory: fixed 32-frame conveyor loop.
       function gifFrameCount() {
+        if (gifLayout() === 'factory') return FACTORY.FRAMES;
         return Math.max(2, parseGifSteps().length + 1);
       }
 
+      // Per-frame delay in centiseconds for the GIF encoder.
+      function gifDelays(total) {
+        if (gifLayout() === 'factory') return Array.from({ length: total }, () => FACTORY.DELAY_CS);
+        const speed = Number(document.getElementById('gif-speed').value || 125);
+        return Array.from({ length: total }, (_, i) => (i === total - 1 ? speed * 2 : speed));
+      }
+
       function drawGifFrame(ctx, w, h, stepIndex) {
+        if (gifLayout() === 'factory') {
+          FACTORY.draw(ctx, w, h, stepIndex, FACTORY.FRAMES, factorySpec());
+          return;
+        }
+        drawClassicFrame(ctx, w, h, stepIndex);
+      }
+
+      function drawClassicFrame(ctx, w, h, stepIndex) {
         ctx.fillStyle = '#F6F3EC';
         ctx.fillRect(0, 0, w, h);
         ctx.strokeStyle = '#D5CFC3';
@@ -1426,19 +1543,30 @@ Building AI products people actually adopt, or navigating your next move? Let's 
       function loadGifPreset(key) {
         const pr = GIF_PRESETS[key];
         if (!pr) return;
-        document.getElementById('gif-kicker').value = pr.kicker;
-        document.getElementById('gif-headline').value = pr.headline;
-        document.getElementById('gif-steps').value = pr.steps.join('\n');
+        const fp = FACTORY && FACTORY.PRESETS[key];
+        if (gifLayout() === 'factory' && fp) {
+          document.getElementById('gif-kicker').value = fp.brand;
+          document.getElementById('gif-headline').value = fp.title;
+          document.getElementById('gif-subtitle').value = fp.subtitle;
+          document.getElementById('gif-cta').value = fp.cta;
+          document.getElementById('gif-steps').value = fp.spec;
+        } else {
+          document.getElementById('gif-kicker').value = pr.kicker;
+          document.getElementById('gif-headline').value = pr.headline;
+          document.getElementById('gif-steps').value = pr.steps.join('\n');
+          if (fp) {
+            document.getElementById('gif-subtitle').value = fp.subtitle;
+            document.getElementById('gif-cta').value = fp.cta;
+          }
+        }
         gifAnimFrame = 0;
         renderPreviewTick();
       }
 
       function gifOutboundText() {
-        return [
-          document.getElementById('gif-kicker').value,
-          document.getElementById('gif-headline').value,
-          document.getElementById('gif-steps').value
-        ].join('\n');
+        return ['gif-kicker', 'gif-headline', 'gif-subtitle', 'gif-cta', 'gif-steps']
+          .map(id => (document.getElementById(id) || {}).value || '')
+          .join('\n');
       }
 
       function renderPreviewTick() {
@@ -1453,7 +1581,8 @@ Building AI products people actually adopt, or navigating your next move? Let's 
 
       function startGifLoop() {
         clearInterval(gifTimer);
-        const speedCs = Number(document.getElementById('gif-speed').value || 125);
+        const factory = gifLayout() === 'factory';
+        const speedCs = factory ? FACTORY.DELAY_CS : Number(document.getElementById('gif-speed').value || 125);
         gifTimer = setInterval(() => {
           gifAnimFrame = (gifAnimFrame + 1) % gifFrameCount();
           renderPreviewTick();
@@ -1572,13 +1701,20 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           safeCopy(posts[activeDayIdx].comment || '', '✓ Copied First Comment CTA to clipboard!');
         };
 
+        const DAY_TO_PRESET = { Monday: 'spotify', Tuesday: 'evals', Wednesday: 'humancheck', Thursday: 'deck', Friday: 'gtm', Saturday: 'agency' };
         document.getElementById('btn-send-to-gif').onclick = () => {
           const p = posts[activeDayIdx];
-          document.getElementById('gif-kicker').value = p.track.slice(0, 48);
-          document.getElementById('gif-headline').value = p.title.slice(0, 56);
-          const numbered = p.body.split('\n').filter(l => /^[1-4]\./.test(l.trim())).slice(0, 4);
-          if (numbered.length >= 3) {
-            document.getElementById('gif-steps').value = numbered.map((l, idx) => `0${idx + 1} · ${l.replace(/^[1-4]\.\s*/, '')} | Production-tested playbook`).join('\n');
+          const presetKey = DAY_TO_PRESET[p.day];
+          if (gifLayout() === 'factory' && presetKey && FACTORY.PRESETS[presetKey]) {
+            document.getElementById('gif-preset').value = presetKey;
+            loadGifPreset(presetKey);
+          } else {
+            document.getElementById('gif-kicker').value = p.track.slice(0, 48);
+            document.getElementById('gif-headline').value = p.title.slice(0, 56);
+            const numbered = p.body.split('\n').filter(l => /^[1-4]\./.test(l.trim())).slice(0, 4);
+            if (numbered.length >= 3) {
+              document.getElementById('gif-steps').value = numbered.map((l, idx) => `0${idx + 1} · ${l.replace(/^[1-4]\.\s*/, '')} | Production-tested playbook`).join('\n');
+            }
           }
           switchTab('gif');
           renderPreviewTick();
@@ -1595,14 +1731,29 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           const arch = parts[2] || 'Gemini + Antigravity + MCP automated pipeline';
           const roi = parts[3] || '10x faster delivery with human QA gate';
 
-          document.getElementById('gif-kicker').value = 'GOOGLE AI + ANTIGRAVITY · LIVE BUILD';
-          document.getElementById('gif-headline').value = pain.slice(0, 46);
-          document.getElementById('gif-steps').value = [
-            `01 · Bottleneck | ${pain}`,
-            `02 · Root Cause | ${root}`,
-            `03 · AI Stack | ${arch}`,
-            `04 · Business ROI | ${roi}`
-          ].join('\n');
+          if (gifLayout() === 'factory') {
+            document.getElementById('gif-kicker').value = 'BUILT WITH ANTIGRAVITY · LIVE BUILD';
+            document.getElementById('gif-headline').value = 'The {Live Build} Factory';
+            document.getElementById('gif-subtitle').value = `1 orchestrator, 12 AI workers. ${pain.slice(0, 70)}`;
+            document.getElementById('gif-cta').value = 'Comment "BUILD" to get the full setup';
+            document.getElementById('gif-steps').value = [
+              'HUB: Build Orchestrator | turns rough notes into a shipped, reviewed deliverable | Antigravity, Gemini, MCP, Drive, Slides, GitHub',
+              `Bottleneck | ${pain} | Drive, Gmail, Meet, Slack, Sheets, Jira, Docs, Notion | Notes, Email, Calls, Tickets, CSV, Docs, Slack, Figma`,
+              `Root Cause | ${root} | Gemini, NotebookLM, Docs | Analyst, Auditor`,
+              `AI Stack | ${arch} | Antigravity, Gemini, MCP | Planner, Builder, Tester`,
+              `Business ROI | ${roi} | Sheets, Looker, Slides | Model, Chart, Memo`,
+              'Ship + QA | human review before anything leaves the building | Slides, Docs, Playwright, GitHub | Reviewer, Export, Release'
+            ].join('\n');
+          } else {
+            document.getElementById('gif-kicker').value = 'GOOGLE AI + ANTIGRAVITY · LIVE BUILD';
+            document.getElementById('gif-headline').value = pain.slice(0, 46);
+            document.getElementById('gif-steps').value = [
+              `01 · Bottleneck | ${pain}`,
+              `02 · Root Cause | ${root}`,
+              `03 · AI Stack | ${arch}`,
+              `04 · Business ROI | ${roi}`
+            ].join('\n');
+          }
           gifAnimFrame = 0;
           renderPreviewTick();
 
@@ -1622,7 +1773,14 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         startGifLoop();
         document.getElementById('gif-preset').onchange = e => loadGifPreset(e.target.value);
         document.getElementById('gif-speed').onchange = () => startGifLoop();
-        ['gif-kicker', 'gif-headline', 'gif-steps'].forEach(id => {
+        document.getElementById('gif-layout').onchange = () => {
+          loadGifPreset(document.getElementById('gif-preset').value);
+          startGifLoop();
+          document.getElementById('gif-status').textContent = gifLayout() === 'factory'
+            ? 'Factory mode: 32-frame conveyor loop (3.2 s). Only the parcels move — text stays crisp for screenshots and saves.'
+            : 'Classic mode: one frame per step + a final "all steps" frame.';
+        };
+        ['gif-kicker', 'gif-headline', 'gif-subtitle', 'gif-cta', 'gif-steps'].forEach(id => {
           document.getElementById(id).addEventListener('input', renderPreviewTick);
         });
 
@@ -1630,15 +1788,14 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           const statusEl = document.getElementById('gif-status');
           if (!guardConfirm(gifOutboundText(), 'GIF visual')) { showToast('GIF export cancelled — rewrite the flagged phrases first.'); return; }
           const total = gifFrameCount();
-          statusEl.textContent = `Encoding ${total}-frame binary GIF89a animation...`;
+          statusEl.textContent = `Encoding ${total}-frame binary GIF89a animation${total > 12 ? ' (dense Factory loop — 10–20 s on a phone)' : ''}...`;
           setTimeout(() => {
             const w = 720, h = 900;
             const off = document.createElement('canvas');
             off.width = w; off.height = h;
             const octx = off.getContext('2d', { willReadFrequently: true });
             const frames = [];
-            const speed = Number(document.getElementById('gif-speed').value || 125);
-            const delays = Array.from({ length: total }, (_, i) => (i === total - 1 ? speed * 2 : speed));
+            const delays = gifDelays(total);
             for (let f = 0; f < total; f++) {
               drawGifFrame(octx, w, h, f);
               frames.push(octx.getImageData(0, 0, w, h));
