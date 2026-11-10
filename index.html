@@ -451,12 +451,16 @@
         <div class="lg:col-span-7 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3">
           <div class="flex flex-wrap justify-between items-center gap-2">
             <div>
-              <span class="text-xs font-semibold text-[var(--muted-foreground)]">SATURDAY ISSUE #01 · CALIBRATED TO YOUR VOICE</span>
+              <span class="text-xs font-semibold text-[var(--muted-foreground)]">SATURDAY ISSUE #01 · CALIBRATED TO YOUR VOICE · FULL-LENGTH (7-MIN READ)</span>
               <h3 class="text-base md:text-lg font-bold">Shipping an AI Model vs. Building a Business People Pay For</h3>
             </div>
-            <button type="button" id="btn-copy-newsletter" class="px-3.5 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Copy Issue #01</button>
+            <div class="flex items-center gap-2">
+              <span id="newsletter-wordcount" class="text-xs font-mono font-bold px-2 py-1 rounded-lg bg-[var(--secondary)]">— words</span>
+              <button type="button" id="btn-copy-newsletter" class="px-3.5 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Copy Issue #01</button>
+            </div>
           </div>
-          <textarea id="newsletter-editor" rows="18" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-3.5 text-sm leading-relaxed"></textarea>
+          <p class="text-xs text-[var(--muted-foreground)]">Spec: 1,400+ words · opening story → 3 measured signals (from the Outlier Vault) → one build with unit economics + failure modes → stealable artifact → Monday skill-transfer → 💬 ♻️ 👋 sign-off. Numbers in section 1 come from <code>data/outliers.json</code>; swap the assumptions in section 2 for your own.</p>
+          <textarea id="newsletter-editor" rows="44" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-3.5 text-sm leading-relaxed"></textarea>
           <div id="newsletter-safety" class="text-xs font-semibold text-[#1F5E46]">✓ Data-safety: checking…</div>
         </div>
       </div>
@@ -1206,33 +1210,124 @@ Grab Issue #01 in the first comment 🩵
       const OUTLIER_VAULT_SNAPSHOT = [{"id":"harvest-1794269084409-4868","creator":"Ruben Hassid","role":"Founder, EasyGen — High-Velocity AI Visual Communicator","mult":3.13,"z":3.71,"likes":2494,"comments":298,"reposts":223,"median":1438,"mad":558,"date":"2026-10-12","age":29,"type":"playbook","media":"image","topic":"Google your name. Now imagine your ex doing it.","url":"https://www.linkedin.com/posts/ruben-hassid_google-your-name-now-imagine-your-ex-doing-activity-7515275262348066816-Ilep","insight":"Google your name. Now imagine your ex doing it. Four prompts erase what they'd find (for $0): The sites selling your data are 𝘭𝘦𝘨𝘢𝘭𝘭𝘺 required to delete it when you ask. They bank on you never asking, because asking 190 sites by hand"},{"id":"harvest-1794269083204-efew","creator":"Ethan Mollick","role":"Professor at Wharton & Author of Co-Intelligence","mult":5.75,"z":7.68,"likes":2765,"comments":271,"reposts":120,"median":726,"mad":303,"date":"2026-10-20","age":21,"type":"announcement","media":"image","topic":"My new book, Co-Existence, is out today. It is a guide to how to live and work in a world where","url":"https://www.linkedin.com/posts/emollick_my-new-book-co-existence-is-out-today-activity-7518356204281180160-I_KG","insight":"My new book, Co-Existence, is out today. It is a guide to how to live and work in a world where AI is sometimes, but not always, better than you. (And, for the release, I worked with Opus 5.5 to make a quite interesting experience for the b"},{"id":"harvest-1794269083204-pjwg","creator":"Ethan Mollick","role":"Professor at Wharton & Author of Co-Intelligence","mult":5.06,"z":6.56,"likes":1969,"comments":221,"reposts":208,"median":726,"mad":303,"date":"2026-10-22","age":19,"type":"playbook","media":"image","topic":"A visible sign of what AI insiders have been warning about since at least the Mythos release. A","url":"https://www.linkedin.com/posts/emollick_a-visible-sign-of-what-ai-insiders-have-been-activity-7518831170906681344-FpL6","insight":"A visible sign of what AI insiders have been warning about since at least the Mythos release. Acceleration of attack and defense, at inhuman speeds, interacting with the very human systems that need to react to them. And these are the vulne"},{"id":"harvest-1794269083204-pszg","creator":"Ethan Mollick","role":"Professor at Wharton & Author of Co-Intelligence","mult":5.23,"z":6.83,"likes":1802,"comments":281,"reposts":230,"median":726,"mad":303,"date":"2026-11-07","age":3,"type":"playbook","media":"image","topic":"I think there is too much concern expressed about the need for human verification of AI output ","url":"https://www.linkedin.com/posts/emollick_i-think-there-is-too-much-concern-expressed-activity-7524907880840380416-ZSMP","insight":"I think there is too much concern expressed about the need for human verification of AI output in everyday work due to a risk of factual errors. It used to be true, but data on more recent models suggest they beat human experts in finding f"},{"id":"harvest-1794269082001-0b0x","creator":"Marily Nika, PhD","role":"GenAI Product Lead @ Google & Founder, AI PM Academy","mult":5.19,"z":6.18,"likes":712,"comments":77,"reposts":2,"median":184,"mad":84,"date":"2026-09-14","age":57,"type":"announcement","media":"image","topic":"I am on WIRED! I've read WIRED for about 15 years, so this one lands a little differently and t","url":"https://www.linkedin.com/posts/marilynika_i-am-on-wired-ive-read-wired-for-about-activity-7505357023945834496-P6BS","insight":"I am on WIRED! I've read WIRED for about 15 years, so this one lands a little differently and this is the second ever edition of WIRED Greece. My article is about the new generation of AI Builders we are all experiencing. It starts with my "},{"id":"harvest-1794269082001-txj5","creator":"Marily Nika, PhD","role":"GenAI Product Lead @ Google & Founder, AI PM Academy","mult":6.92,"z":8.72,"likes":327,"comments":306,"reposts":5,"median":184,"mad":84,"date":"2026-04-01","age":223,"type":"playbook","media":"image","topic":"What did you do at 7:30am? I was building a smart fridge for kids using AI studio and then Clau","url":"https://www.linkedin.com/posts/marilynika_what-did-you-do-at-730am-i-was-building-activity-7445142107155247104-Rtb6","insight":"What did you do at 7:30am? I was building a smart fridge for kids using AI studio and then Claude Code with my students =) Do you want to join the next one with me and Diego? Comment link and we'll share our invite-only upcoming workshop!"},{"id":"harvest-1794269082001-6388","creator":"Marily Nika, PhD","role":"GenAI Product Lead @ Google & Founder, AI PM Academy","mult":8.19,"z":10.59,"likes":275,"comments":404,"reposts":3,"median":184,"mad":84,"date":"2026-02-09","age":274,"type":"playbook","media":"text","topic":"I sometimes get blocked, not due to lack of skill or intelligence... I am blocked because I am ","url":"https://www.linkedin.com/posts/marilynika_i-sometimes-get-blocked-not-due-to-lack-activity-7426656213817393152-kh3a","insight":"I sometimes get blocked, not due to lack of skill or intelligence... I am blocked because I am carrying too many half-decisions in my head. Once you start closing loops, progress suddenly feels lighter because the mental load did. This is t"},{"id":"harvest-1794269080798-0dwn","creator":"Aakash Gupta","role":"Author of Product Growth Newsletter (ex-VP Product)","mult":8.65,"z":12.39,"likes":1348,"comments":130,"reposts":47,"median":228,"mad":95,"date":"2026-10-14","age":27,"type":"playbook","media":"image","topic":"At Apple, there is roughly 1 product manager for every 30 engineers. At Walmart, it is closer t","url":"https://www.linkedin.com/posts/aagupta_at-apple-there-is-roughly-1-product-manager-activity-7516181311057776640-NVYS","insight":"At Apple, there is roughly 1 product manager for every 30 engineers. At Walmart, it is closer to one for every 3.6. My friend Zuhayeer Musa at Levels.fyi looked at PM and engineer submissions on the site as a proxy. The spread is wild. (But"},{"id":"harvest-1794269080798-yxdb","creator":"Aakash Gupta","role":"Author of Product Growth Newsletter (ex-VP Product)","mult":23.5,"z":36.42,"likes":3775,"comments":136,"reposts":235,"median":228,"mad":95,"date":"2026-11-01","age":9,"type":"playbook","media":"image","topic":"Spotify cut their Claude Code token bill by 90%.","url":"https://www.linkedin.com/posts/aagupta_spotify-cut-their-claude-code-token-bill-activity-7522511755588067328-VNMq","insight":"Spotify cut their Claude Code token bill by 90%. Then they open-sourced how they did it. The insight underneath is almost boring: coding agents spend most of the bill on reading: A coding agent will read a 4,000 line file just to answer a q"},{"id":"harvest-1794269079595-r9hc","creator":"Shreyas Doshi","role":"Product Executive & Advisor (ex-Stripe, Twitter, Google)","mult":11.33,"z":8.52,"likes":916,"comments":86,"reposts":27,"median":116,"mad":95,"date":"2026-10-08","age":33,"type":"playbook","media":"text","topic":"Something that’s changed rapidly in the past year:","url":"https://www.linkedin.com/posts/shreyasdoshi_something-thats-changed-rapidly-in-the-past-activity-7514086443636490240--r47","insight":"Something that’s changed rapidly in the past year: Product Managers who’ve historically viewed their role as “my main job is to execute” are finding it way harder to get hired at top companies than those who’ve viewed their role as “my main"},{"id":"harvest-1794269079595-mtsw","creator":"Shreyas Doshi","role":"Product Executive & Advisor (ex-Stripe, Twitter, Google)","mult":17.45,"z":13.56,"likes":1735,"comments":90,"reposts":2,"median":116,"mad":95,"date":"2026-08-24","age":78,"type":"playbook","media":"image","topic":"\"Did you just move your kid in?\", asked the agent at United's baggage check-in desk, on my way ","url":"https://www.linkedin.com/posts/shreyasdoshi_did-you-just-move-your-kid-in-asked-the-activity-7497456065249304577-NCCK","insight":"\"Did you just move your kid in?\", asked the agent at United's baggage check-in desk, on my way back home to SFO from Nashville airport. I asked her how she knew that. \"Your bags are empty\", she replied. Santhoshi and I just dropped off our "},{"id":"harvest-1794269078391-garh","creator":"Hamel Husain","role":"Principal AI Engineer, Parlance Labs (AI Evals Course Co-Creator)","mult":119.65,"z":173.4,"likes":4902,"comments":430,"reposts":6,"median":52,"mad":24,"date":"2026-10-25","age":16,"type":"announcement","media":"text","topic":"I’m happy to share that I’m now working at OpenAI!  🎉 My focus will be applied Evals, helping ","url":"https://www.linkedin.com/posts/hamelhusain_im-happy-to-share-that-im-now-working-at-activity-7520143057250508800-YkvK","insight":"I’m happy to share that I’m now working at OpenAI! 🎉 My focus will be applied Evals, helping companies debug, measure, and improve AI products. I’ll also be continuing my mission of educating the world on Evals through blog posts, tutorial"},{"id":"harvest-1794269078391-g4l3","creator":"Hamel Husain","role":"Principal AI Engineer, Parlance Labs (AI Evals Course Co-Creator)","mult":6.02,"z":7.34,"likes":186,"comments":29,"reposts":8,"median":52,"mad":24,"date":"2026-10-20","age":21,"type":"playbook","media":"image","topic":"New blog post 🎉: 𝗛𝗼𝘄 𝗧𝗼 𝗨𝘀𝗲 𝗗𝗲𝗰𝗶𝘀𝗶𝗼𝗻 𝗠𝗼𝗱𝗲𝗹𝘀 𝗙𝗼𝗿 𝗘𝘃𝗮𝗹𝘀","url":"https://www.linkedin.com/posts/hamelhusain_new-blog-post-%F0%9D%97%9B%F0%9D%97%BC%F0%9D%98%84-%F0%9D%97%A7%F0%9D%97%BC-%F0%9D%97%A8%F0%9D%98%80%F0%9D%97%B2-%F0%9D%97%97%F0%9D%97%B2-activity-7518355470206590976-rll3","insight":"New blog post 🎉: 𝗛𝗼𝘄 𝗧𝗼 𝗨𝘀𝗲 𝗗𝗲𝗰𝗶𝘀𝗶𝗼𝗻 𝗠𝗼𝗱𝗲𝗹𝘀 𝗙𝗼𝗿 𝗘𝘃𝗮𝗹𝘀 In this post, we show you how to choose a decision model for your task, tune its threshold (don't assume the 0.5 default is good!), and interpret its score"},{"id":"harvest-1794269078391-c4hc","creator":"Hamel Husain","role":"Principal AI Engineer, Parlance Labs (AI Evals Course Co-Creator)","mult":15.21,"z":20.77,"likes":514,"comments":49,"reposts":26,"median":52,"mad":24,"date":"2026-11-05","age":5,"type":"playbook","media":"document","topic":"Over the past couple of years, I've written dozens of articles on evals, answered 60+ FAQs, and","url":"https://www.linkedin.com/posts/hamelhusain_evals-for-ai-engineers-table-of-contents-activity-7524184541930946560-Y1RK","insight":"Over the past couple of years, I've written dozens of articles on evals, answered 60+ FAQs, and created flashcards, memes, and countless videos on evals. Your feedback and comments made it all worthwhile. Until now, our live course has been"},{"id":"harvest-1794269077187-1n5x","creator":"Aman Khan","role":"AI Product Leader, Google Cloud AI Agents (ex-Arize AI)","mult":40.25,"z":47.9,"likes":3261,"comments":269,"reposts":104,"median":114,"mad":63,"date":"2026-03-19","age":236,"type":"announcement","media":"image","topic":"Proud to announce my new book \"𝐀𝐈 𝐏𝐫𝐨𝐝𝐮𝐜𝐭 𝐌𝐚𝐧𝐚𝐠𝐞𝐦𝐞𝐧𝐭\" published by O'Reilly!","url":"https://www.linkedin.com/posts/amanberkeley_proud-to-announce-my-new-book-%F0%9D%90%80%F0%9D%90%88-%F0%9D%90%8F%F0%9D%90%AB%F0%9D%90%A8%F0%9D%90%9D%F0%9D%90%AE%F0%9D%90%9C%F0%9D%90%AD-activity-7440351422044475394-qAYB","insight":"Proud to announce my new book \"𝐀𝐈 𝐏𝐫𝐨𝐝𝐮𝐜𝐭 𝐌𝐚𝐧𝐚𝐠𝐞𝐦𝐞𝐧𝐭\" published by O'Reilly! The book covers 5 foundational areas: I. AI Product Foundations - AI product sense & scaling laws for PMs II. Building AI Products - prototyping"},{"id":"harvest-1794269077187-l1lj","creator":"Aman Khan","role":"AI Product Leader, Google Cloud AI Agents (ex-Arize AI)","mult":4.45,"z":4.21,"likes":348,"comments":33,"reposts":12,"median":114,"mad":63,"date":"2026-02-03","age":280,"type":"playbook","media":"document","topic":"Leave it to 2 PMs to turn a Lenny's Newsletter post on AI Product Sense into a product - litera","url":"https://www.linkedin.com/posts/amanberkeley_how-to-build-ai-product-sense-activity-7424472881067175936-0qQR","insight":"Leave it to 2 PMs to turn a Lenny's Newsletter post on AI Product Sense into a product - literally 😅 - The reader starts with a prompt that guides them through a \"choose your own adventure\" style video game that explains how coding agents "},{"id":"harvest-1794269077187-o4sx","creator":"Aman Khan","role":"AI Product Leader, Google Cloud AI Agents (ex-Arize AI)","mult":5.25,"z":5.19,"likes":393,"comments":47,"reposts":13,"median":114,"mad":63,"date":"2026-02-08","age":275,"type":"playbook","media":"image","topic":"So... Tal Raviv and I are doing something a little crazy. We want to give our students a Mac Mi","url":"https://www.linkedin.com/posts/amanberkeley_so-tal-raviv-and-i-are-doing-something-activity-7426300751624404992-mdLS","insight":"So... Tal Raviv and I are doing something a little crazy. We want to give our students a Mac Mini to spin up their own OpenClaw system - and teach you about how OpenClaw works at the same time. Here's how we're doing this: 1. If you bring 2"},{"id":"harvest-1794269075982-lq50","creator":"Kevin Weil","role":"Chief Product Officer, OpenAI","mult":13.64,"z":12.01,"likes":8287,"comments":347,"reposts":512,"median":872,"mad":619,"date":"2025-07-17","age":481,"type":"announcement","media":"text","topic":"💥 Announcing ChatGPT agent: a powerful new agent that can use a computer, browse the web, writ","url":"https://www.linkedin.com/posts/kevinweil_announcing-chatgpt-agent-a-powerful-new-activity-7351662630152912898-y7_I","insight":"💥 Announcing ChatGPT agent: a powerful new agent that can use a computer, browse the web, write code, use a terminal, write reports, create images, edit spreadsheets, and even create slides for you. The slides often... need some work. But "},{"id":"harvest-1794269075982-h9kj","creator":"Kevin Weil","role":"Chief Product Officer, OpenAI","mult":5.03,"z":3.83,"likes":2934,"comments":393,"reposts":54,"median":872,"mad":619,"date":"2025-05-13","age":546,"type":"playbook","media":"document","topic":"Excited and honored to join Cisco’s board of directors today. It’s long been an important techn","url":"https://www.linkedin.com/posts/kevinweil_cisco-appoints-kevin-weil-to-its-board-of-activity-7328041688566849537-IkBY","insight":"Excited and honored to join Cisco’s board of directors today. It’s long been an important technology company for 🇺🇸 and the world, and their products—from datacenters and networking to observability and security—are only becoming more piv"},{"id":"harvest-1794269075982-wysa","creator":"Kevin Weil","role":"Chief Product Officer, OpenAI","mult":11.24,"z":9.73,"likes":8111,"comments":249,"reposts":188,"median":872,"mad":619,"date":"2025-03-31","age":589,"type":"playbook","media":"image","topic":"Never seen anything like this before, even at Twitter and Instagram.","url":"https://www.linkedin.com/posts/kevinweil_never-seen-anything-like-this-before-even-activity-7312538006685421568-PqpL","insight":"Never seen anything like this before, even at Twitter and Instagram."},{"id":"harvest-1794269074779-h1w8","creator":"Logan Kilpatrick","role":"Lead Product Manager, Google DeepMind (AI Studio & Gemini API)","mult":5.79,"z":7.52,"likes":967,"comments":51,"reposts":94,"median":275,"mad":118,"date":"2026-08-13","age":89,"type":"announcement","media":"image","topic":"Introducing Gemini 3.7 Flash : )","url":"https://www.linkedin.com/posts/logankilpatrick_introducing-gemini-37-flash-it-is-activity-7493714350927671296-kw_v","insight":"Introducing Gemini 3.7 Flash : ) - it is fast! - 50% lower price than 3.6 flash (through end of year) - strong intelligence increase in only ~3 weeks (thanks to some awesome algorithmic improvements) - available in the API, AI Studio, Antig"},{"id":"harvest-1794269074779-amjb","creator":"Logan Kilpatrick","role":"Lead Product Manager, Google DeepMind (AI Studio & Gemini API)","mult":3.65,"z":4.16,"likes":689,"comments":28,"reposts":46,"median":275,"mad":118,"date":"2026-05-19","age":175,"type":"playbook","media":"image","topic":"Welcome to Gemini 3.5 Flash, our most powerful model to date. It pushes the frontier of intelli","url":"https://www.linkedin.com/posts/logankilpatrick_welcome-to-gemini-35-flash-our-most-powerful-activity-7462565893697552387-9LWH","insight":"Welcome to Gemini 3.5 Flash, our most powerful model to date. It pushes the frontier of intelligence, speed, and cost putting 3.5 Flash in a class of its own. We spent the last 6 months making sure Flash is great for real world use cases. I"},{"id":"harvest-1794269074779-k22e","creator":"Logan Kilpatrick","role":"Lead Product Manager, Google DeepMind (AI Studio & Gemini API)","mult":3.76,"z":4.32,"likes":812,"comments":18,"reposts":33,"median":275,"mad":118,"date":"2026-04-29","age":195,"type":"playbook","media":"image","topic":"Google is the best company in the world https://lnkd.in/gAcnF_4N","url":"https://www.linkedin.com/posts/logankilpatrick_google-is-the-best-company-in-the-world-https-activity-7455354957823873026-uy-k","insight":"Google is the best company in the world https://lnkd.in/gAcnF_4N"},{"id":"harvest-1794269073575-etwe","creator":"Pawel Huryn","role":"Author, The Product Compass (AI PM frameworks & cheat sheets)","mult":6.19,"z":7.07,"likes":1422,"comments":48,"reposts":62,"median":303,"mad":150,"date":"2026-08-16","age":86,"type":"playbook","media":"image","topic":"In the last 35 months, 20,000+ PMs completed my skill assessments.","url":"https://www.linkedin.com/posts/pawel-huryn_in-the-last-35-months-20000-pms-completed-activity-7494788367788863488-YEDd","insight":"In the last 35 months, 20,000+ PMs completed my skill assessments. This allowed me to identify the critical knowledge areas for: - Product Owner \\ APM - Product Manager - Senior Product Manager - Product Marketing Manager - Growth Product M"},{"id":"harvest-1794269073575-j20x","creator":"Pawel Huryn","role":"Author, The Product Compass (AI PM frameworks & cheat sheets)","mult":6.59,"z":7.62,"likes":1416,"comments":42,"reposts":91,"median":303,"mad":150,"date":"2026-06-05","age":158,"type":"playbook","media":"image","topic":"Just shared PM Skills v2.0 with 9 plugins, 68 skills, 42 commands. Free, MIT.","url":"https://www.linkedin.com/posts/pawel-huryn_just-shared-pm-skills-v20-with-9-plugins-activity-7468728012700540928-7PAM","insight":"Just shared PM Skills v2.0 with 9 plugins, 68 skills, 42 commands. Free, MIT. You get the rigor of Teresa Torres, Marty Cagan, and Alberto Savoia built into your daily workflows. The open-source repo (12K GitHub stars) is now bigger, and it"}];
       // @vault-snapshot-end
 
-      const INITIAL_NEWSLETTER = `Subject: Issue #01: Shipping an AI Model vs. Building a Business People Pay For (+ My 6-Min Enterprise Deck Agent)
+      const INITIAL_NEWSLETTER = `Subject: Issue #01 · Shipping an AI model vs. building a business people pay for (+ the 6-minute Enterprise Deck Factory)
+Preheader: Three posts that beat their authors' own baselines by 5x–23x this week, the pattern underneath them, and a deck pipeline you can copy by Monday.
 
-I was 12 when I got my first unofficial PM job—coordinating an engineer and negotiating building materials for my parents' home. No qualifications. No job title. Definitely no salary.
+Hi, I'm Afrina. Welcome to the first issue of The Prototype-to-Production Dispatch.
 
-Today, building Gemini & enterprise agents at Google, that same rule drives The Prototype-to-Production Dispatch: turning frontier AI into products customers understand, adopt, and pay for.
+I was about 12 when I got my first unofficial product job. My parents wanted to build a home. I found the engineer, explained what they wanted, and negotiated the price of bricks and cement with people three times my age. No title. No salary. A lot of walking between the site and the shop.
 
-1. THIS WEEK'S THREE SIGNALS (THE POSTS THAT OUTPERFORMED EVERYTHING ELSE)
-• Spotify cut its AI coding-agent bill by 90% by stopping the frontier model from reading big files (credit: Aakash Gupta's breakdown, 23x his usual reach). Lesson: keep the expensive model for judgment, let cheap workers do the reading.
-• Hamel Husain put two years of eval teaching into one book (15x). Lesson: evals are your acceptance criteria for AI, and a PM can write the first ones without code.
-• Ethan Mollick called out that "a human checks everything" is now a queue, not a quality plan (5x). Lesson: put the human where a wrong answer costs the most, and sample the rest.
-The pattern: the posts that win are plain-English playbooks, not announcements. Same ceremonies, new work.
+Twenty-plus years later, building Gemini and AI agents at Google, the job is still the same shape: take something powerful that most people do not understand yet, and turn it into something they will use and pay for.
 
-2. REAL-TIME BUILD #1: ROUGH NOTES → ENTERPRISE GOOGLE SLIDES DECK IN 6 MINUTES
-Agencies, founders, and PMs burn 15+ hours formatting slides. My 4-stage Antigravity pipeline:
-• Gemini + NotebookLM → restructures raw transcripts & CSVs into SCQA executive headlines.
-• Figma Brand Tokens → enforces strict enterprise typography and grid hierarchy.
-• Imagen + SVG Renderer → builds clean architecture diagrams (zero AI stock fluff).
-• Google Slides API → outputs 100% native, editable slides + speaker notes.
+That is the gap this newsletter lives in. Every week the industry ships a new model, a new agent framework, a new benchmark. Very few of those become a product with a buyer, a price, and a renewal. Every Saturday I will show you one piece of that path, with real numbers, and one build you can copy.
 
-3. REAL-TIME BUILD #2: GITHUB RELEASE NOTES → CUSTOMER DEMO IN 10 MINUTES
-After years of running go-to-market enablement for enterprise products, here is how to eliminate the 3-week GTM lag: GitHub PR filter → Gemini CFO/User/Partner value framing → Playwright 4:5 GIF capture → Google Docs sales brief.
+Here is how Issue #01 is laid out:
+1. Three signals: the posts that beat their authors' own baselines this week, and the pattern underneath them
+2. The build: rough notes → enterprise Google Slides deck in 6 minutes, with the unit economics and the failure modes
+3. The stealable artifact: the exact 6-station spec you can paste into your own agent
+4. Skill-transfer corner: what to do on Monday if you are a PM, an engineer, or an agency owner
 
-4. SKILL-TRANSFER CORNER: THE 3-LAYER EXECUTABLE EVAL PRD
-You don't need to start over to lead AI Product. Transfer your existing edge-case instinct into: (a) 35 messy Golden Scenarios, (b) Binary Pass/Fail Assertions across MCP tools, and (c) Margin & p95 Latency Ceilings.
+Reading time: about 7 minutes.
+
+────────────────────────────────────────
+1. THREE SIGNALS (MEASURED, NOT VIBES)
+────────────────────────────────────────
+
+I do not pick these by feel. A scout pulls the last ~100 posts for 10 creators I respect and compares every post to that creator's own median. A post makes this list only when it beats the author's median by 3x or more and the gap is statistically unusual (z ≥ 2.5). Announcements ("I'm joining…", "my book is out…") are tracked but kept out of the playbook list, because you cannot copy them. Scan date: Nov 10.
+
+Signal 1 · Aakash Gupta: "Spotify cut their Claude Code token bill by 90%." (23.5x his median)
+3,775 reactions, 136 comments, 235 reposts against a weighted median of 228. The post is a breakdown of Spotify's own engineering write-up: coding agents spend most of the bill on reading, not reasoning. A frontier model will read a 4,000-line file to answer a question about one function. Spotify's fix was a rule, not a cheaper model: block full reads over ~350 lines, hand the reading to a small model, pass back only the answer.
+Why it matters for your product: your agent's cost of goods is a reading problem before it is a model problem. If you have not split last week's traces into "reading" vs "reasoning," you do not know your margin.
+
+Signal 2 · Hamel Husain: the table of contents for "Evals for AI Engineers", two years of eval teaching in one outline (15.2x his median)
+514 reactions, 49 comments, 26 reposts against a median of 52. The signal is not the giveaway. It is that the market now treats evals as the acceptance criteria for AI products, and people will share the person who makes them concrete.
+Why it matters: a PM can write the first evals without code. "Did it cite the source? yes/no" is an eval. Thirty real asks and a pass/fail column is a test suite.
+
+Signal 3 · Ethan Mollick: "There is too much concern about the need for human verification of AI output." (5.2x his median)
+1,802 reactions, 281 comments, 230 reposts against a median of 726. His point: on recent models, the data says they catch factual errors better than human experts in everyday work. The comments split hard, and that is where the reach came from.
+My read, as someone who has to ship this: "a human checks everything" is a queue, not a quality plan. Put the human where a wrong answer costs the most. Sample the rest. Measure the miss rate.
+
+The pattern across all three: plain-English playbooks with one number in the first line beat announcements, every week. Same ceremonies, new work.
+
+────────────────────────────────────────
+2. THE BUILD: ROUGH NOTES → ENTERPRISE DECK IN 6 MINUTES
+────────────────────────────────────────
+
+Live demo (runs in your browser, nothing is uploaded): https://afrinam19.github.io/signal50/apps/deck-factory/
+
+The problem, in money
+The planning number I use is 15 hours per client deck after the thinking is done. Not the strategy. The formatting, the restructuring, the "can you make slide 7 look like slide 3." At a $150 blended rate that is $2,250 of margin per deck gone before anyone has said anything smart. A ten-client agency does this forty times a quarter.
+
+Inside enterprise product teams the number is smaller per deck and larger in total: every QBR, every roadmap review, every exec pre-read.
+
+The system
+Antigravity is the orchestrator. Gemini does the reading and the writing. Six stations, one orchestrator. Here is who does what.
+
+Station 1 · Orchestrator. Receives the brief, decides which workers run, keeps the brand and the facts locked. It never writes a slide.
+
+Station 2 · Intake. One worker per source: meeting transcript, CSV, rough notes, a Figma frame, a Jira export, a Slack thread. Each worker gets its own context window. This is the Spotify lesson applied: the expensive model never reads the raw 4,000-line transcript. A small model reads it and returns a one-page extract with quotes and numbers.
+
+Station 3 · Fact check. Every number in the extract is traced back to a source line or flagged. Numbers that cannot be traced are marked in red in the speaker notes, not silently dropped. This one station is the reason an exec will trust the deck twice.
+
+Station 4 · Narrative. SCQA (situation, complication, question, answer) turned into headlines. One "so what" per slide. If a slide does not change a decision, it moves to the appendix.
+
+Station 5 · Design system. Brand tokens (type scale, grid, colors) applied as rules, not suggestions. Diagrams rendered as clean SVG, not generated art.
+
+Station 6 · Ship + QA. Native, editable Google Slides with speaker notes. Then the only non-negotiable step: a human reads the fact-check flags before it leaves the building.
+
+The unit economics (my assumptions, swap in yours)
+• Tokens per deck: roughly 60k input / 15k output across all stations when a small model does the reading. At today's list prices that is under $0.50 per deck. If the frontier model reads the raw sources instead, the input side grows 5–8x. That is the whole Spotify post in one line item.
+• Time per deck: about 6 minutes of machine time, 10–20 minutes of human review. Down from 15 hours.
+• Margin math for the agency above: 40 decks a quarter × ~14 hours saved × $150 = $84,000 of recovered capacity per quarter, before faster turnaround on new business.
+• Build cost: one week of a PM plus an engineer to wire the sources, if you start from the spec below.
+
+The five failure modes every deck pipeline hits
+1. The confident wrong number. Beautiful slides with a revenue figure that exists nowhere in the sources. Fix: Station 3, and a rule that every number carries a source reference in the notes.
+2. Transcript bloat. Dumping a 90-minute call into the main context makes everything worse and 6x more expensive. Fix: intake workers return extracts, never raw text.
+3. Design drift. Without tokens, slide 9 invents a new font. Fix: a fixed style sheet the model cannot edit.
+4. The "all slides matter" deck. First versions run to 28 slides. The "so what" rule cuts it to 11 plus an appendix.
+5. Human review as the bottleneck. If the reviewer has to read everything, you are back to 15 hours. Fix: the reviewer reads the flags, not the deck, and samples one unflagged slide in five.
+
+────────────────────────────────────────
+3. THE STEALABLE ARTIFACT: THE 6-STATION SPEC
+────────────────────────────────────────
+
+Paste this into whatever you orchestrate with. It is the same spec that drives the visual on my Thursday post.
+
+HUB: Deck Orchestrator | routes every brief to the right worker, keeps brand + facts locked | Antigravity, Gemini, MCP, Drive, Slides
+Intake | one worker per source, each with its own context | Drive, Gmail, Meet, NotebookLM, Sheets, Slack, Figma, Jira
+Fact Check | every number traced to a source, or flagged | BigQuery, Sheets, Gemini
+Narrative | SCQA headlines, exec summary, a so-what per slide | Gemini, NotebookLM, Docs
+Design System | brand tokens, grid and typography enforced | Figma, Imagen, SVG
+Ship + QA | native editable Slides, speaker notes, human review | Slides, Docs, Playwright, GitHub
+
+Three rules that travel with it:
+• Expensive model for judgment, cheap models for reading.
+• No number without a source. Flag, do not drop.
+• The human reads the flags, not the deck.
+
+────────────────────────────────────────
+4. SKILL-TRANSFER CORNER (WHAT TO DO MONDAY)
+────────────────────────────────────────
+
+If you are a PM: write down 30 real asks your product gets, and add a pass/fail column. That is your first eval suite. You already know the messy edge cases; that instinct is the asset.
+If you are an engineer: split last week's agent traces into reading vs reasoning. Report the ratio to your PM. Budgets follow ratios.
+If you run an agency or a services team: time one deliverable end to end this week. Mark the hours that happen after the thinking is done. That is the pipeline you build first.
+
+You do not need to start over to lead in AI product. You need to move the skills you already have one layer up: from doing the work to specifying the work and checking it.
+
+────────────────────────────────────────
+
+Next Saturday, Issue #02: GitHub release notes → a live customer demo in 10 minutes, with the GTM math.
+
+💬 Reply and tell me which station you would build first. I read every reply.
+♻️ If a colleague is still formatting decks by hand, forward this to them.
+👋 New here? I'm Afrina. 15+ years building product, now scaling Gemini and AI agents at Google ($300M→$1B+). Every Saturday: one build, real numbers, plain English.
 
 — Afrina M
-Senior PM, Google (Gemini & Agents) | 4x Google Cloud Next Speaker`;
+Senior PM, Google (Gemini & AI Agents) · 4x Google Cloud Next speaker
+
+Credits this week: Aakash Gupta, Hamel Husain, Ethan Mollick. Links to the original posts are in the studio's Outlier Vault.`;
 
       const UPGRADED_ABOUT = `I was about 12 when I got my first unofficial product management job.
 
@@ -2078,8 +2173,17 @@ Credit to ${creator} for the original post that sparked this.
         // Saturday Newsletter + revenue-mix simulator (her own newsletter business, not Google data)
         const nlEditor = document.getElementById('newsletter-editor');
         nlEditor.value = INITIAL_NEWSLETTER;
+        const nlCount = () => {
+          const words = (nlEditor.value.match(/[A-Za-z0-9$%][\w'’$%.,-]*/g) || []).length;
+          const badge = document.getElementById('newsletter-wordcount');
+          if (!badge) return;
+          badge.textContent = `${words.toLocaleString('en-US')} words · ~${Math.max(1, Math.round(words / 225))} min read`;
+          badge.style.color = words >= 1400 ? '#1F5E46' : '#B45309';
+          badge.title = words >= 1400 ? 'Meets the 1,400+ word Saturday spec' : 'Below the 1,400-word Saturday spec';
+        };
+        nlCount();
         renderSafety('newsletter-safety', nlEditor.value);
-        nlEditor.addEventListener('input', () => renderSafety('newsletter-safety', nlEditor.value));
+        nlEditor.addEventListener('input', () => { renderSafety('newsletter-safety', nlEditor.value); nlCount(); });
         ['sim-pro-subs', 'sim-spon-rate', 'sim-advisory'].forEach(id => {
           document.getElementById(id).addEventListener('input', updateArrSim);
         });
