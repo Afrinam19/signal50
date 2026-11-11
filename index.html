@@ -362,6 +362,7 @@
               <option value="spotify">Mon Outlier · Cut Your AI Agent Bill 90% in 5 Steps (Credit: Aakash Gupta)</option>
               <option value="evals">Tue Outlier · Evals for PMs in 6 Steps, No Code (Credit: Hamel Husain)</option>
               <option value="humancheck">Wed Outlier · Where the Human Check Goes — 5 Steps (Credit: Ethan Mollick)</option>
+              <option value="agents">Tue Growth · Personal Agents: Same 5 Decisions, Five Answers (Matrix cheat sheet)</option>
             </select>
           </div>
 
@@ -370,11 +371,12 @@
               <label for="gif-layout" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Visual Density</label>
               <select id="gif-layout" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm">
                 <option value="factory" selected>Factory · dense B2B system map (hub + 5 stations, tool chips, workers, belts)</option>
+                <option value="matrix">Matrix · comparison cheat sheet (products × decisions, brand tints, PM takeaways)</option>
                 <option value="classic">Classic · 4–6 step cards</option>
               </select>
             </div>
             <div>
-              <label for="gif-speed" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Animation Speed <span class="font-normal">(Classic only — Factory loops 32 frames at 10fps)</span></label>
+              <label for="gif-speed" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Animation Speed <span class="font-normal">(Classic &amp; Matrix — Factory loops 32 frames at 10fps)</span></label>
               <select id="gif-speed" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm">
                 <option value="95">Snappy (0.95s / step)</option>
                 <option value="125" selected>Executive Pace (1.25s / step)</option>
@@ -405,8 +407,21 @@
           </div>
 
           <div>
-            <label for="gif-steps" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">System Spec — <code>HUB: Title | sub | Tools</code> then 5 stations <code>Title | sub | Tool1, Tool2 | Worker1, Worker2</code> <span class="font-normal">(Classic reads <code>Label | detail</code>)</span></label>
+            <label for="gif-steps" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">System Spec — <code>HUB: Title | sub | Tools</code> then 5 stations <code>Title | sub | Tool1, Tool2 | Worker1, Worker2</code> <span class="font-normal">(Classic reads <code>Label | detail</code> · Matrix reads <code>COLS: Name (Org) #hex | …</code> then rows <code>01 · Decision | cell | cell | … | 👉 PM takeaway</code>, plus optional <code>CORNER:</code> <code>CHIP:</code> <code>NOTE:</code> <code>ALSO:</code> <code>SOURCES:</code>)</span></label>
             <textarea id="gif-steps" rows="8" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2.5 text-xs font-mono leading-relaxed"></textarea>
+          </div>
+
+          <!-- Matrix-only tools: per-column product images (never uploaded anywhere) + research prompt for the next matrix -->
+          <div id="matrix-tools" class="hidden space-y-2.5 p-3 rounded-lg border border-dashed border-[var(--border)] bg-[var(--secondary)]">
+            <div class="text-xs font-semibold text-[var(--muted-foreground)]">Product images for the column tiles <span class="font-normal">— official brand cards or your own screenshots, one per column. Files stay in this tab; nothing is uploaded. Without an image a tile shows the brand-colored initial.</span></div>
+            <div id="matrix-image-slots" class="space-y-1.5"></div>
+            <div class="flex flex-wrap gap-2 pt-1">
+              <button type="button" id="btn-matrix-clear-images" class="px-3 py-1.5 rounded-lg border border-[var(--border)] text-xs font-semibold">Clear images</button>
+              <button type="button" id="btn-matrix-prompt" class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Copy research prompt → new matrix</button>
+              <button type="button" id="btn-matrix-prompt-show" class="px-3 py-1.5 rounded-lg border border-[var(--border)] text-xs font-semibold">Show prompt</button>
+            </div>
+            <div class="text-[11px] text-[var(--muted-foreground)]">Paste the prompt into Antigravity (or Gemini) with your new topic. It returns a spec in exactly this format with a source URL per cell — paste it into the System Spec box above.</div>
+            <pre id="matrix-prompt-output" class="hidden text-[11px] whitespace-pre-wrap leading-relaxed p-2.5 rounded-lg bg-[var(--background)] border border-[var(--border)] max-h-72 overflow-auto"></pre>
           </div>
 
           <div class="flex flex-wrap gap-2.5 pt-1">
@@ -727,6 +742,7 @@
   <canvas id="png-export-canvas" width="1080" height="1350" class="hidden"></canvas>
 
   <script src="assets/factory.js"></script>
+  <script src="assets/matrix.js"></script>
   <script>
     (function () {
       // =======================================================================
@@ -1336,6 +1352,18 @@ Read Issue #01 via the first comment — and reply with the #1 production AI bot
             '04 · Show the work | Sources, tool calls, confidence in every trace',
             '05 · Write the escalation rule | Low confidence, new customer, money moves'
           ]
+        },
+        // Classic/Factory fallback for the Personal Agents matrix (the full matrix lives in assets/matrix.js PRESETS.agents).
+        agents: {
+          kicker: 'AI PM CHEAT SHEET · PERSONAL AGENTS',
+          headline: 'Same 5 Decisions. Five Different Answers.',
+          steps: [
+            '01 · Asks before acting? | Muse stops before anything hard to undo; Duet waits for your OK',
+            '02 · Where you talk to it | Own app, WhatsApp, inside ChatGPT, or just text it',
+            '03 · Where the work runs | Cloud VMs for most; OpenClaw / Hermes run on your laptop',
+            '04 · Distribution | Bundled into WhatsApp, ChatGPT and Claude plans; Instinct invite-only',
+            '05 · Pricing | Free tiers up to $500 a month; know cost per user per task'
+          ]
         }
       };
 
@@ -1728,10 +1756,13 @@ Building AI products people actually adopt, or navigating your next move? Let's 
 
       const GIF_MAX_STEPS = 6;
       const FACTORY = window.Signal50Factory || null;
+      const MATRIX = window.Signal50Matrix || null;
 
       function gifLayout() {
         const sel = document.getElementById('gif-layout');
-        return (FACTORY && sel && sel.value === 'factory') ? 'factory' : 'classic';
+        if (FACTORY && sel && sel.value === 'factory') return 'factory';
+        if (MATRIX && sel && sel.value === 'matrix') return 'matrix';
+        return 'classic';
       }
 
       // Builds the dense Factory spec from the panel fields (kicker → brand pill, headline → {accent} title, etc.).
@@ -1749,6 +1780,18 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         };
       }
 
+      // Builds the Matrix spec (products × decisions) from the same panel fields + the COLS/rows text.
+      function matrixSpec() {
+        const v = id => (document.getElementById(id) || {}).value || '';
+        return {
+          brand: (v('gif-kicker') || 'AI PM CHEAT SHEET').toUpperCase().slice(0, 60),
+          title: v('gif-headline') || 'Same {5 decisions}.||Five different answers.',
+          subtitle: v('gif-subtitle') || '',
+          cta: v('gif-cta') || 'Save this 🩵 · Full breakdown in the post',
+          ...MATRIX.parseSpec(v('gif-steps'))
+        };
+      }
+
       function parseGifSteps() {
         return document.getElementById('gif-steps').value
           .split('\n').map(s => s.trim()).filter(Boolean)
@@ -1759,9 +1802,11 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           });
       }
 
-      // Classic: one frame per step + a final "all steps" frame. Factory: fixed 32-frame conveyor loop.
+      // Classic: one frame per step + a final "all steps" frame. Matrix: one frame per decision row + header-only frame 0.
+      // Factory: fixed 32-frame conveyor loop.
       function gifFrameCount() {
         if (gifLayout() === 'factory') return FACTORY.FRAMES;
+        if (gifLayout() === 'matrix') return Math.max(2, MATRIX.parseSpec(document.getElementById('gif-steps').value).rows.length + 1);
         return Math.max(2, parseGifSteps().length + 1);
       }
 
@@ -1775,6 +1820,10 @@ Building AI products people actually adopt, or navigating your next move? Let's 
       function drawGifFrame(ctx, w, h, stepIndex) {
         if (gifLayout() === 'factory') {
           FACTORY.draw(ctx, w, h, stepIndex, FACTORY.FRAMES, factorySpec());
+          return;
+        }
+        if (gifLayout() === 'matrix') {
+          MATRIX.draw(ctx, w, h, stepIndex, gifFrameCount(), matrixSpec());
           return;
         }
         drawClassicFrame(ctx, w, h, stepIndex);
@@ -1872,23 +1921,109 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         const pr = GIF_PRESETS[key];
         if (!pr) return;
         const fp = FACTORY && FACTORY.PRESETS[key];
-        if (gifLayout() === 'factory' && fp) {
-          document.getElementById('gif-kicker').value = fp.brand;
-          document.getElementById('gif-headline').value = fp.title;
-          document.getElementById('gif-subtitle').value = fp.subtitle;
-          document.getElementById('gif-cta').value = fp.cta;
-          document.getElementById('gif-steps').value = fp.spec;
+        const mp = MATRIX && MATRIX.PRESETS[key];
+        const layout = gifLayout();
+        const set = (id, val) => { document.getElementById(id).value = val; };
+        if (layout === 'factory' && fp) {
+          set('gif-kicker', fp.brand);
+          set('gif-headline', fp.title);
+          set('gif-subtitle', fp.subtitle);
+          set('gif-cta', fp.cta);
+          set('gif-steps', fp.spec);
+        } else if (layout === 'matrix' && mp) {
+          set('gif-kicker', mp.brand);
+          set('gif-headline', mp.title);
+          set('gif-subtitle', mp.subtitle);
+          set('gif-cta', mp.cta);
+          set('gif-steps', mp.spec);
+        } else if (layout === 'matrix') {
+          // Step-list preset shown as a one-column matrix so the format is visible and editable.
+          set('gif-kicker', pr.kicker);
+          set('gif-headline', pr.headline);
+          set('gif-subtitle', (fp && fp.subtitle) || '');
+          set('gif-cta', (fp && fp.cta) || 'Save this 🩵 · Full breakdown in the post');
+          set('gif-steps', [
+            `COLS: ${pr.headline.replace(/[{}]/g, '')} #0866FF`,
+            'CORNER: The playbook',
+            ...pr.steps
+          ].join('\n'));
         } else {
-          document.getElementById('gif-kicker').value = pr.kicker;
-          document.getElementById('gif-headline').value = pr.headline;
-          document.getElementById('gif-steps').value = pr.steps.join('\n');
-          if (fp) {
-            document.getElementById('gif-subtitle').value = fp.subtitle;
-            document.getElementById('gif-cta').value = fp.cta;
+          set('gif-kicker', pr.kicker);
+          set('gif-headline', pr.headline);
+          set('gif-steps', pr.steps.join('\n'));
+          const extras = fp || mp;
+          if (extras) {
+            set('gif-subtitle', extras.subtitle);
+            set('gif-cta', extras.cta);
           }
         }
         gifAnimFrame = 0;
         renderPreviewTick();
+        syncMatrixTools();
+      }
+
+      // ---- Matrix-only tools: per-column image slots + research prompt --------------------------
+      let matrixSlotSignature = '';
+      function syncMatrixTools(force) {
+        const wrap = document.getElementById('matrix-tools');
+        if (!wrap) return;
+        const on = gifLayout() === 'matrix';
+        wrap.classList.toggle('hidden', !on);
+        if (on) renderMatrixImageSlots(force);
+      }
+
+      function renderMatrixImageSlots(force) {
+        const host = document.getElementById('matrix-image-slots');
+        if (!host || !MATRIX) return;
+        const cols = MATRIX.parseSpec(document.getElementById('gif-steps').value).cols;
+        const sig = cols.map((c, i) => `${i}:${c.name}:${c.color}:${MATRIX.images[i] ? (MATRIX.images[i].ok ? 'ok' : MATRIX.images[i].error ? 'err' : 'pending') : 'none'}`).join('|');
+        if (!force && sig === matrixSlotSignature) return;
+        matrixSlotSignature = sig;
+        host.innerHTML = '';
+        cols.forEach((c, i) => {
+          const im = MATRIX.images[i];
+          const row = document.createElement('div');
+          row.className = 'flex items-center gap-2 text-xs min-w-0';
+          const dot = document.createElement('span');
+          dot.className = 'inline-block w-2.5 h-2.5 rounded-full shrink-0';
+          dot.style.background = c.color;
+          const name = document.createElement('span');
+          name.className = 'font-semibold w-[120px] truncate shrink-0';
+          name.textContent = c.name; name.title = c.name;
+          const thumb = document.createElement('img');
+          thumb.className = 'h-7 w-12 object-cover rounded border border-[var(--border)] shrink-0' + (im && im.ok ? '' : ' hidden');
+          thumb.alt = ''; thumb.style.cssText = 'width:48px;height:28px;object-fit:cover';
+          if (im && im.ok) thumb.src = im.src;
+          const pick = document.createElement('label');
+          pick.className = 'px-2 py-1 rounded-md border border-[var(--border)] bg-[var(--background)] cursor-pointer font-semibold shrink-0';
+          pick.textContent = im ? 'Replace…' : 'Choose image…';
+          const input = document.createElement('input');
+          input.type = 'file'; input.accept = 'image/*'; input.className = 'hidden';
+          input.onchange = e => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = ev => { MATRIX.setImage(i, String(ev.target.result)); renderMatrixImageSlots(true); };
+            reader.readAsDataURL(file);
+          };
+          pick.appendChild(input);
+          const status = document.createElement('span');
+          status.className = 'text-[var(--muted-foreground)] truncate';
+          status.textContent = im ? (im.ok ? '✓ in tile' : im.error ? 'URL blocked by the host (CORS) — choose a file instead' : 'loading…') : 'brand-colored initial';
+          row.append(dot, name, thumb, pick, status);
+          if (im) {
+            const clear = document.createElement('button');
+            clear.type = 'button'; clear.className = 'ml-auto px-1.5 text-[var(--muted-foreground)] shrink-0'; clear.title = 'Remove image'; clear.textContent = '✕';
+            clear.onclick = () => { MATRIX.setImage(i, null); renderMatrixImageSlots(true); };
+            row.appendChild(clear);
+          }
+          host.appendChild(row);
+        });
+      }
+
+      function matrixPromptText() {
+        const v = id => (document.getElementById(id) || {}).value || '';
+        return MATRIX.promptFor({ title: v('gif-headline'), subtitle: v('gif-subtitle'), spec: v('gif-steps') });
       }
 
       function gifOutboundText() {
@@ -2079,12 +2214,14 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             }
           }
 
-          if (gifLayout() === 'factory' && isUnmodifiedDefault && presetKey && FACTORY.PRESETS[presetKey]) {
+          const layout = gifLayout();
+          const layoutPresets = layout === 'factory' ? FACTORY.PRESETS : layout === 'matrix' ? (MATRIX && MATRIX.PRESETS) : null;
+          if (layoutPresets && isUnmodifiedDefault && presetKey && layoutPresets[presetKey]) {
             document.getElementById('gif-preset').value = presetKey;
             loadGifPreset(presetKey);
           } else if (extracted.length >= 3) {
             document.getElementById('gif-kicker').value = p.track.slice(0, 48).toUpperCase();
-            if (gifLayout() === 'factory') {
+            if (layout === 'factory') {
               const cleanTitle = (p.title || p.day).replace(/[^\w\s&/-]/g, '').trim().slice(0, 34);
               document.getElementById('gif-headline').value = `{${cleanTitle}} System`;
               document.getElementById('gif-subtitle').value = `${extracted.length}-step execution workflow from ${p.day}'s post`;
@@ -2101,14 +2238,18 @@ Building AI products people actually adopt, or navigating your next move? Let's 
               ].join('\n');
             } else {
               document.getElementById('gif-headline').value = p.title.slice(0, 56);
-              document.getElementById('gif-steps').value = extracted.map((s, idx) => `0${idx + 1} · ${s.title} | ${s.detail}`).join('\n');
+              const rows = extracted.map((s, idx) => `0${idx + 1} · ${s.title} | ${s.detail}`);
+              // Matrix reads COLS first — a post's step list becomes a one-column matrix the user can widen.
+              if (layout === 'matrix') rows.unshift(`COLS: ${p.title.slice(0, 40)} #0866FF`, 'CORNER: The playbook');
+              document.getElementById('gif-steps').value = rows.join('\n');
             }
-          } else if (presetKey && FACTORY.PRESETS[presetKey]) {
+          } else if (presetKey && GIF_PRESETS[presetKey]) {
             document.getElementById('gif-preset').value = presetKey;
             loadGifPreset(presetKey);
           }
           switchTab('gif');
           renderPreviewTick();
+          syncMatrixTools();
           showToast(`Loaded ${p.day} into the Animated GIF Lab!`);
         };
 
@@ -2135,6 +2276,19 @@ Building AI products people actually adopt, or navigating your next move? Let's 
               `Business ROI | ${roi} | Sheets, Looker, Slides | Model, Chart, Memo`,
               'Ship + QA | human review before anything leaves the building | Slides, Docs, Playwright, GitHub | Reviewer, Export, Release'
             ].join('\n');
+          } else if (gifLayout() === 'matrix') {
+            document.getElementById('gif-kicker').value = 'BUILT WITH ANTIGRAVITY · LIVE BUILD';
+            document.getElementById('gif-headline').value = 'Before the build.||{After the build.}';
+            document.getElementById('gif-subtitle').value = pain.slice(0, 110);
+            document.getElementById('gif-cta').value = 'Comment "BUILD" to get the full setup';
+            document.getElementById('gif-steps').value = [
+              'COLS: Today (manual) #E5484D | With the Antigravity build #0E9F6E',
+              'CORNER: What changed',
+              `01 · The bottleneck | ${pain} | ${arch} | 👉 Fix the handoff first. The model is the easy part.`,
+              `02 · Why it hurt | ${root} | One orchestrator holds the context; handoffs are automated | 👉 Most "AI problems" are context problems.`,
+              `03 · What it is worth | Hours lost every week | ${roi} | 👉 Report the outcome in hours and dollars, not tokens.`,
+              '04 · Who signs off | Nobody, until the end | Human QA gate before anything ships | 👉 Put the human check where a mistake costs the most.'
+            ].join('\n');
           } else {
             document.getElementById('gif-kicker').value = 'GOOGLE AI + ANTIGRAVITY · LIVE BUILD';
             document.getElementById('gif-headline').value = pain.slice(0, 46);
@@ -2145,6 +2299,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
               `04 · Business ROI | ${roi}`
             ].join('\n');
           }
+          syncMatrixTools();
           gifAnimFrame = 0;
           renderPreviewTick();
 
@@ -2162,26 +2317,52 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         // GIF Lab Controls & Safe Export
         loadGifPreset('deck');
         startGifLoop();
-        document.getElementById('gif-preset').onchange = e => loadGifPreset(e.target.value);
+        document.getElementById('gif-preset').onchange = e => {
+          if (MATRIX && gifLayout() === 'matrix') MATRIX.clearImages(); // images are keyed by column; a new matrix means new columns
+          loadGifPreset(e.target.value);
+        };
         document.getElementById('gif-speed').onchange = () => startGifLoop();
         document.getElementById('gif-layout').onchange = () => {
-          loadGifPreset(document.getElementById('gif-preset').value);
+          const presetSel = document.getElementById('gif-preset');
+          // Switching into Matrix from a step-list preset: jump to the matrix preset so the first thing seen is a real matrix.
+          if (gifLayout() === 'matrix' && MATRIX && !MATRIX.PRESETS[presetSel.value] && MATRIX.PRESETS.agents) presetSel.value = 'agents';
+          loadGifPreset(presetSel.value);
           startGifLoop();
-          document.getElementById('gif-status').textContent = gifLayout() === 'factory'
+          const layout = gifLayout();
+          document.getElementById('gif-status').textContent = layout === 'factory'
             ? 'Factory mode: 32-frame conveyor loop (3.2 s). Only the parcels move — text stays crisp for screenshots and saves.'
-            : 'Classic mode: one frame per step + a final "all steps" frame.';
+            : layout === 'matrix'
+              ? 'Matrix mode: one frame per decision row + a final "all rows" frame. Add product images below, then Generate PNG for the 1080×1350 cheat sheet.'
+              : 'Classic mode: one frame per step + a final "all steps" frame.';
         };
         ['gif-kicker', 'gif-headline', 'gif-subtitle', 'gif-cta', 'gif-steps'].forEach(id => {
           document.getElementById(id).addEventListener('input', renderPreviewTick);
         });
+        document.getElementById('gif-steps').addEventListener('input', () => syncMatrixTools());
+
+        if (MATRIX) {
+          MATRIX.onImage = () => { renderPreviewTick(); if (gifLayout() === 'matrix') renderMatrixImageSlots(); };
+          document.getElementById('btn-matrix-clear-images').onclick = () => { MATRIX.clearImages(); renderMatrixImageSlots(true); showToast('Cleared matrix images — tiles show brand initials again.'); };
+          document.getElementById('btn-matrix-prompt').onclick = () => safeCopy(matrixPromptText(), '✓ Copied the matrix research prompt — paste it into Antigravity with your new topic.');
+          document.getElementById('btn-matrix-prompt-show').onclick = e => {
+            const pre = document.getElementById('matrix-prompt-output');
+            const show = pre.classList.contains('hidden');
+            pre.textContent = matrixPromptText();
+            pre.classList.toggle('hidden', !show);
+            e.target.textContent = show ? 'Hide prompt' : 'Show prompt';
+          };
+        }
+        syncMatrixTools();
 
         document.getElementById('btn-export-gif').onclick = () => {
           const statusEl = document.getElementById('gif-status');
           if (!guardConfirm(gifOutboundText(), 'GIF visual')) { showToast('GIF export cancelled — rewrite the flagged phrases first.'); return; }
           const total = gifFrameCount();
-          statusEl.textContent = `Encoding ${total}-frame binary GIF89a animation${total > 12 ? ' (dense Factory loop — 10–20 s on a phone)' : ''}...`;
+          const matrixGif = gifLayout() === 'matrix';
+          statusEl.textContent = `Encoding ${total}-frame binary GIF89a animation${total > 12 ? ' (dense Factory loop — 10–20 s on a phone)' : matrixGif ? ' at 1080×1350 (a few seconds)' : ''}...`;
           setTimeout(() => {
-            const w = 720, h = 900;
+            // Matrix frames are dense tables: encode at full 1080×1350 (few frames) so the cells stay legible.
+            const w = matrixGif ? 1080 : 720, h = matrixGif ? 1350 : 900;
             const off = document.createElement('canvas');
             off.width = w; off.height = h;
             const octx = off.getContext('2d', { willReadFrequently: true });
