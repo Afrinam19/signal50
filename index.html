@@ -45,10 +45,11 @@
         <h1 class="text-base md:text-xl font-bold mt-1">Afrina M · AI Product Voice &amp; Growth Studio</h1>
       </div>
       <div class="flex flex-wrap items-center gap-2 text-xs">
+        <button type="button" id="btn-toggle-guide" class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-bold">? How to Use</button>
         <a href="apps/deck-factory/" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold hover:bg-[var(--secondary)]" title="Thursday's live build">Thu · Deck Factory ↗</a>
         <a href="apps/release-to-demo/" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold hover:bg-[var(--secondary)]" title="Friday's live build">Fri · Release-to-Demo ↗</a>
         <span class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--secondary-foreground)] font-semibold">4.5K → 50K (26w)</span>
-        <span id="header-voice-badge" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold">Voice DNA: 100%</span>
+        <span id="header-voice-badge" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold">Outlier Voice v2</span>
       </div>
     </div>
 
@@ -69,6 +70,67 @@
       <span id="toast-text">Action completed</span>
       <button type="button" id="toast-close" class="text-xs underline ml-4">Dismiss</button>
     </div>
+
+    <!-- In-App Quick-Start Guide ("How to Use Signal50") -->
+    <section id="guide-panel" class="bg-[var(--card)] border-2 border-[var(--primary)] rounded-xl p-4 md:p-5 space-y-4">
+      <div class="flex flex-wrap items-start justify-between gap-2">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)]">Quick-Start Guide</span>
+          <h2 class="text-sm md:text-base font-bold mt-1.5">How to Use Signal50 in 15 Minutes a Day</h2>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Every edit auto-saves locally on your device. Re-open this guide anytime via <strong>? How to Use</strong> in the top bar.</p>
+        </div>
+        <button type="button" id="btn-close-guide" class="px-3 py-1 rounded-lg border border-[var(--border)] text-xs font-semibold hover:bg-[var(--secondary)]">Hide Guide ×</button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-3 text-xs">
+        <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-1.5 flex flex-col justify-between">
+          <div>
+            <div class="font-bold text-[var(--primary)]">1 · Pick Signal (Mon–Wed)</div>
+            <p class="text-[var(--muted-foreground)] mt-1">GitHub Actions scans 10 top creators every 12h. In <strong>Tab 3</strong>, pick a <code>≥3x</code> outlier card, choose an Outlier Format, and load it into Studio with full creator credit.</p>
+          </div>
+          <button type="button" data-guide-jump="outliers" class="text-left font-bold underline pt-1">Open Outlier Vault →</button>
+        </div>
+
+        <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-1.5 flex flex-col justify-between">
+          <div>
+            <div class="font-bold text-[var(--primary)]">2 · Draft &amp; Rewrite with AI</div>
+            <p class="text-[var(--muted-foreground)] mt-1">In <strong>Tab 1</strong>, use the <strong>✨ Draft &amp; Rewrite with Gemini</strong> bar inside the editor (connect a free AI Studio key once, OR pop out <code>gemini.google.com</code> side-by-side with your prompt pre-copied).</p>
+          </div>
+          <button type="button" data-guide-jump="ai" class="text-left font-bold underline pt-1">Focus AI Co-Writer →</button>
+        </div>
+
+        <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-1.5 flex flex-col justify-between">
+          <div>
+            <div class="font-bold text-[var(--primary)]">3 · Build 4:5 GIF / Live App</div>
+            <p class="text-[var(--muted-foreground)] mt-1">Click <strong>Animate as GIF →</strong> on any post to export a <code>1080×1350</code> conveyor <code>.GIF</code> or <code>.PNG</code>. On Thu–Fri, pair your post with your live <strong>Deck Factory</strong> or <strong>Release-to-Demo</strong> app.</p>
+          </div>
+          <button type="button" data-guide-jump="gif" class="text-left font-bold underline pt-1">Open GIF Lab →</button>
+        </div>
+
+        <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-1.5 flex flex-col justify-between">
+          <div>
+            <div class="font-bold text-[var(--primary)]">4 · Pass QA &amp; Publish</div>
+            <p class="text-[var(--muted-foreground)] mt-1">Verify <strong>100% Ready</strong> + green <strong>✓ Data-safety</strong> (blocks revenue, MAU, quota %, and internal Google links). Tap <strong>Copy Post</strong>, attach your GIF on LinkedIn, then post <strong>Copy 1st Comment</strong>.</p>
+          </div>
+          <button type="button" data-guide-jump="calendar" class="text-left font-bold underline pt-1">Go to Studio QA →</button>
+        </div>
+
+        <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-1.5 flex flex-col justify-between">
+          <div>
+            <div class="font-bold text-[var(--primary)]">5 · Sat Dispatch &amp; Retro</div>
+            <p class="text-[var(--muted-foreground)] mt-1">Ship your deep-dive in <strong>Tab 4 · Saturday Newsletter</strong>. On Sunday, log post impressions &amp; saves in <strong>Tab 5 · Retro</strong> to see which Outlier Format won the week.</p>
+          </div>
+          <button type="button" data-guide-jump="retro" class="text-left font-bold underline pt-1">Open Sunday Retro →</button>
+        </div>
+      </div>
+
+      <div class="p-3 rounded-lg border border-[var(--border)] bg-[var(--background)] text-xs flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <strong>Outlier Voice v2 (Zero Cookie-Cutter Templates):</strong> Rotates 4 proven outlier structures — <em>System Teardown (<code>1. → ↳</code>)</em>, <em>Zero-Friction Runbook</em>, <em>Sharp Product Thesis</em>, and <em>Live Build Walkthrough</em> — with audience-native save cues and zero Agile/emoji boilerplate.
+        </div>
+        <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-[var(--secondary)]">Install on Phone: Share → Add to Home Screen</span>
+      </div>
+    </section>
 
     <!-- Collapsed Status & Optional VM Bridge Bar (Zero API Key Prompts) -->
     <section class="bg-[var(--card)] border border-[var(--border)] rounded-xl px-4 py-2.5 space-y-2.5">
@@ -133,16 +195,70 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
         <!-- Left Editor Column -->
-        <div class="lg:col-span-7 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-4">
+        <div class="lg:col-span-7 min-w-0 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-4">
           <div class="flex flex-wrap items-start justify-between gap-2">
-            <div>
+            <div class="min-w-0">
               <span id="post-track-badge" class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded bg-[var(--secondary)] text-[var(--secondary-foreground)]">Outlier Growth</span>
-              <h2 id="post-title" class="text-base md:text-lg font-bold mt-1.5">Loading Week 1 Queue...</h2>
+              <h2 id="post-title" class="text-base md:text-lg font-bold mt-1.5 break-words">Loading Week 1 Queue...</h2>
             </div>
             <div class="flex flex-wrap gap-2">
               <button type="button" id="btn-send-to-gif" class="px-3 py-1.5 rounded-lg border border-[var(--border)] text-xs font-semibold">Animate as GIF →</button>
               <button type="button" id="btn-copy-post" class="px-3.5 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Copy Post</button>
             </div>
+          </div>
+
+          <!-- Embedded AI Draft & Outlier Rewriter + gemini.google.com Companion -->
+          <div id="ai-draft-box" class="min-w-0 max-w-full rounded-xl border border-[var(--primary)] bg-[var(--secondary)] p-3.5 space-y-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2 min-w-0">
+              <div class="flex flex-wrap items-center gap-2 min-w-0 max-w-full">
+                <span class="text-xs font-bold px-2 py-0.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)]">✨ Draft &amp; Rewrite with Gemini</span>
+                <select id="ai-archetype" aria-label="Outlier Post Format" class="max-w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-2.5 py-1 text-xs font-semibold">
+                  <option value="teardown">Format: System Teardown (1. → ↳)</option>
+                  <option value="runbook">Format: Zero-Friction Runbook (1..6)</option>
+                  <option value="thesis">Format: Sharp Product Thesis (Prose + Rules)</option>
+                  <option value="build">Format: Live Build Walkthrough</option>
+                </select>
+              </div>
+              <div class="flex flex-wrap items-center gap-1.5 text-xs">
+                <button type="button" id="btn-ai-key-toggle" class="px-2.5 py-1 rounded-lg border border-[var(--border)] bg-[var(--card)] font-semibold">🔑 Connect Gemini Key</button>
+                <button type="button" id="btn-open-gemini-web" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--primary)] text-[var(--primary)] font-bold" title="Copies Outlier Prompt + Draft and opens gemini.google.com in a side-by-side window">Open gemini.google.com ↗</button>
+              </div>
+            </div>
+
+            <div id="ai-key-bar" class="hidden rounded-lg border border-[var(--border)] bg-[var(--card)] p-2.5 space-y-1.5 text-xs">
+              <div class="flex flex-wrap items-center gap-2">
+                <input id="ai-gemini-key" type="password" autocomplete="off" placeholder="Paste free Google AI Studio key (saved locally on this device only)..." class="flex-1 min-w-0 rounded border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-xs font-mono" />
+                <button type="button" id="btn-save-gemini-key" class="px-3 py-1.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)] font-bold">Save Key</button>
+                <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" class="underline font-semibold">Get free key ↗</a>
+              </div>
+              <p class="text-[11px] text-[var(--muted-foreground)]">
+                Why two options? Google blocks <code>&lt;iframe&gt;</code> embeds on <code>gemini.google.com</code> for account security. Save a free AI Studio key here to rewrite <strong>directly inside this box</strong> (shared with Deck Factory &amp; Release-to-Demo), or click <strong>Open gemini.google.com ↗</strong> to pop out Gemini chat side-by-side with your prompt pre-copied.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-1.5 text-xs">
+              <button type="button" data-ai-preset="outlier" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">✨ Rewrite Like Outlier</button>
+              <button type="button" data-ai-preset="hooks" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">🪝 3 Stronger Hooks (≤210c)</button>
+              <button type="button" data-ai-preset="tighten" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">✂️ Tighten &amp; Cut Clichés</button>
+              <button type="button" data-ai-preset="exec" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">🎯 Sharpen PM / Exec Angle</button>
+              <button type="button" id="btn-toggle-paste-gemini" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold">📋 Paste Gemini Reply</button>
+              <button type="button" id="btn-undo-ai" class="hidden px-2.5 py-1 rounded-lg border border-[var(--primary)] text-[var(--primary)] bg-[var(--card)] font-bold">↩ Undo AI Edit</button>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+              <input id="ai-custom-prompt" type="text" placeholder="Ask Gemini to draft or rewrite (e.g. 'Rewrite for VPs of Eng, sharper opening, under 160 words')..." class="flex-1 min-w-0 rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-1.5 text-xs" />
+              <button type="button" id="btn-run-ai" class="px-3.5 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Rewrite Draft ✨</button>
+            </div>
+
+            <div id="gemini-paste-drawer" class="hidden rounded-lg border border-[var(--border)] bg-[var(--card)] p-2.5 space-y-2 text-xs">
+              <label for="gemini-paste-input" class="block font-semibold">Paste your rewrite from <code>gemini.google.com</code> (auto-splits Hook ≤210c + Body &amp; checks Data-Safety):</label>
+              <textarea id="gemini-paste-input" rows="4" placeholder="Paste Gemini's response here..." class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs"></textarea>
+              <div class="flex justify-end gap-2">
+                <button type="button" id="btn-apply-gemini-paste" class="px-3 py-1.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)] font-bold">Apply to Hook &amp; Body →</button>
+              </div>
+            </div>
+
+            <div id="ai-status" class="text-[11px] text-[var(--muted-foreground)] break-words">Pick a 1-click rewrite preset, type a custom instruction, or pop out <code>gemini.google.com</code> side-by-side.</div>
           </div>
 
           <div>
@@ -156,7 +272,7 @@
           </div>
 
           <div>
-            <label for="body-editor" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Post Body (Calibrated to Your Verbatim Voice · Public Facts Only)</label>
+            <label for="body-editor" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Post Body (Outlier Voice v2 · Audience-Native · Public Facts Only)</label>
             <textarea id="body-editor" rows="11" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] p-3 text-sm leading-relaxed"></textarea>
             <div id="post-safety" class="text-xs font-semibold text-[#1F5E46] mt-2">✓ Data-safety: checking…</div>
           </div>
@@ -177,8 +293,8 @@
         </div>
 
         <!-- Right Mobile Feed Simulator & QA Gate -->
-        <div class="lg:col-span-5 space-y-4">
-          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5">
+        <div class="lg:col-span-5 min-w-0 space-y-4">
+          <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 overflow-hidden">
             <div class="flex items-center gap-3 mb-3">
               <div class="w-10 h-10 rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] flex items-center justify-center font-bold text-sm shrink-0">AM</div>
               <div class="min-w-0">
@@ -187,16 +303,16 @@
               </div>
             </div>
 
-            <div id="sim-hook" class="text-sm whitespace-pre-wrap leading-relaxed pb-2.5 border-b border-dashed border-[var(--primary)]"></div>
+            <div id="sim-hook" class="text-sm whitespace-pre-wrap leading-relaxed pb-2.5 border-b border-dashed border-[var(--primary)] break-words" style="overflow-wrap:anywhere"></div>
             <div class="flex justify-between items-center text-xs py-1.5 font-mono text-[var(--muted-foreground)]">
               <span>▲ Mobile "...see more" cutoff</span>
               <span id="sim-char-count">0 / 210 chars</span>
             </div>
-            <div id="sim-body" class="text-xs md:text-sm whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto pt-1"></div>
+            <div id="sim-body" class="text-xs md:text-sm whitespace-pre-wrap leading-relaxed max-h-64 overflow-y-auto pt-1 break-words" style="overflow-wrap:anywhere"></div>
 
             <div class="mt-4 pt-3 border-t border-[var(--border)]">
               <div class="text-xs font-semibold text-[var(--muted-foreground)] mb-1">First Comment (Creator Credit + Saturday Newsletter Funnel)</div>
-              <div id="sim-comment" class="text-xs p-2.5 rounded-lg bg-[var(--secondary)] text-[var(--secondary-foreground)]"></div>
+              <div id="sim-comment" class="text-xs p-2.5 rounded-lg bg-[var(--secondary)] text-[var(--secondary-foreground)] break-words" style="overflow-wrap:anywhere"></div>
             </div>
           </div>
 
@@ -326,13 +442,13 @@
         <div class="lg:col-span-6 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3.5">
           <div>
             <span class="text-xs font-bold uppercase px-2 py-0.5 rounded bg-[var(--secondary)]">Subagent #1 + #2 Live Pipeline</span>
-            <h2 class="text-base md:text-lg font-bold mt-1">Verify Rarity &amp; Convert Any Outlier Into Your Voice</h2>
-            <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Checks <code>Multiplier ≥ 3.0x</code> &amp; <code>MAD Z-Score ≥ 2.5</code>, credits the creator, and writes a fresh Mon–Wed post in your verbatim voice.</p>
+            <h2 class="text-base md:text-lg font-bold mt-1">Verify Rarity &amp; Rebuild Any Outlier in Outlier Voice v2</h2>
+            <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Checks <code>Multiplier ≥ 3.0x</code> &amp; <code>MAD Z-Score ≥ 2.5</code>, credits the creator, and structures the post around how top LinkedIn outliers actually read (zero Agile/emoji boilerplate).</p>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
             <div>
-              <label class="block font-semibold mb-1" for="new-out-creator">Original Creator (for Credit)</label>
+              <label class="block font-semibold mb-1" for="new-out-creator">Original Creator (Credit)</label>
               <input id="new-out-creator" type="text" value="Logan Kilpatrick" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" />
             </div>
             <div>
@@ -341,6 +457,15 @@
                 <option value="0">Monday Slot</option>
                 <option value="1">Tuesday Slot</option>
                 <option value="2">Wednesday Slot</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold mb-1" for="new-out-archetype">Outlier Format</label>
+              <select id="new-out-archetype" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm">
+                <option value="auto">Auto-Match Signal</option>
+                <option value="teardown">System Teardown (1. → ↳)</option>
+                <option value="runbook">Builder Runbook (1..5)</option>
+                <option value="thesis">Sharp Product Thesis</option>
               </select>
             </div>
           </div>
@@ -379,7 +504,7 @@
           <div id="rarity-result" class="p-3 rounded-lg bg-[var(--secondary)] text-xs space-y-1"></div>
 
           <button type="button" id="btn-alchemize-outlier" class="w-full py-2.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">
-            Convert Outlier Into My Verbatim Voice &amp; Load in Studio →
+            Rebuild in Outlier Voice &amp; Load in Studio →
           </button>
         </div>
 
@@ -632,7 +757,7 @@
       // before anything is copied, exported or rendered into a visual.
       // ---------------------------------------------------------------------
       // @sensitive-guard-start — regenerated by: node scripts/export_vault_snapshot.js
-      const SENSITIVE_RULES = [{"id":"money","label":"Dollar figure tied to a business (revenue, deal size, platform value)","source":"\\$\\s?\\d[\\d.,]*\\s?(?:k|m|mm|b|bn|million|billion)\\b\\+?","flags":"gi"},{"id":"scale","label":"Revenue-scale claim (e.g. \"to $1B\", \"$300M→$1B\")","source":"\\b(?:scal(?:e|ed|ing)|grew|grow|took|take)\\b[^.\\n]{0,40}\\$\\s?\\d","flags":"gi"},{"id":"usage","label":"Internal usage metric (MAU / DAU / WAU / active users)","source":"\\b\\d[\\d.,]*\\s?(?:k|m)?\\+?\\s?(?:MAU|DAU|WAU|monthly active|daily active|weekly active)\\b|\\b(?:MAU|DAU|WAU)\\b","flags":"gi"},{"id":"target","label":"Quota / target attainment","source":"(?:>|≥|over|above)?\\s?\\d{2,3}%\\s?(?:of\\s+)?(?:annual\\s+|quarterly\\s+)?(?:target|quota|plan|goal)s?\\b","flags":"gi"},{"id":"growth","label":"Internal growth rate (YoY / QoQ / MoM)","source":"[+-]?\\d{1,3}%\\s?(?:YoY|QoQ|MoM|year[- ]over[- ]year|quarter[- ]over[- ]quarter)\\b","flags":"gi"},{"id":"csat","label":"Internal rating / CSAT score","source":"\\b\\d(?:\\.\\d)?\\s?\\/\\s?5\\b(?!\\s?(?:steps?|days?|posts?))|\\bCSAT\\b","flags":"gi"},{"id":"headcount","label":"Internal stakeholder / customer counts","source":"\\b\\d{1,3}(?:,\\d{3})+\\+?\\s+(?:global\\s+)?(?:stakeholders|employees|sellers|engineers|customers|users|seats|accounts)\\b|\\b\\d+\\+?\\s+Fortune\\s+\\d{2,3}s?\\b","flags":"gi"},{"id":"customer_story","label":"Looks like a private customer interaction (quotes from a named-role customer)","source":"\\b(?:our|the|a)\\s+(?:customer|client)(?:'s)?\\s+(?:CISO|CIO|CTO|VP|SVP|EVP|architect|director)\\b|\\bFortune\\s+\\d{2,3}\\s+(?:architect|customer|client|CISO|CIO|CTO|VP)\\b","flags":"gi"},{"id":"internal_links","label":"Internal Google links or IDs","source":"\\bgo\\/[\\w-]+|\\bgoogle3\\b|\\bb\\/\\d{6,}\\b|\\bcl\\/\\d{6,}\\b|\\bcritique\\b|\\bbuganizer\\b|\\bmoma\\b|\\bcorp\\.google\\.com\\b","flags":"gi"},{"id":"confidential","label":"Confidentiality / pre-announcement markers","source":"\\b(?:confidential|internal[- ]only|need[- ]to[- ]know|do not distribute|not yet announced|unannounced|pre-?announce|under NDA|embargo(?:ed)?)\\b","flags":"gi"},{"id":"pipeline","label":"Pipeline / bookings / ARR tied to a number","source":"\\b(?:pipeline|bookings|ARR|ACV|TCV|NRR|GRR)\\b[^.\\n]{0,20}\\$?\\d","flags":"gi"}];
+      const SENSITIVE_RULES = [{"id":"money","label":"Dollar figure tied to a business (revenue, deal size, platform value)","source":"\\$\\s?\\d[\\d.,]*\\s?(?:k|m|mm|b|bn|million|billion)\\b\\+?","flags":"gi"},{"id":"scale","label":"Revenue-scale claim (grew/scaled tied to dollar figure)","source":"\\b(?:scal(?:e|ed|ing)|grew|grow|took|take)\\b[^.\\n]{0,40}\\$\\s?\\d","flags":"gi"},{"id":"usage","label":"Internal usage metric (MAU / DAU / WAU / active users)","source":"\\b\\d[\\d.,]*\\s?(?:k|m)?\\+?\\s?(?:MAU|DAU|WAU|monthly active|daily active|weekly active)\\b|\\b(?:MAU|DAU|WAU)\\b","flags":"gi"},{"id":"target","label":"Quota / target attainment","source":"(?:>|≥|over|above)?\\s?\\d{2,3}%\\s?(?:of\\s+)?(?:annual\\s+|quarterly\\s+)?(?:target|quota|plan|goal)s?\\b","flags":"gi"},{"id":"growth","label":"Internal growth rate (YoY / QoQ / MoM)","source":"[+-]?\\d{1,3}%\\s?(?:YoY|QoQ|MoM|year[- ]over[- ]year|quarter[- ]over[- ]quarter)\\b","flags":"gi"},{"id":"csat","label":"Internal rating / CSAT score","source":"\\b\\d(?:\\.\\d)?\\s?\\/\\s?5\\b(?!\\s?(?:steps?|days?|posts?))|\\bCSAT\\b","flags":"gi"},{"id":"headcount","label":"Internal stakeholder / customer counts","source":"\\b\\d{1,3}(?:,\\d{3})+\\+?\\s+(?:global\\s+)?(?:stakeholders|employees|sellers|engineers|customers|users|seats|accounts)\\b|\\b\\d+\\+?\\s+Fortune\\s+\\d{2,3}s?\\b","flags":"gi"},{"id":"customer_story","label":"Looks like a private customer interaction (quotes from a named-role customer)","source":"\\b(?:our|the|a)\\s+(?:customer|client)(?:'s)?\\s+(?:CISO|CIO|CTO|VP|SVP|EVP|architect|director)\\b|\\bFortune\\s+\\d{2,3}\\s+(?:architect|customer|client|CISO|CIO|CTO|VP)\\b","flags":"gi"},{"id":"internal_links","label":"Internal Google links or IDs","source":"\\bgo\\/[\\w-]+|\\bgoogle3\\b|\\bb\\/\\d{6,}\\b|\\bcl\\/\\d{6,}\\b|\\bcritique\\b|\\bbuganizer\\b|\\bmoma\\b|\\bcorp\\.google\\.com\\b","flags":"gi"},{"id":"confidential","label":"Confidentiality / pre-announcement markers","source":"\\b(?:confidential|internal[- ]only|need[- ]to[- ]know|do not distribute|not yet announced|unannounced|pre-?announce|under NDA|embargo(?:ed)?)\\b","flags":"gi"},{"id":"pipeline","label":"Pipeline / bookings / ARR tied to a number","source":"\\b(?:pipeline|bookings|ARR|ACV|TCV|NRR|GRR)\\b[^.\\n]{0,20}\\$?\\d","flags":"gi"}];
       // @sensitive-guard-end
 
       function scanSensitive(text) {
@@ -909,266 +1034,241 @@
       }
 
       // =======================================================================
-      // 2. VERBATIM-VOICE CALIBRATED DATA STORE
+      // 2. OUTLIER-VOICE v2 DATA STORE (4 PROVEN OUTLIER ARCHETYPES · ZERO CLICHÉS)
       // =======================================================================
       const DEFAULT_POSTS = [
         {
           day: 'Monday',
-          track: 'Outlier Growth · Credit: Aakash Gupta (23.5x · HarvestAPI verified · 9 days old)',
+          archetype: 'teardown',
+          track: 'Outlier Teardown · Credit: Aakash Gupta (23.5x · HarvestAPI verified)',
           isGrowth: true,
           credit: 'Aakash Gupta',
           creditUrl: 'https://www.linkedin.com/posts/aagupta_spotify-cut-their-claude-code-token-bill-activity-7522511755588067328-VNMq',
-          title: 'Spotify cut its AI agent bill by 90% — 5 steps to cut yours (credit: Aakash Gupta)',
+          title: 'Spotify cut its AI agent bill by 90% — the 5-part teardown (credit: Aakash Gupta)',
           selectedHook: 0,
           hooks: [
-            'Spotify cut its AI coding-agent bill by 90%.\nThe fix was not a cheaper model. It was stopping the expensive model from reading.',
-            'Most of your AI agent bill is not thinking. It is reading.\nSpotify proved it, then open-sourced the fix. Here is the 5-step version for your team:',
-            'A bigger token bill is not more intelligence.\nSpotify cut 90% of theirs with one rule. Here is how to apply it before your next sprint:'
+            'Spotify cut its AI coding-agent bill by 90%.\nThe fix wasn\'t a cheaper model. It was stopping the frontier model from reading.',
+            'Most of your AI agent bill isn\'t reasoning. It\'s reading.\nSpotify proved it, then open-sourced the fix. Here is the 5-part teardown:',
+            'A bigger token bill is not more intelligence.\nSpotify cut 90% of theirs with one architectural rule. Save this before your next agent run:'
           ],
-          body: `Here are 5 steps to cut your AI agent bill before your next sprint review 🚀
+          body: `The insight underneath is almost boring: coding agents spend most of the bill reading context.
 
-Save this for your next sprint planning 🩵
+Left alone, an agent reads a 4,000-line file just to answer a question about one function — using a frontier model that is wildly overqualified for file lookup.
 
-Step 1. Find out where the tokens go
-Most agent spend is reading, not reasoning. An agent will read a 4,000-line file to answer a question about one function.
- 👉 Pull last week's traces. Split the bill into "reading" vs "reasoning."
+Here is the 5-part teardown. Save it before your next agent run:
 
-Step 2. Stop the frontier model from reading
- 👉 Block full reads of big files (Spotify used 350 lines as the cut-off). Send the read to a small, cheap model and pass back only the answer.
+1. Split your traces into "reading" vs. "reasoning"
+↳ Pull last week's agent logs. Measure how many input tokens went to raw file and doc reads versus actual planning and code edits.
 
-Step 3. Cache what repeats
- 👉 System prompts, policies, product docs: cache them once instead of paying for them on every turn.
+2. Block the frontier model from reading large files
+↳ Set a hard line-count cutoff (Spotify used 350 lines). Route big reads to a fast, cheap reader model and pass back only the extracted answer.
 
-Step 4. Set a token budget per task
- 👉 Give every workflow a cost ceiling and an alert. A bigger bill is not more intelligence.
+3. Cache static context once
+↳ System prompts, repo conventions, and tool schemas shouldn't be billed at full input price on every turn.
 
-Step 5. Enforce it with code, not a suggestion
- 👉 A note in the prompt gets ignored. A hook that blocks the read does not. Spotify open-sourced theirs.
+4. Put a token ceiling on every task
+↳ Give each workflow a hard budget and an alert. Runaway retry loops look like "deep thinking" on the monthly invoice until you cap them.
+
+5. Enforce routing in code, not in the system prompt
+↳ Models ignore polite prompt instructions under pressure. A pre-tool hook that blocks raw reads works every time — Spotify open-sourced theirs.
 
 Keep the frontier model for judgment.
 Let cheap workers do the reading.
 
-Credit to Aakash Gupta, whose breakdown of Spotify's engineering post sparked this.
+H/T to Aakash Gupta — his breakdown of Spotify's engineering post sparked this teardown.
 
-💬 What does your agent bill look like this month? Drop a number below.
-♻️ Repost this for an engineer or PM running agents in production.
-👋 New here? I'm Afrina. 15+ years of building product, now working on Gemini & AI agents at Google. Follow for more on how AI products are built.`,
-          comment: `Credit to Aakash Gupta for the original breakdown: https://www.linkedin.com/posts/aagupta_spotify-cut-their-claude-code-token-bill-activity-7522511755588067328-VNMq — it links to Spotify's engineering blog and the open-source plugin. Every Saturday I break down one AI product build step by step in my newsletter (link in bio).`
+Where are your production agents burning the most tokens right now: reading context, tool retries, or long history?`,
+          comment: `Credit to Aakash Gupta for the original breakdown: https://www.linkedin.com/posts/aagupta_spotify-cut-their-claude-code-token-bill-activity-7522511755588067328-VNMq — it links to Spotify's engineering blog and the open-source hook. Every Saturday I break down one AI product build in plain English (newsletter link on my profile).`
         },
         {
           day: 'Tuesday',
-          track: 'Outlier Growth · Credit: Hamel Husain (15.2x · HarvestAPI verified · 5 days old)',
+          archetype: 'runbook',
+          track: 'Builder Runbook · Credit: Hamel Husain (15.2x · HarvestAPI verified)',
           isGrowth: true,
           credit: 'Hamel Husain',
           creditUrl: 'https://www.linkedin.com/posts/hamelhusain_evals-for-ai-engineers-table-of-contents-activity-7524184541930946560-Y1RK',
-          title: 'Evals for PMs in 6 steps, no code (credit: Hamel Husain)',
+          title: 'Write your first AI eval suite in one afternoon — no code (credit: Hamel Husain)',
           selectedHook: 0,
           hooks: [
-            'Hamel Husain just put 2 years of eval teaching into one book.\nMost PMs still don\'t know where to start. Start here.',
-            '"Evals" is the most-used word in AI product and the least-understood.\nHere are 6 steps to write your first ones this week, no code needed:',
-            'Your AI feature does not have acceptance criteria.\nIt has vibes. Here is how to fix that in 6 steps:'
+            'Most AI features don\'t have acceptance criteria. They have vibes.\nFive people try five prompts in staging and call it QA.',
+            '"Evals" is the most-used word in AI product and the least-understood.\nHere is the 6-step runbook any PM can build in an afternoon (no code):',
+            'Hamel Husain distilled 2 years of production eval lessons into one guide.\nIf your team still ships prompt changes by gut feel, start here:'
           ],
-          body: `Here are 6 steps to write evals for your AI feature, no code needed 🚀
+          body: `"Evals" sounds like an ML research project. In practice, your first production eval suite is a 30-row table a PM and engineer can build in two hours.
 
-Save this for your next sprint planning 🩵
+Bookmark this runbook before you ship your next prompt or model update:
 
-Step 1. Collect 30 real examples
- 👉 Not made-up prompts. Real user asks, including the messy ones.
+1. Pull 30 real user traces
+↳ Skip synthetic test prompts. Export 30 real production inputs — especially the messy, ambiguous ones.
 
-Step 2. Read the outputs yourself
- 👉 All 30. Write down what went wrong in plain words ("ignored the date filter"), not "hallucination."
+2. Read every output yourself
+↳ Don't outsource error analysis to an LLM judge on day one. Write what broke in plain English ("ignored the date filter"), never "hallucinated."
 
-Step 3. Group the failures
- 👉 You will usually find 3 to 5 repeat problems. Those are your first evals.
+3. Cluster the failures into 3–5 buckets
+↳ Almost every broken AI workflow collapses into a handful of repeat failure modes. Those buckets become your eval columns.
 
-Step 4. Turn each one into a pass/fail check
- 👉 "Did it cite the source?" Yes or no. No 1-to-5 vibe scores.
+4. Score each bucket pass/fail — never 1-to-5
+↳ Nobody agrees on the difference between a 3 and a 4. "Did it cite the source line: yes or no?" leaves nowhere to hide.
 
-Step 5. Add one human check
- 👉 Pick the step where a wrong answer costs the most. A person reviews that one.
+5. Put a human check only on the highest-cost step
+↳ Automate the format and grounding checks; save human review for irreversible actions.
 
-Step 6. Run it every time something changes
- 👉 New prompt, new model, new tool: rerun the checks. Take the misses to the retro.
+6. Re-run the 30 rows on every change
+↳ New model, shorter prompt, added MCP tool — run the table before rollout so regressions fail in CI, not in front of customers.
 
-Evals are not an engineering task.
-They are your acceptance criteria for AI.
+Evals aren't an ML side project.
+They are your product spec in executable form.
 
-Credit to Hamel Husain and Shreya Shankar. Their free eval FAQs are the best starting point I know.
+Credit to Hamel Husain and Shreya Shankar — their applied evals work shaped how I teach this to PMs.
 
-💬 Which step is your team skipping today?
-♻️ Repost this for a PM shipping their first AI feature.
-👋 New here? I'm Afrina. 15+ years of building product, now working on Gemini & AI agents at Google. Follow for more on how AI products are built.`,
-          comment: `Credit to Hamel Husain (with Shreya Shankar) — the post that sparked this: https://www.linkedin.com/posts/hamelhusain_evals-for-ai-engineers-table-of-contents-activity-7524184541930946560-Y1RK. Their free FAQs: https://hamel.dev/blog/posts/evals-faq/`
+Which of these 6 steps does your team skip most often when a deadline gets tight?`,
+          comment: `Credit to Hamel Husain (with Shreya Shankar) — original post: https://www.linkedin.com/posts/hamelhusain_evals-for-ai-engineers-table-of-contents-activity-7524184541930946560-Y1RK · Free evals FAQ: https://hamel.dev/blog/posts/evals-faq/`
         },
         {
           day: 'Wednesday',
-          track: 'Outlier Growth · Credit: Ethan Mollick (5.2x · HarvestAPI verified · 3 days old)',
+          archetype: 'thesis',
+          track: 'Product Thesis · Credit: Ethan Mollick (5.2x · HarvestAPI verified)',
           isGrowth: true,
           credit: 'Ethan Mollick',
           creditUrl: 'https://www.linkedin.com/posts/emollick_i-think-there-is-too-much-concern-expressed-activity-7524907880840380416-ZSMP',
-          title: 'Stop checking every AI output — where the human check actually goes (credit: Ethan Mollick)',
+          title: 'Reviewing 100% of AI outputs is not safety — it is a queue (credit: Ethan Mollick)',
           selectedHook: 0,
           hooks: [
-            '"A human must check every AI output."\nThat rule made sense in 2023. Today it is where AI projects go to stall.',
-            'Ethan Mollick said the quiet part out loud this week:\nchecking every AI output by hand is no longer a quality strategy. It is a bottleneck.',
-            'Your team reviews 100% of AI outputs.\nThat is not safety. That is a queue. Here is where the human check should go instead:'
+            '"A human must check every AI output."\nThat rule made sense in 2023. Today it is where enterprise AI workflows go to stall.',
+            'Ethan Mollick said the quiet part out loud this week:\nreviewing every AI output by hand isn\'t a quality strategy anymore. It\'s a bottleneck.',
+            'Your team reviews 100% of AI outputs by hand.\nThat is not safety — it is reviewer fatigue. Here is where the human check actually belongs:'
           ],
-          body: `Ethan Mollick pointed out this week that data on newer models suggests they now beat human experts at finding facts and checking claims.
+          body: `Ethan Mollick highlighted an uncomfortable shift this week: on straightforward fact-finding and claim verification, frontier models coupled with automated checks now catch more errors than tired human reviewers scanning a queue.
 
-So "a person checks everything" is not a quality plan anymore. It is a queue.
+When a team insists "a human checks every output," two things happen in production:
+Latency balloons back to manual speed, and reviewers start rubber-stamping by Friday afternoon.
 
-Here is how to decide where the human check goes 🚀
+Instead of reviewing everything, design the human check around four product rules:
 
-Save this for your next review 🩵
+• Separate verifiable facts from judgment — let deterministic evals verify citations, numbers, and schema; reserve people for trade-offs, tone, and exceptions.
+• Price the blast radius — a rough internal summary costs 10 seconds; an external customer action costs trust. Gate the irreversible step, not the draft.
+• Audit a sample, not the firehose — inspect 20 random production traces every week. Widen autonomy when pass rates hold; tighten it when they dip.
+• Force the agent to show its receipt — surface the exact source line and tool call next to the draft so human sign-off takes 15 seconds, not 10 minutes.
 
-Step 1. Separate errors from judgment
- 👉 Facts, formats, math: let automated checks (evals) catch them. Opinions, trade-offs, tone: that is where people add value.
+Humans shouldn't be the AI's spell-checker.
+Humans should own the decisions that carry consequence.
 
-Step 2. Rank steps by the cost of being wrong
- 👉 A wrong summary costs a re-read. A wrong refund costs money. Put human review where the cost is highest.
+H/T to Ethan Mollick for the post that sparked this note.
 
-Step 3. Sample, don't audit everything
- 👉 Review 20 random outputs a week. If the pass rate holds, widen the gate. If it drops, tighten it.
-
-Step 4. Make the agent show its work
- 👉 Sources, tool calls, confidence. A reviewer can check a trace in 30 seconds instead of 10 minutes.
-
-Step 5. Write the escalation rule
- 👉 Define when the agent must stop and ask: low confidence, new customer, money moves.
-
-Humans should not be the AI's spell-checker.
-Humans should own the decisions that matter.
-
-Credit to Ethan Mollick for the post that sparked this.
-
-💬 Where does the human check sit in your workflow today?
-♻️ Repost this for a leader still reviewing every AI output by hand.
-👋 New here? I'm Afrina. 15+ years of building product, now working on Gemini & AI agents at Google. Follow for more on how AI products are built.`,
-          comment: `Credit to Ethan Mollick — original post: https://www.linkedin.com/posts/emollick_i-think-there-is-too-much-concern-expressed-activity-7524907880840380416-ZSMP. Tomorrow (Thursday): a live "Built with Antigravity" build.`
+Where does human review sit in your AI workflow today — on every draft, or only at the high-stakes boundary?`,
+          comment: `Credit to Ethan Mollick — original post: https://www.linkedin.com/posts/emollick_i-think-there-is-too-much-concern-expressed-activity-7524907880840380416-ZSMP · Tomorrow (Thursday): a live "Built with Antigravity" app you can test in your browser.`
         },
         {
           day: 'Thursday',
-          track: 'Built with Antigravity #01 · Simple Deck → Enterprise Deck',
+          archetype: 'build',
+          track: 'Built with Antigravity #01 · Rough Notes → Enterprise Deck Factory (live link)',
           isGrowth: false,
           credit: '',
-          title: 'Built with Antigravity: Rough Notes → Enterprise-Ready Deck in 6 Minutes (live link)',
+          title: 'Built with Antigravity: Rough Notes → Fact-Checked Executive Deck in 6 Minutes',
           selectedHook: 0,
           hooks: [
-            'Agencies, founders, and PMs spend 15+ hours formatting executive decks.\nBuilt with Antigravity: a live app that does it in 6 minutes and traces every number to its source line 🚀',
-            'One-click AI slide tools invent numbers. Execs notice.\nBuilt with Antigravity: I shipped a deck factory where nothing leaves the building until a human reads the flags (link below):',
-            'Shipping a feature and winning the room are not the same thing.\nBuilt with Antigravity: my 6-station pipeline from rough notes to a board-ready deck, live and free to try:'
+            'One-click AI slide tools invent numbers. Executives notice in 30 seconds.\nBuilt with Antigravity: I shipped a deck factory that traces every figure back to your notes:',
+            'PMs, founders, and agencies lose 15+ hours turning rough notes into board decks.\nBuilt with Antigravity: a 6-station browser app that builds the deck and flags unverified claims:',
+            'Shipping a product and winning the executive room are two different skills.\nBuilt with Antigravity: my 6-station pipeline from messy notes to an SCQA deck (free, live below):'
           ],
-          body: `Save this for your next exec or client review 🩵
+          body: `One-click AI slide generators fail in real executive reviews for three reasons:
+Generic filler copy. Broken grids. Invented numbers.
 
-One-click AI slide tools fail in enterprise rooms for three reasons:
-Fluff copy. Broken brand grids. Invented numbers.
+So I built the Enterprise Deck Factory with Antigravity as a working browser app (live link in the first comment). Six stations, one orchestrator:
 
-So I built the factory as a live app (link in the first comment). Six stations, one orchestrator:
+1. Intake reads — it does not write
+↳ Separate lightweight readers extract facts from messy notes, call transcripts, and CSVs so the narrative model never drowns in raw text.
 
-Step 1. Intake reads, it does not write
- 👉 Each source (notes, transcript, CSV) gets its own small reader that returns facts, not raw text. The expensive model never sees a 4,000-line transcript.
+2. Fact-check traces every number to a source line
+↳ Every metric on every slide is matched verbatim against your input notes. Anything unverified gets a red ⚑ in speaker notes before export.
 
-Step 2. Fact check traces every number
- 👉 Every figure on every slide is matched back to a source line. If it is not in your notes, it gets a red ⚑ in the speaker notes instead of shipping.
+3. SCQA narrative — one decision per slide
+↳ Situation, Complication, Question, Answer. If a slide doesn't move a decision, it goes to the appendix.
 
-Step 3. Narrative is SCQA, one so-what per slide
- 👉 Situation, complication, question, answer. If a slide does not change a decision, it moves to the appendix.
+4. Locked brand tokens
+↳ Typography, spacing, and color tokens live in a fixed spec the model cannot override.
 
-Step 4. Brand tokens are rules, not suggestions
- 👉 Type scale, grid and color come from a fixed style sheet the model cannot edit. No surprise fonts on slide 9.
+5. Human-gated export
+↳ PDF and slide-outline exports stay locked until a human reviews the flagged claims and ticks sign-off.
 
-Step 5. Nothing exports until a human ticks the box
- 👉 The PDF and outline buttons stay locked until you confirm you read the flags. That is the quality plan, not "AI did it."
+It runs 100% client-side in your browser — nothing is uploaded. Add a free Gemini key for richer prose, or run the built-in deterministic planner with zero setup.
 
-It runs in your browser. Your notes never leave it. Add a free Gemini key and the narrative station gets smarter; without one, a local planner builds the deck.
+You don't need prettier AI slide templates.
+You need a deck workflow that shows its sources.
 
-You don't need 15 hours of slide formatting.
-You need a system that shows its sources.
-
-💬 Comment DECK and I'll send the 6-station spec you can paste into your own agent.
-♻️ Repost this for a PM, founder, or agency lead on your team.
-👋 New here? I'm Afrina. 15+ years building product, now working on Gemini & AI agents at Google. Follow for practical playbooks on how AI products are built.`,
-          comment: `Try it (free, runs in your browser, nothing uploaded): https://afrinam19.github.io/signal50/apps/deck-factory/ · Source: https://github.com/Afrinam19/signal50/tree/main/apps/deck-factory · Built with Antigravity + Gemini. Full unit economics and the failure modes in Saturday's newsletter.`
+Try the live app in the first comment — and tell me which station your team needs most.`,
+          comment: `Try it live (free, runs in your browser, nothing uploaded): https://afrinam19.github.io/signal50/apps/deck-factory/ · Source code: https://github.com/Afrinam19/signal50/tree/main/apps/deck-factory · Built with Antigravity + Gemini. Full architecture teardown in Saturday's newsletter.`
         },
         {
           day: 'Friday',
+          archetype: 'build',
           track: 'Built with Antigravity #02 · Release Notes → Customer Demo Agent (live link)',
           isGrowth: false,
           credit: '',
-          title: 'Built with Antigravity: Raw Release Notes → Customer Demo Pack in 10 Minutes (live link)',
+          title: 'Built with Antigravity: Raw Release Notes → Customer Demo Pack in 10 Minutes',
           selectedHook: 0,
           hooks: [
-            'Engineering ships 30 updates on Tuesday. Sales still pitches last quarter’s deck 3 weeks later.\nBuilt with Antigravity: a live agent that closes that gap in 10 minutes, link below 🚀',
-            'Most "AI release notes" tools write marketing fluff about a dependency bump.\nBuilt with Antigravity: I shipped an agent that filters the changelog first and shows its reasons (free, in your browser):',
-            'Shipping a feature and getting a customer to adopt it are not the same job.\nBuilt with Antigravity: paste release notes, get the demo script, the one-pager and the 4:5 card, live:'
+            'Engineering ships 30 updates on Tuesday. Sales still pitches last quarter\'s deck 3 weeks later.\nBuilt with Antigravity: a live agent that closes that gap in 10 minutes:',
+            'Most "AI release notes" tools write marketing fluff about a dependency bump.\nBuilt with Antigravity: an agent that filters the changelog first and shows its reasons (live below):',
+            'Shipping code and getting customers to adopt it are not the same job.\nBuilt with Antigravity: paste raw PRs, get the 30s demo script, 1-pager, and 4:5 card in one run:'
           ],
-          body: `Save this for your next product launch 🩵
-
-Years of running go-to-market for enterprise products showed me where AI teams leak momentum:
+          body: `Years of running go-to-market for enterprise AI products taught me where teams quietly lose momentum:
 
 Engineering ships daily.
-Customer enablement still runs by hand, 3 weeks later.
+Customer enablement still runs by hand, three weeks behind.
 
-So I built the Release-to-Demo agent as a live app (link in the first comment). Six stations, one orchestrator:
+So I built the Release-to-Demo agent with Antigravity as a live browser app (link in the first comment):
 
-Step 1. Filter before you write
- 👉 It reads raw release notes or PR titles, keeps the speed, security and workflow wins, and drops the dependency bumps and refactors. Every drop shows its reason, and you can flip any line back in.
+1. Filter changelog noise before writing a word
+↳ Keeps customer-visible speed, security, and workflow wins; drops refactors and dependency bumps — showing the reason for every drop so a PM can override in one click.
 
-Step 2. Translate one change for three readers
- 👉 Each win gets three lenses: the exec buyer (ROI and risk), the daily user (time saved) and the partner (a repeatable use case they can resell).
+2. Translate one technical change into three buyer lenses
+↳ Rewrites each win for the executive buyer (ROI and risk), the daily operator (time saved), and the partner/agency (repeatable workflow).
 
-Step 3. Package the 30-second demo
- 👉 A beat-by-beat script (0:00 hook, 0:04 before, 0:10 after, 0:23 proof, 0:27 CTA), a 4:5 demo card you can post, a one-page customer brief, plus Slack, CRM and email snippets.
+3. Package the 30-second demo + enablement kit
+↳ Generates a beat-by-beat demo script (0:00 hook → 0:27 CTA), a 4:5 visual card, a one-page customer brief, and ready-to-send Slack/CRM/email notes.
 
-Step 4. Trace every number
- 👉 Every figure in every lens is matched back to the release notes. Anything the model adds gets a red ⚑. Superlatives get flagged too; "fastest" is not a feature.
+4. Trace every claim and strip superlatives
+↳ Flags any number not present in the raw release notes and highlights hype words ("fastest", "seamless") before anyone hits send.
 
-Step 5. A human decides what customers hear
- 👉 Exports stay locked until you confirm you checked the claims and filled the "[needs confirmation]" answers on pricing, rollout and plans. The agent does not know those. You do.
-
-It runs in your browser. Nothing is uploaded. Add a free Gemini key and the translate station writes better prose; without one, templates do the job.
+5. Lock export behind human sign-off
+↳ Exports unlock only after you verify flagged claims and fill in "[needs confirmation]" rollout and pricing details the code can't know.
 
 Shipping code is half the job.
-Helping customers adopt it is the half that pays.
+Helping customers adopt it is the half that builds the business.
 
-💬 Comment DEMO and I'll send the 6-station spec you can paste into your own agent.
-♻️ Repost this for a PM, PMM, or GTM leader on your team.
-👋 New here? I'm Afrina. 15+ years building product, now working on Gemini & AI agents at Google. Follow for practical playbooks on how AI products are built.`,
-          comment: `Try it (free, runs in your browser, nothing uploaded): https://afrinam19.github.io/signal50/apps/release-to-demo/ · Source: https://github.com/Afrinam19/signal50/tree/main/apps/release-to-demo · Thursday's build, the Enterprise Deck Factory: https://afrinam19.github.io/signal50/apps/deck-factory/ · Both playbooks step by step in Saturday's Issue #01.`
+Live link is in the first comment — how long does it take your team to turn a merged PR into a customer demo today?`,
+          comment: `Try it live (free, runs in your browser, nothing uploaded): https://afrinam19.github.io/signal50/apps/release-to-demo/ · Source: https://github.com/Afrinam19/signal50/tree/main/apps/release-to-demo · Yesterday's build (Enterprise Deck Factory): https://afrinam19.github.io/signal50/apps/deck-factory/ · Both teardowns in tomorrow's Saturday Dispatch.`
         },
         {
           day: 'Saturday',
-          track: 'Flagship Newsletter Launch · Saturday Dispatch',
+          archetype: 'thesis',
+          track: 'Flagship Newsletter Launch · The Saturday AI Product Dispatch',
           isGrowth: false,
           credit: '',
-          title: 'Saturday LinkedIn Bridge → Converting Readers Into Issue #01 Subscribers',
+          title: 'Saturday Dispatch Issue #01 — How Real AI Products Are Built, Tested & Adopted',
           selectedHook: 0,
           hooks: [
-            'When I was 12, my first unofficial PM job was negotiating cement for my parents’ home.\nToday I build AI products at Google—and Issue #01 of my Saturday newsletter is live:',
-            'Most AI newsletters summarize press releases.\nEvery Saturday, I break down how real AI products are actually built, tested, and adopted:',
-            'Missed Thursday’s Enterprise Deck builder or Friday’s Release-to-Demo GTM agent?\nBoth "Built with Antigravity" playbooks just dropped in Saturday Issue #01:'
+            'At 12, my first unofficial PM job was negotiating cement for my parents\' house.\nToday I build Gemini & AI agents at Google — and Issue #01 of my Saturday Dispatch is live:',
+            'Most AI newsletters summarize model announcements.\nEvery Saturday, I tear down the unglamorous middle: how AI products actually survive production and win adoption:',
+            'Missed Thursday\'s Enterprise Deck Factory or Friday\'s Release-to-Demo agent?\nBoth "Built with Antigravity" architectures + the 30-row eval template just dropped in Issue #01:'
           ],
           body: `No qualifications. No job title. Definitely no salary.
-That was me at 12, coordinating engineers and negotiating building materials for my parents' house.
+That was me at 12, coordinating contractors and negotiating building materials for my parents' home.
 
-From Honeywell, Microsoft, Bank of America, and Oracle to building Gemini & enterprise agents at Google, one goal stayed constant:
+Across Honeywell, Philips, Microsoft, Bank of America, Oracle, and now building Gemini and AI agents at Google, the job underneath never really changed:
 
-Turning complex technology into something customers understand, adopt, and pay for.
+Take complex technology and turn it into a workflow customers trust, adopt, and pay for.
 
-Today I'm launching my Saturday newsletter—built for Product Leaders, Founders, Agencies, and builders growing into AI product leadership.
+Today I'm publishing Issue #01 of my weekly Saturday newsletter — written for Product Leaders, Founders, Engineers, and operators building real AI products.
 
-Inside today's 5-minute Issue #01:
- 👉 Why top AI labs pay a premium for PMs who build working prototypes
- 👉 Built with Antigravity #01: Rough Notes → Enterprise Google Slides Deck in 6 minutes
- 👉 Built with Antigravity #02: Raw Release Notes → Customer Demo in 10 minutes
- 👉 Plain-English template: How to write an AI Definition of Done (evals)
+Inside Issue #01 (7-minute read):
+• The token-routing pattern behind Spotify's 90% coding-agent cost cut — and how to apply it to enterprise workflows
+• A 30-row, no-code AI eval table any PM and tech lead can stand up in one afternoon
+• Full architecture notes + source code for both "Built with Antigravity" apps shipped this week (Deck Factory + Release-to-Demo)
 
-Grab Issue #01 in the first comment 🩵
-
-💬 Reply with the #1 workflow bottleneck you want me to build next week.
-♻️ Repost for anyone growing into AI product work.
-👋 New here? I'm Afrina. 15+ years building product. Follow for weekly AI product playbooks.`,
-          comment: `Read Issue #01 & grab both "Built with Antigravity" templates here → https://www.linkedin.com/in/afrina-m`
+Read Issue #01 via the first comment — and reply with the #1 production AI bottleneck you want torn down next Saturday.`,
+          comment: `Read Saturday Dispatch Issue #01 & try both live "Built with Antigravity" apps here → https://www.linkedin.com/in/afrina-m`
         }
       ];
 
@@ -1406,7 +1506,24 @@ Building AI products people actually adopt, or navigating your next move? Let's 
       ];
 
       const cloneDefaults = () => JSON.parse(JSON.stringify(DEFAULT_POSTS));
-      let posts = safeGet('signal50_v6_posts', null) || cloneDefaults();
+      const isLegacyBoilerplate = txt => /sprint review|sprint planning|♻️\s*Repost this for/i.test(String(txt || ''));
+      function loadInitialPosts() {
+        const v7 = safeGet('signal50_v7_posts', null);
+        if (Array.isArray(v7) && v7.length === DEFAULT_POSTS.length) return v7;
+        const fresh = cloneDefaults();
+        const v6 = safeGet('signal50_v6_posts', null);
+        if (Array.isArray(v6) && v6.length === fresh.length) {
+          for (let i = 0; i < fresh.length; i++) {
+            if (v6[i] && v6[i].body && !isLegacyBoilerplate(v6[i].body)) {
+              fresh[i] = { ...fresh[i], ...v6[i] };
+            }
+          }
+        }
+        safeSet('signal50_v7_posts', fresh);
+        return fresh;
+      }
+
+      let posts = loadInitialPosts();
       RETRO_ROWS = safeGet('signal50_v6_retro', RETRO_ROWS);
       let activeDayIdx = 0;
       let voiceScore = Number(safeGet('signal50_v6_voice', 100));
@@ -1440,8 +1557,9 @@ Building AI products people actually adopt, or navigating your next move? Let's 
               const data = await resp.json();
               hasBackend = true;
               if (Array.isArray(data.posts) && data.posts.length) {
-                posts = data.posts;
-                safeSet('signal50_v6_posts', posts);
+                const fresh = cloneDefaults();
+                posts = data.posts.map((sp, idx) => (sp && sp.body && !isLegacyBoilerplate(sp.body)) ? { ...(fresh[idx] || {}), ...sp } : (fresh[idx] || sp));
+                safeSet('signal50_v7_posts', posts);
               }
               if (data.voiceScore) voiceScore = data.voiceScore;
               if (Array.isArray(data.retroRows)) {
@@ -1464,7 +1582,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
                 }
               }
               document.getElementById('sync-status-pill').textContent = 'Live Server Connected (Disk Sync ON)';
-              document.getElementById('header-voice-badge').textContent = `Voice DNA: ${voiceScore}%`;
+              document.getElementById('header-voice-badge').textContent = 'Outlier Voice v2';
               renderStudio();
               renderRetro();
               applyServerVaultHook(data);
@@ -1476,6 +1594,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
       async function persistAll() {
         const nlVal = (document.getElementById('newsletter-editor') || {}).value ?? INITIAL_NEWSLETTER;
         const aboutVal = (document.getElementById('profile-about-editor') || {}).value ?? UPGRADED_ABOUT;
+        safeSet('signal50_v7_posts', posts);
         safeSet('signal50_v6_posts', posts);
         safeSet('signal50_v6_voice', voiceScore);
         safeSet('signal50_v6_retro', RETRO_ROWS);
@@ -1536,6 +1655,8 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         const p = posts[activeDayIdx];
         document.getElementById('post-track-badge').textContent = p.track;
         document.getElementById('post-title').textContent = p.title;
+        const archSel = document.getElementById('ai-archetype');
+        if (archSel && p.archetype) archSel.value = p.archetype;
 
         const hList = document.getElementById('hook-list');
         hList.innerHTML = p.hooks.map((h, i) => `
@@ -1579,13 +1700,14 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         const banned = ['delve', 'tapestry', 'testament', 'game-changer', 'thrilled to announce'];
         const hasBrackets = /(?<!["'“])\[[^\]\n]{3,65}\](?!["'”])/.test(combined);
         const safetyHits = renderSafety('post-safety', combined);
+        const signalWords = ['agent', 'eval', 'enterprise', 'margin', 'production', 'slides', 'gtm', 'mcp', 'workflow', 'prototype', 'step', 'token', 'check', 'model', 'prompt', 'context', 'latency', 'trace', 'human'];
         const checks = [
           { ok: safetyHits.length === 0, label: safetyHits.length ? `Data-safety: ${safetyHits.length} flagged` : 'No Revenue / Internal Google Data' },
           { ok: !hasBrackets, label: hasBrackets ? 'Fill in [Bracket] Slots' : 'No Unfilled [Brackets]' },
           { ok: hook.length > 20 && hook.length <= 210, label: `210-Char Fold (${hook.length}/210)` },
           { ok: !p.isGrowth || full.includes((p.credit || '').split(' ')[0].toLowerCase()), label: p.isGrowth ? `Credit: ${p.credit}` : 'Original Ecosystem IP' },
           { ok: !banned.some(w => full.includes(w)), label: 'Zero AI-Slop Scan' },
-          { ok: ['agent', 'eval', 'enterprise', 'margin', 'production', 'slides', 'gtm', 'mcp', 'workflow', 'prototype', 'step', 'token', 'check'].filter(k => full.includes(k)).length >= 2, label: 'AI Product Signal' },
+          { ok: signalWords.filter(k => full.includes(k)).length >= 2, label: 'AI Product Signal' },
           { ok: true, label: '4:5 GIF / PNG Ready' },
           { ok: comment.trim().length > 15, label: 'Saturday NL Funnel CTA' }
         ];
@@ -1939,18 +2061,21 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           const bodyLines = currentBody.split('\n').map(l => l.trim());
           const extracted = [];
           for (let i = 0; i < bodyLines.length && extracted.length < 6; i++) {
-            const m = bodyLines[i].match(/^(?:Step\s*)?([1-6])[.):]\s*(.+)/i);
+            const m = bodyLines[i].match(/^(?:(?:Step|Station)\s*)?([1-6])[.):]\s*(.+)/i);
+            const bulletRule = !m && bodyLines[i].match(/^[•▪-]\s*([^—–:]{4,44})\s*[—–:]\s*(.+)/u);
             if (m) {
               const stepTitle = m[2].trim();
-              let detail = 'Production-tested playbook';
+              let detail = 'Production-tested workflow';
               for (let j = i + 1; j <= Math.min(i + 3, bodyLines.length - 1); j++) {
                 if (!bodyLines[j]) continue;
-                if (/^(?:Step\s*)?[1-6][.):]/i.test(bodyLines[j])) break;
-                const arrow = bodyLines[j].match(/^(?:👉|[•-])\s*(.+)/u);
+                if (/^(?:(?:Step|Station)\s*)?[1-6][.):]/i.test(bodyLines[j])) break;
+                const arrow = bodyLines[j].match(/^(?:↳|👉|[•-])\s*(.+)/u);
                 if (arrow) { detail = arrow[1].trim(); break; }
                 detail = bodyLines[j];
               }
               extracted.push({ title: stepTitle.slice(0, 42), detail: detail.slice(0, 68) });
+            } else if (bulletRule) {
+              extracted.push({ title: bulletRule[1].trim().slice(0, 42), detail: bulletRule[2].trim().slice(0, 68) });
             }
           }
 
@@ -2275,6 +2400,456 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         });
         updateRarityCalc();
 
+        // =====================================================================
+        // 5. EMBEDDED GEMINI CO-WRITER, gemini.google.com COMPANION & GUIDE
+        // =====================================================================
+        let aiUndoState = null;
+        let cachedGeminiModel = '';
+
+        function getSharedGeminiKey() {
+          try {
+            return (
+              localStorage.getItem('signal50.geminiKey') ||
+              localStorage.getItem('deckfactory.key') ||
+              localStorage.getItem('r2d.key') ||
+              ''
+            ).trim();
+          } catch (_) {
+            return String(MEM_STORE['signal50.geminiKey'] || '').trim();
+          }
+        }
+
+        function saveSharedGeminiKey(k) {
+          const clean = String(k || '').trim();
+          MEM_STORE['signal50.geminiKey'] = clean;
+          try {
+            localStorage.setItem('signal50.geminiKey', clean);
+            if (clean) {
+              localStorage.setItem('deckfactory.key', clean);
+              localStorage.setItem('r2d.key', clean);
+            }
+          } catch (_) {}
+          cachedGeminiModel = '';
+          refreshGeminiKeyBadge();
+        }
+
+        function refreshGeminiKeyBadge() {
+          const has = Boolean(getSharedGeminiKey());
+          const btn = document.getElementById('btn-ai-key-toggle');
+          if (btn) {
+            btn.textContent = has ? '✓ Gemini Key Active' : '🔑 Connect Gemini Key';
+            btn.className = has
+              ? 'px-2.5 py-1 rounded-lg border border-[#1F5E46] bg-[var(--card)] text-[#1F5E46] font-bold'
+              : 'px-2.5 py-1 rounded-lg border border-[var(--border)] bg-[var(--card)] font-semibold';
+          }
+          const inp = document.getElementById('ai-gemini-key');
+          if (inp && has && !inp.value) inp.value = getSharedGeminiKey();
+        }
+
+        async function resolveGeminiModel(key) {
+          if (cachedGeminiModel) return cachedGeminiModel;
+          const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}&pageSize=200`);
+          if (!r.ok) throw new Error(`Gemini key check failed (HTTP ${r.status})`);
+          const j = await r.json();
+          const candidates = (j.models || [])
+            .filter(m => (m.supportedGenerationMethods || []).includes('generateContent'))
+            .map(m => m.name.replace(/^models\//, ''));
+          if (!candidates.length) throw new Error('No generateContent models available for this key');
+          const score = n => (/flash/i.test(n) ? 10 : 0) + (/-lite|8b/i.test(n) ? -3 : 0) + (/preview|exp/i.test(n) ? -1 : 0) + (parseFloat((n.match(/gemini-(\d+(?:\.\d+)?)/) || [])[1] || 0) * 2);
+          cachedGeminiModel = candidates.sort((a, b) => score(b) - score(a))[0];
+          return cachedGeminiModel;
+        }
+
+        const ARCHETYPE_SPECS = {
+          teardown: 'System Teardown (modeled on 20x+ infra/product teardowns): 2-line counter-intuitive proof hook (<=210 chars), 1-2 short sentences naming the "boring" root cause underneath, an audience-native save cue (e.g. "Save this before your next agent run:"), then 4-5 numbered mechanics formatted as "1. Bold rule" followed on the next line by "↳ Concrete engineering/PM action", ending with a 2-line contrast takeaway and ONE specific operator question.',
+          runbook: 'Zero-Friction Builder Runbook: 2-line tension hook (<=210 chars), 1 plain-English demystifying sentence, a launch-native save cue ("Bookmark this before you ship your next prompt/model update:"), 5-6 verb-first steps ("1. ..." + "↳ ...") that a PM/engineer can run in one afternoon without extra tooling, 2-line takeaway, and ONE closing question.',
+          thesis: 'Sharp Product Thesis / Field Shift (Ethan Mollick / Shreyas Doshi style — NO numbered step list): 2-line observation hook (<=210 chars), 2 short analytical paragraphs naming what breaks in production, 3-4 crisp bullet rules ("• Rule — concrete product implication"), 2-line memorable thesis, and ONE closing question.',
+          build: 'Built with Antigravity Live Architecture Walkthrough: 2-line problem-to-shipped-app hook (<=210 chars) mentioning "Built with Antigravity", 2-line manual bottleneck setup, 5 numbered architecture stations ("1. Station" + "↳ How it works & human gate"), 2-line closer, and pointer to the live browser app in the first comment.'
+        };
+
+        function buildGeminiPromptText(mode, customInstruction) {
+          const p = posts[activeDayIdx];
+          const arch = (document.getElementById('ai-archetype') || {}).value || p.archetype || 'teardown';
+          const curHook = document.getElementById('hook-editor').value.trim();
+          const curBody = document.getElementById('body-editor').value.trim();
+          const modeDirective = {
+            outlier: `Rewrite this post from scratch to read like a genuine 10x+ LinkedIn outlier using the "${arch}" format.`,
+            hooks: 'Write 3 sharper, high-curiosity pre-fold hooks (each 2 lines, strictly <= 200 characters) and tighten the opening of the body to flow seamlessly from Hook #1.',
+            tighten: 'Cut 20-25% of the words. Remove any throat-clearing, passive voice, corporate clichés, or repetitive lines while keeping every concrete detail sharp.',
+            exec: 'Sharpen the Senior/Director AI PM perspective for VPs of Product, VPs of Engineering, and Founders — emphasize production trade-offs, evals, cost/latency, and adoption.',
+            custom: customInstruction || 'Enhance clarity, rhythm, and outlier punch while keeping plain English.'
+          }[mode] || customInstruction || 'Rewrite in crisp Outlier Voice.';
+
+          return `You are co-writing a high-performing LinkedIn post for Afrina M (Senior PM working on Gemini & AI agents at Google, 15+ years building product, 4x Google Cloud Next speaker).
+
+TASK:
+${modeDirective}
+${customInstruction && mode !== 'custom' ? `Additional user instruction: ${customInstruction}` : ''}
+
+SELECTED OUTLIER FORMAT:
+${ARCHETYPE_SPECS[arch] || ARCHETYPE_SPECS.teardown}
+
+HARD VOICE & DATA-SAFETY RULES (NON-NEGOTIABLE):
+1. Hook MUST be 2 crisp lines totaling <= 200 characters (fits above LinkedIn mobile "...see more").
+2. NEVER use Scrum/Agile ceremony clichés ("sprint review", "sprint planning", "scrum") unless the topic is explicitly about Agile.
+3. NEVER use AI-slop buzzwords: delve, tapestry, testament, game-changer, unlock, seamless, cutting-edge, thrilled to announce, leverage.
+4. NEVER append a robotic 3-emoji footer wall (no "💬 / ♻️ Repost this / 👋 New here?" stack). End naturally with a 2-line takeaway${p.isGrowth && p.credit ? `, a natural peer credit ("H/T to ${p.credit}" or "Credit to ${p.credit}")` : ''}, and ONE specific question.
+5. STRICT DATA-SAFETY: ZERO dollar revenue/ARR figures, ZERO internal usage metrics (MAU/DAU), ZERO quota/target percentages, ZERO CSAT scores, ZERO customer/stakeholder headcounts, and ZERO internal Google links. Use only public facts or numbers already present in the draft below.
+
+CURRENT HOOK:
+${curHook}
+
+CURRENT BODY:
+${curBody}`;
+        }
+
+        function pushAiUndo() {
+          const p = posts[activeDayIdx];
+          aiUndoState = {
+            dayIdx: activeDayIdx,
+            hooks: p.hooks.slice(),
+            selectedHook: p.selectedHook,
+            body: document.getElementById('body-editor').value,
+            archetype: p.archetype
+          };
+          const undoBtn = document.getElementById('btn-undo-ai');
+          if (undoBtn) undoBtn.classList.remove('hidden');
+        }
+
+        function applyLocalOutlierPolish(mode) {
+          pushAiUndo();
+          const p = posts[activeDayIdx];
+          const arch = (document.getElementById('ai-archetype') || {}).value || 'teardown';
+          p.archetype = arch;
+          let hook = document.getElementById('hook-editor').value.trim();
+          let body = document.getElementById('body-editor').value;
+
+          // Strip legacy boilerplate, Scrum ceremony leaks & AI-slop words
+          body = body
+            .replace(/before your next sprint review\s*🚀?/gi, 'before your next production agent run:')
+            .replace(/Save this for your next sprint planning\s*🩵?/gi, 'Save this before your next production rollout:')
+            .replace(/^[💬♻️👋].*$/gm, '')
+            .replace(/\b(delve|tapestry|testament|game-changer|seamless|cutting-edge)\b/gi, '')
+            .replace(/\n{3,}/g, '\n\n')
+            .trim();
+
+          if (arch === 'teardown' || arch === 'runbook') {
+            body = body
+              .replace(/^Step\s+(\d+)[.:]\s*/gim, '$1. ')
+              .replace(/^\s*👉\s*/gm, '↳ ');
+          } else if (arch === 'thesis') {
+            body = body
+              .replace(/^(?:Step\s+)?\d+[.:]\s*(.+)\n\s*(?:↳|👉)\s*(.+)$/gim, '• $1 — $2');
+          }
+
+          if (mode === 'hooks') {
+            const topicCore = (p.title || hook.split('\n')[0]).replace(/\s*\(credit:.*\)/i, '').trim().slice(0, 88);
+            p.hooks = [
+              `${topicCore}.\nMost teams try to fix this in the prompt. The real fix lives in the workflow:`.slice(0, 205),
+              `What separates a flashy AI demo from a production workflow?\n${topicCore} — broken down in plain English:`.slice(0, 205),
+              `${p.credit ? p.credit + ' highlighted a pattern' : 'A pattern'} every AI builder should steal this week:\n${topicCore}.`.slice(0, 205)
+            ];
+            p.selectedHook = 0;
+            hook = p.hooks[0];
+          } else if (hook.length > 210) {
+            hook = hook.slice(0, 206).replace(/\s+\S*$/, '') + '…';
+            p.hooks[p.selectedHook] = hook;
+          } else {
+            p.hooks[p.selectedHook] = hook;
+          }
+
+          if (p.isGrowth && p.credit && !body.toLowerCase().includes(p.credit.split(' ')[0].toLowerCase())) {
+            body += `\n\nH/T to ${p.credit} for the original insight that sparked this.`;
+          }
+          if (!/\?\s*$/.test(body)) {
+            body += '\n\nWhere is this showing up in your AI workflow right now?';
+          }
+
+          p.body = body;
+          renderStudio();
+          scheduleAutoSave(`✓ Polished ${p.day} in Outlier Voice`);
+        }
+
+        async function runAiRewrite(mode) {
+          const statusEl = document.getElementById('ai-status');
+          const runBtn = document.getElementById('btn-run-ai');
+          const customInstruction = document.getElementById('ai-custom-prompt').value.trim();
+          const key = getSharedGeminiKey();
+
+          if (!key) {
+            applyLocalOutlierPolish(mode);
+            statusEl.innerHTML = '✓ Applied instant local Outlier-Voice polish! Connect a free <strong>Gemini Key</strong> above for full generative AI rewrites, or click <strong>Open gemini.google.com ↗</strong> (copies prompt + draft).';
+            showToast('Applied local Outlier-Voice polish! Add a free Gemini key or click Open gemini.google.com ↗ for full AI rewriting.');
+            return;
+          }
+
+          runBtn.disabled = true;
+          const origLabel = runBtn.textContent;
+          runBtn.textContent = 'Writing…';
+          statusEl.textContent = 'Calling Gemini with Outlier Voice v2 + Data-Safety guardrails…';
+          try {
+            const model = await resolveGeminiModel(key);
+            const prompt = buildGeminiPromptText(mode, customInstruction) + `\n\nReturn JSON ONLY matching this exact schema:\n{"hooks":["hook 1 (<=200 chars, 2 lines)","hook 2 (<=200 chars)","hook 3 (<=200 chars)"],"body":"full rewritten post body"}`;
+            const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: { temperature: 0.45, responseMimeType: 'application/json' }
+              })
+            });
+            if (!r.ok) throw new Error(`Gemini HTTP ${r.status}: ${(await r.text()).slice(0, 160)}`);
+            const j = await r.json();
+            const rawText = (j.candidates?.[0]?.content?.parts || []).map(pt => pt.text || '').join('');
+            const parsed = JSON.parse(rawText.replace(/^```json\s*|```\s*$/g, '').trim());
+
+            pushAiUndo();
+            const p = posts[activeDayIdx];
+            p.archetype = (document.getElementById('ai-archetype') || {}).value || p.archetype || 'teardown';
+            if (Array.isArray(parsed.hooks) && parsed.hooks.length) {
+              p.hooks = parsed.hooks.slice(0, 3).map(h => String(h || '').trim().slice(0, 208));
+              p.selectedHook = 0;
+            }
+            if (typeof parsed.body === 'string' && parsed.body.trim()) {
+              p.body = parsed.body.trim();
+            }
+            renderStudio();
+            await persistAll();
+            statusEl.textContent = `✓ Rewritten with ${model} (${p.archetype} format) · Data-safety & 210-char fold verified.`;
+            showToast(`✓ Gemini rewrote ${p.day} in Outlier Voice! Click "↩ Undo AI Edit" anytime.`);
+          } catch (err) {
+            statusEl.textContent = `✕ ${err.message} — try checking your key or click "Open gemini.google.com ↗".`;
+            showToast(`Gemini error: ${err.message}`);
+          } finally {
+            runBtn.disabled = false;
+            runBtn.textContent = origLabel;
+          }
+        }
+
+        // Wire AI Draft & Rewrite UI controls
+        refreshGeminiKeyBadge();
+        document.getElementById('btn-ai-key-toggle').onclick = () => {
+          document.getElementById('ai-key-bar').classList.toggle('hidden');
+        };
+        document.getElementById('btn-save-gemini-key').onclick = () => {
+          const val = document.getElementById('ai-gemini-key').value.trim();
+          saveSharedGeminiKey(val);
+          document.getElementById('ai-key-bar').classList.add('hidden');
+          document.getElementById('ai-status').textContent = val
+            ? '✓ Gemini key saved locally on this browser (shared with Deck Factory & Release-to-Demo). Click any rewrite button!'
+            : 'Cleared saved Gemini key.';
+          showToast(val ? '✓ Gemini key connected across Signal50 apps!' : 'Cleared Gemini key');
+        };
+        document.getElementById('ai-archetype').onchange = e => {
+          posts[activeDayIdx].archetype = e.target.value;
+          scheduleAutoSave();
+        };
+        document.querySelectorAll('[data-ai-preset]').forEach(btn => {
+          btn.onclick = () => runAiRewrite(btn.dataset.aiPreset);
+        });
+        document.getElementById('btn-run-ai').onclick = () => runAiRewrite('custom');
+        document.getElementById('ai-custom-prompt').addEventListener('keydown', e => {
+          if (e.key === 'Enter') { e.preventDefault(); runAiRewrite('custom'); }
+        });
+        document.getElementById('btn-undo-ai').onclick = async () => {
+          if (!aiUndoState) return;
+          activeDayIdx = aiUndoState.dayIdx;
+          const p = posts[activeDayIdx];
+          p.hooks = aiUndoState.hooks;
+          p.selectedHook = aiUndoState.selectedHook;
+          p.body = aiUndoState.body;
+          p.archetype = aiUndoState.archetype;
+          aiUndoState = null;
+          document.getElementById('btn-undo-ai').classList.add('hidden');
+          renderStudio();
+          await persistAll();
+          document.getElementById('ai-status').textContent = '↩ Restored previous draft.';
+          showToast('Restored draft before last AI edit.');
+        };
+
+        // Side-by-side gemini.google.com launcher + 1-click Paste-Back parser
+        document.getElementById('btn-open-gemini-web').onclick = () => {
+          const customInstruction = document.getElementById('ai-custom-prompt').value.trim();
+          const prompt = buildGeminiPromptText('custom', customInstruction || 'Rewrite this post to read like a top 1% LinkedIn outlier in plain English.') +
+            `\n\nReply in plain text using these exact two headings so I can paste it straight back into Signal50:\nHOOK:\n<2 punchy lines, <= 200 chars total>\n\nBODY:\n<full post body>`;
+          try { navigator.clipboard.writeText(prompt); } catch (_) {}
+          document.getElementById('gemini-paste-drawer').classList.remove('hidden');
+          document.getElementById('ai-status').textContent = '✓ Copied Outlier Prompt + current draft! Paste (Cmd+V / Ctrl+V) into the gemini.google.com window, then paste Gemini\'s reply below.';
+          window.open('https://gemini.google.com/app', 'signal50_gemini_companion', 'popup=yes,width=560,height=860,left=860,top=60');
+          showToast('✓ Prompt copied! Press Cmd+V / Ctrl+V inside gemini.google.com.');
+        };
+
+        document.getElementById('btn-toggle-paste-gemini').onclick = () => {
+          document.getElementById('gemini-paste-drawer').classList.toggle('hidden');
+        };
+
+        document.getElementById('btn-apply-gemini-paste').onclick = async () => {
+          const raw = document.getElementById('gemini-paste-input').value.trim();
+          if (!raw) { showToast('Paste Gemini\'s reply into the box first.'); return; }
+          pushAiUndo();
+          let newHook = '';
+          let newBody = '';
+          const labeled = raw.match(/HOOK\s*:\s*([\s\S]*?)\n+\s*BODY\s*:\s*([\s\S]*)/i);
+          if (labeled) {
+            newHook = labeled[1].trim();
+            newBody = labeled[2].trim();
+          } else {
+            const paras = raw.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean);
+            if (paras.length >= 2 && paras[0].length <= 210) {
+              newHook = paras[0];
+              newBody = paras.slice(1).join('\n\n');
+            } else {
+              const lines = raw.split('\n');
+              newHook = lines.slice(0, 2).join('\n').trim().slice(0, 208);
+              newBody = lines.slice(2).join('\n').trim() || raw;
+            }
+          }
+          if (newHook.length > 210) newHook = newHook.slice(0, 207).replace(/\s+\S*$/, '') + '…';
+          const p = posts[activeDayIdx];
+          if (newHook) p.hooks[p.selectedHook] = newHook;
+          if (newBody) p.body = newBody;
+          document.getElementById('gemini-paste-input').value = '';
+          document.getElementById('gemini-paste-drawer').classList.add('hidden');
+          renderStudio();
+          await persistAll();
+          document.getElementById('ai-status').textContent = '✓ Applied Gemini reply to Hook + Body & ran Data-Safety check!';
+          showToast('✓ Applied Gemini rewrite to Hook & Body!');
+        };
+
+        // In-App "How to Use Signal50" Guide Toggle & Interactive Jumps
+        const guidePanel = document.getElementById('guide-panel');
+        if (safeGet('signal50_v7_guide_hidden', false)) {
+          guidePanel.classList.add('hidden');
+        }
+        document.getElementById('btn-toggle-guide').onclick = () => {
+          const hidden = guidePanel.classList.toggle('hidden');
+          safeSet('signal50_v7_guide_hidden', hidden);
+          if (!hidden) guidePanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+        document.getElementById('btn-close-guide').onclick = () => {
+          guidePanel.classList.add('hidden');
+          safeSet('signal50_v7_guide_hidden', true);
+        };
+        document.querySelectorAll('[data-guide-jump]').forEach(btn => {
+          btn.onclick = () => {
+            const target = btn.dataset.guideJump;
+            if (target === 'ai') {
+              switchTab('calendar');
+              const box = document.getElementById('ai-custom-prompt');
+              if (box) { box.scrollIntoView({ behavior: 'smooth', block: 'center' }); box.focus(); }
+            } else {
+              switchTab(target);
+            }
+          };
+        });
+
+        // Outlier Converter -> Outlier Voice v2 (supports Teardown, Runbook, Thesis + live Gemini when connected)
+        function buildOutlierDraftByArchetype({ arch, shortTopic, summaryLine, creator, mult, dayName, sourceUrl }) {
+          const lowerTopic = shortTopic.charAt(0).toLowerCase() + shortTopic.slice(1);
+          const chosen = arch === 'auto'
+            ? (/eval|test|prompt|setup|how to/i.test(shortTopic) ? 'runbook' : /human|why|shift|team|interview|culture/i.test(shortTopic) ? 'thesis' : 'teardown')
+            : arch;
+
+          const hooks = [
+            `${shortTopic}.\n${creator} surfaced the signal — here is how to turn it into a production system:`.slice(0, 208),
+            `Most AI teams misdiagnose ${lowerTopic} as a model problem.\nIn production, it is an architecture and workflow decision:`.slice(0, 208),
+            `A high-signal lesson from ${creator} (${mult}x outlier):\n${shortTopic} — broken down for PMs and engineers:`.slice(0, 208)
+          ];
+
+          let body = '';
+          let label = 'Outlier Teardown';
+          if (chosen === 'thesis') {
+            label = 'Product Thesis';
+            body = `${summaryLine}
+
+When teams hit friction around ${lowerTopic}, their first instinct is almost always to swap models or rewrite a 2,000-word system prompt. In practice, that hides a product design gap.
+
+Four design rules that separate durable AI products from fragile demos:
+
+• Instrument the real bottleneck first — trace where latency, cost, or user drop-off actually spikes before touching prompts.
+• Separate deterministic checks from judgment — let code and evals verify schema, citations, and numbers; save humans for high-stakes trade-offs.
+• Scope context ruthlessly — pass each step only the slice of state and tools it needs to finish the job.
+• Make failures visible — show sources and tool receipts next to the output so trust compounds over time.
+
+Models commoditize fast.
+Clear workflow boundaries and verification are what build a real moat.
+
+H/T to ${creator} (${mult}x outlier) for the post that sparked this note.
+
+How is your team handling ${lowerTopic} in production right now?`;
+          } else if (chosen === 'runbook') {
+            label = 'Builder Runbook';
+            body = `${summaryLine}
+
+Bookmark this 5-step runbook before your next model, prompt, or agent rollout:
+
+1. Pull 30 real production traces
+↳ Skip clean synthetic examples. Export real user inputs where ${lowerTopic} actually shows up.
+
+2. Name the failure modes in plain English
+↳ Read the outputs yourself and group misses into 3–5 concrete buckets your whole team understands.
+
+3. Scope context and tools to the minimum required
+↳ Strip unused tools and raw file dumps so cost, latency, and error rates drop together.
+
+4. Turn each failure bucket into a binary pass/fail check
+↳ Run those checks automatically on every prompt or model change before merge.
+
+5. Gate only the irreversible boundary
+↳ Let the agent prepare and verify the draft; put a fast human sign-off on external actions.
+
+Shipping an AI demo takes an afternoon.
+Making it reliable is a product discipline.
+
+Credit to ${creator} (${mult}x outlier) for the original post that sparked this runbook.
+
+Which of these 5 steps is the tightest bottleneck on your roadmap today?`;
+          } else {
+            label = 'Outlier Teardown';
+            body = `The takeaway underneath ${creator}'s post is deceptively simple: ${summaryLine}
+
+Most teams try to brute-force this with a bigger model or longer prompt. Production teams fix the system around the model instead.
+
+Here is the 5-part teardown. Save it before your next agent build:
+
+1. Measure where tokens and latency actually go
+↳ Split real traces into context reading, tool retries, and actual reasoning before changing anything.
+
+2. Route cheap work away from the frontier model
+↳ Use lightweight readers and deterministic filters first; save frontier reasoning for synthesis and judgment.
+
+3. Turn vague quality complaints into binary evals
+↳ Replace subjective vibe checks with 3–5 pass/fail assertions grounded in real logs.
+
+4. Enforce boundaries in code, not polite prompt notes
+↳ Hard hooks, token ceilings, and schema checks hold up under load when prompt reminders fail.
+
+5. Show provenance at the human review step
+↳ Surface exact source lines and tool calls so sign-off takes seconds instead of manual re-work.
+
+Keep the frontier model for judgment.
+Let clean architecture handle the rest.
+
+H/T to ${creator} — their ${mult}x outlier post sparked this teardown.
+
+Where is your AI workflow leaking the most time or tokens right now?`;
+          }
+
+          return {
+            day: dayName,
+            archetype: chosen,
+            track: `${label} · Credit: ${creator} (${mult}x · HarvestAPI verified)`,
+            isGrowth: true,
+            credit: creator,
+            creditUrl: sourceUrl,
+            title: `${shortTopic} — ${label.toLowerCase()} (credit: ${creator})`,
+            selectedHook: 0,
+            hooks,
+            body,
+            comment: `Credit to ${creator} for the original post${sourceUrl ? `: ${sourceUrl}` : ''} (${mult}x their baseline engagement — verified via HarvestAPI). Every Saturday I break down how real AI products are built in my newsletter: https://www.linkedin.com/in/afrina-m`
+          };
+        }
+
         document.getElementById('btn-alchemize-outlier').onclick = async () => {
           const creatorEl = document.getElementById('new-out-creator');
           const creator = creatorEl.value.trim() || 'Industry Creator';
@@ -2282,6 +2857,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           const rawInsight = (creatorEl.dataset.insight || '').replace(/\s+/g, ' ').trim();
           const topic = document.getElementById('new-out-topic').value.trim() || 'Scaling AI Products';
           const dayIdx = Number(document.getElementById('new-out-day').value || 0);
+          const arch = (document.getElementById('new-out-archetype') || {}).value || 'auto';
           const { mult, isOutlier } = computeRarity();
           const dayNames = ['Monday', 'Tuesday', 'Wednesday'];
           if (!isOutlier) {
@@ -2290,63 +2866,29 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           }
 
           const shortTopic = topic.replace(/[.!?]+$/, '').slice(0, 90);
-          const summaryLine = rawInsight ? rawInsight.slice(0, 180) : `${creator} showed why ${shortTopic.toLowerCase()} separates shipping teams from demo teams.`;
-          posts[dayIdx] = {
-            day: dayNames[dayIdx],
-            track: `Outlier Growth · Credit: ${creator} (${mult}x · HarvestAPI verified)`,
-            isGrowth: true,
-            credit: creator,
-            creditUrl: sourceUrl,
-            title: `${shortTopic} — rebuilt in Afrina's voice (credit: ${creator})`,
-            selectedHook: 0,
-            hooks: [
-              `${shortTopic}.\n${creator} showed why this matters. Here is how to run it in production, step by step:`.slice(0, 210),
-              `Most AI teams miss this: ${shortTopic.charAt(0).toLowerCase() + shortTopic.slice(1)}.\nHere are the 5 workflow checks I use at Google, in plain English:`.slice(0, 210),
-              `${creator} shared an outlier lesson on ${shortTopic.charAt(0).toLowerCase() + shortTopic.slice(1)}.\nHere is the sprint playbook your PM and eng team can ship this week:`.slice(0, 210)
-            ],
-            body: `${summaryLine}
-Most teams treat this like a prompt problem when it is really a product workflow problem.
-
-Here are 5 steps to turn this into a reliable production workflow 🚀
-
-Save this for your next sprint planning 🩵
-
-Step 1. Map the exact bottleneck before touching the model
-Write down where human hours or token latency actually spike in the workflow.
- 👉 Instrument one real user trace end to end before changing prompts.
-
-Step 2. Turn vague quality complaints into binary failure modes
-Replace subjective "looks off" feedback with 3 to 5 pass/fail checks from real logs.
- 👉 Label 30 real production traces yourself with your engineering lead.
-
-Step 3. Constrain the agent's context and tool surface
-Give the agent only the schema, retrieval slice, and tools required for that single step.
- 👉 Strip unused tools and long history so latency and failure rates drop together.
-
-Step 4. Put a deterministic eval gate in CI before rollout
-Run your golden trace dataset on every prompt, model, or tool change automatically.
- 👉 Block merges when pass rate, latency, or cost per task regresses.
-
-Step 5. Keep a clear human check on irreversible actions
-Let the agent draft, verify, and stage the work—and let a human approve external sends.
- 👉 Track edit distance on human approvals to see where the workflow still needs work.
-
-Models get cheaper every quarter.
-Clean workflow architecture and eval discipline are what compound into a real product moat.
-
-Credit to ${creator} for the original post (${mult}x outlier) that sparked this breakdown.
-
-💬 Which of these 5 steps is the tightest bottleneck on your AI roadmap right now?
-♻️ Repost this for a PM, engineer, or leader shipping AI agents this quarter.
-👋 New here? I'm Afrina. 15+ years of building product, now working on Gemini & AI agents at Google. Follow for practical notes on how AI products are built.`,
-            comment: `Credit to ${creator} for the original post${sourceUrl ? `: ${sourceUrl}` : ''} (${mult}x their usual engagement — verified via HarvestAPI). Every Saturday I break down one AI product build step by step in my newsletter: https://www.linkedin.com/in/afrina-m`
-          };
+          const summaryLine = rawInsight ? rawInsight.slice(0, 200) : `${creator} showed why ${shortTopic.toLowerCase()} separates durable AI products from fragile demos.`;
+          posts[dayIdx] = buildOutlierDraftByArchetype({
+            arch,
+            shortTopic,
+            summaryLine,
+            creator,
+            mult,
+            dayName: dayNames[dayIdx],
+            sourceUrl
+          });
 
           activeDayIdx = dayIdx;
           await persistAll();
           renderStudio();
           switchTab('calendar');
-          showToast(`✓ ${dayNames[dayIdx]} draft rebuilt in your voice (crediting ${creator}). Click "Reset Day" anytime to restore the original.`);
+
+          // If user connected a Gemini key, enhance the converted draft live with Gemini!
+          if (getSharedGeminiKey()) {
+            showToast(`✓ Loaded ${creator}'s outlier into ${dayNames[dayIdx]} — refining with Gemini…`);
+            await runAiRewrite('outlier');
+          } else {
+            showToast(`✓ Rebuilt in Outlier Voice v2 (${posts[dayIdx].archetype}) crediting ${creator}! Click "Reset Day" anytime.`);
+          }
         };
 
         // Saturday Newsletter + revenue-mix simulator (her own newsletter business, not Google data)
@@ -2408,11 +2950,11 @@ Credit to ${creator} for the original post (${mult}x outlier) that sparked this 
           }
           const count = val.split(/\n\s*---\s*\n/).filter(Boolean).length;
           voiceScore = Math.min(100, voiceScore + count * 2);
-          document.getElementById('header-voice-badge').textContent = `Voice DNA: ${voiceScore}%`;
-          document.getElementById('voice-feedback').textContent = `✓ Ingested ${count} verbatim post(s)! Voice DNA locked at ${voiceScore}%.`;
+          document.getElementById('header-voice-badge').textContent = 'Outlier Voice v2';
+          document.getElementById('voice-feedback').textContent = `✓ Ingested ${count} reference post(s) into Outlier Voice v2!`;
           document.getElementById('voice-paste-box').value = '';
           await persistAll();
-          showToast(`Voice DNA calibrated to ${voiceScore}%!`);
+          showToast('Reference posts added to Outlier Voice v2!');
         };
 
         // Optional Local VM Bridge (collapsed by default; zero API key prompts)
