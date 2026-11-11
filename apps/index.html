@@ -13,7 +13,7 @@
   .build .when { font-size: 13.5px; color: var(--ink-3); line-height: 1.4; padding-top: 4px; }
   .build .when b { display: block; color: var(--ink); font-weight: 600; }
   .build h2 { font-size: 22px; letter-spacing: -0.015em; }
-  .build h2 a { text-decoration: none; }
+  .build h2 a { text-decoration: none; color: inherit; }
   .build h2 a:hover { text-decoration: underline; text-decoration-color: var(--line-2); }
   .build .lede { color: var(--ink-2); margin-top: 6px; max-width: 62ch; }
   .build .io { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin-top: 14px; font-size: 13.5px; }
@@ -24,6 +24,7 @@
   .build .checks svg { width: 15px; height: 15px; color: var(--verified); flex: none; }
   .build .go { padding-top: 4px; display: flex; flex-direction: column; gap: 8px; align-items: stretch; min-width: 180px; }
   .how { max-width: 1320px; margin: 40px auto 0; padding: 0 20px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 32px; }
+  .how > div { border-top: 3px solid var(--brand); padding-top: 14px; }
   .how h3 { font-size: 15px; }
   .how p { color: var(--ink-2); font-size: 14px; margin-top: 6px; }
   @media (max-width: 960px) {
@@ -51,7 +52,7 @@
 
 <section class="intro">
   <div>
-    <h1>The working apps behind the Thursday and Friday posts.</h1>
+    <h1>The <mark class="marker">working apps</mark> behind the Thursday and Friday posts.</h1>
     <p>A post about building something should ship the thing. Each build below runs in your browser, nothing you paste is uploaded, every number in the output is traced back to a line of your source, and exports stay locked until a person has read the flags.</p>
   </div>
   <div class="facts" aria-label="What every build guarantees">

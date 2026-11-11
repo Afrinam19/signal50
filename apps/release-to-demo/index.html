@@ -16,11 +16,7 @@
   .chg.out .text { color: var(--ink-3); }
   .chg .why { color: var(--ink-3); font-size: 12.5px; margin-top: 2px; }
   .cat { font-size: 12.5px; font-weight: 600; color: var(--ink-2); white-space: nowrap; padding: 2px 8px; border-radius: 999px; background: var(--well-2); }
-  .cat.speed { background: #E3ECFA; color: #2B4C86; }
-  .cat.security { background: var(--verified-bg); color: var(--verified); }
-  .cat.workflow { background: #EDE7F6; color: #4B3A75; }
-  .cat.integration { background: #E6F2F1; color: #1F5F5B; }
-  .cat.reliability { background: var(--well-2); color: var(--ink-2); }
+  .cat.speed, .cat.security, .cat.workflow, .cat.integration, .cat.reliability { background: var(--brand-bg); color: var(--brand-ink); }
   .cat.headsup, .cat.known { background: var(--caution-bg); color: var(--caution); }
   .cat.internal { background: transparent; color: var(--ink-3); border: 1px solid var(--line); }
   /* demo script */
@@ -93,7 +89,7 @@
 
 <section class="intro">
   <div>
-    <h1>Raw release notes in. A customer demo pack out, with every claim traced.</h1>
+    <h1>Raw release notes in. A customer demo pack out, <mark class="marker">with every claim traced</mark>.</h1>
     <p>Paste a changelog or a list of PR titles. The agent keeps the wins customers can feel, drops internal cleanup and says why, translates each win for the exec buyer, the daily user and the partner, then packages a 30-second demo script, a one-page brief, a 4:5 card and the Slack, CRM and email snippets.</p>
   </div>
   <div class="facts" aria-label="How it runs">
@@ -473,10 +469,10 @@ ${kept.map(c => `${c.id}. [${c.category}] ${c.text}`).join('\n')}`;
 
   function renderDemo(pack, mark) {
     const total = pack.beats.reduce((a, b) => a + b.len, 0);
-    const shades = ['#15171A', '#3F4651', '#6B7380', '#8B93A1', '#AEB6C2', '#157F5A'];
+    const shades = ['#1B37D6', '#2545F5', '#5B72F8', '#8C9CFA', '#C5CDFF', '#FFD60A'];
     $('demo').innerHTML = `<div class="demo-grid"><div>
       <div class="timeline" aria-hidden="true">${pack.beats.map((b, i) => `<span style="width:${(b.len / total * 100).toFixed(1)}%;background:${shades[i]}" title="${b.t} ${esc(b.say)}"></span>`).join('')}</div>
-      <table class="beats"><thead><tr><th>Time</th><th>Say</th><th>Show</th></tr></thead><tbody>${pack.beats.map(b => `<tr><td class="t">${b.t}</td><td>${mark(b.say)}</td><td class="show">${esc(b.show)}</td></tr>`).join('')}</tbody></table></div>
+      <table class="beats"><thead><tr><th>Time</th><th>Say</th><th>Show</th></tr></thead><tbody>${pack.beats.map(b => `<tr><td class="t">${b.t}</td><td>${mark(b.say)}</td><td class="show">${esc(b.show)}</td></tr>`).join('')}</tbody></table>
       <ul class="checklist"><li>Crop to 4:5 (1080 by 1350); most of LinkedIn is watched on a phone</li><li>Burn captions in; most people watch without sound</li><li>Demo data only, no customer names or personal data on screen</li><li>Show the clock or the number, not the settings page</li><li>End card: the call to action and your name, held for the last beats</li><li>Under half a minute; cut anything that is a scroll</li></ul>
     </div>
     <div class="cardprev" id="cardprev">${cardSvg(pack)}<p class="cap">The 4:5 card, rendered from the same traced numbers. Download it from the review bar.</p></div></div>`;
@@ -489,8 +485,9 @@ ${kept.map(c => `${c.id}. [${c.category}] ${c.text}`).join('\n')}`;
     let y = 150;
     let out = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="${F}" role="img" aria-label="${esc(pack.name)} demo card">
 <rect width="${W}" height="${H}" fill="#FFFFFF"/>
+<rect width="${W}" height="16" fill="#2545F5"/>
 <text x="72" y="92" font-size="22" font-weight="600" fill="#15171A">What shipped${pack.meta.date ? ', ' + esc(pack.meta.date) : ''}</text>
-<text x="${W - 72}" y="92" text-anchor="end" font-size="22" fill="#6B7380">Built with Antigravity</text>
+<text x="${W - 72}" y="92" text-anchor="end" font-size="22" font-weight="600" fill="#2545F5">Built with Antigravity</text>
 <line x1="72" y1="112" x2="${W - 72}" y2="112" stroke="#E4E7EB" stroke-width="2"/>`;
     title.forEach(l => { y += 72; out += `<text x="72" y="${y}" font-size="68" font-weight="600" fill="#15171A" letter-spacing="-1.5">${esc(l)}</text>`; });
     y += 44; out += `<text x="72" y="${y}" font-size="26" fill="#3F4651">The ${pack.top.length === 1 ? 'change' : pack.top.length + ' changes'} customers will feel. Internal work left out on purpose.</text>`;
@@ -505,11 +502,11 @@ ${kept.map(c => `${c.id}. [${c.category}] ${c.text}`).join('\n')}`;
       out += `<line x1="72" y1="${top}" x2="${W - 72}" y2="${top}" stroke="#E4E7EB" stroke-width="2"/>
 <text x="72" y="${top + 48}" font-size="20" font-weight="600" fill="#6B7380">${CAT_LABEL[w.category] || w.category}${w.prs.length ? `<tspan dx="22">PR #${esc(w.prs[0])}</tspan>` : ''}</text>`;
       lines.forEach((l, k) => { out += `<text x="72" y="${top + 100 + k * 40}" font-size="32" font-weight="600" fill="#15171A" letter-spacing="-0.4">${esc(l)}</text>`; });
-      if (big) { out += `<text x="${W - 72}" y="${top + h / 2 + bigSize / 3}" text-anchor="end" font-size="${bigSize}" font-weight="600" fill="#15171A" letter-spacing="-1.5">${esc(big)}</text><line x1="${W - 72 - Math.min(big.length * bigSize * .56, 480)}" y1="${top + h / 2 + bigSize / 3 + 14}" x2="${W - 72}" y2="${top + h / 2 + bigSize / 3 + 14}" stroke="#157F5A" stroke-width="5" stroke-linecap="round"/>`; }
+      if (big) { out += `<text x="${W - 72}" y="${top + h / 2 + bigSize / 3}" text-anchor="end" font-size="${bigSize}" font-weight="600" fill="#2545F5" letter-spacing="-1.5">${esc(big)}</text><line x1="${W - 72 - Math.min(big.length * bigSize * .56, 480)}" y1="${top + h / 2 + bigSize / 3 + 16}" x2="${W - 72}" y2="${top + h / 2 + bigSize / 3 + 16}" stroke="#FFD60A" stroke-width="10"/>`; }
     });
     const fy = H - 110;
     out += `<line x1="72" y1="${fy - 36}" x2="${W - 72}" y2="${fy - 36}" stroke="#E4E7EB" stroke-width="2"/>`;
-    if (pack.heads[0] || pack.known[0]) out += `<text x="72" y="${fy}" font-size="22" fill="#9A6700" font-weight="600">Heads-up: ${esc(short((pack.heads[0] || pack.known[0]).text, 72))}</text>`;
+    if (pack.heads[0] || pack.known[0]) out += `<text x="72" y="${fy}" font-size="22" fill="#B54708" font-weight="600">Heads-up: ${esc(short((pack.heads[0] || pack.known[0]).text, 72))}</text>`;
     out += `<text x="72" y="${H - 52}" font-size="20" fill="#6B7380">Afrina M, Signal50. Every number traced to the release notes.</text>
 <text x="${W - 72}" y="${H - 52}" text-anchor="end" font-size="20" fill="#6B7380">afrinam19.github.io/signal50</text></svg>`;
     return out;

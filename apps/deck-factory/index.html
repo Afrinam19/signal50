@@ -36,6 +36,11 @@
   .notes[open] summary::before { transform: rotate(45deg); }
   .notes .body { padding: 8px 0 0 17px; line-height: 1.5; }
   .notes .flagline { color: var(--danger); font-weight: 600; margin-top: 6px; }
+  .theme-royal { --s-bg: #FFFFFF; --s-ink: #15171A; --s-mute: #5B6473; --s-accent: #2545F5; --s-line: #E4E7EB; --s-font: var(--font); }
+  .theme-royal.title { --s-bg: #2545F5; --s-ink: #FFFFFF; --s-mute: rgba(255, 255, 255, .8); --s-accent: #FFD60A; --s-line: rgba(255, 255, 255, .3); }
+  .theme-royal .ok { text-decoration: none; background: linear-gradient(180deg, transparent 60%, #FFD60A 60%, #FFD60A 96%, transparent 96%); }
+  .theme-royal.title .ok { background: none; text-decoration: underline; text-decoration-color: #FFD60A; text-decoration-thickness: .08em; text-underline-offset: .12em; }
+  .theme-royal:not(.title)::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 1.1cqw; background: #2545F5; }
   .theme-slate { --s-bg: #0F172A; --s-ink: #F8FAFC; --s-mute: #A5B4CF; --s-accent: #7DB0FF; --s-line: rgba(255, 255, 255, .14); --s-font: var(--font); }
   .theme-warm { --s-bg: #FBF8F3; --s-ink: #1F1A17; --s-mute: #6E655C; --s-accent: #9A4B2F; --s-line: #E6DCCD; --s-font: var(--font); }
   .theme-mono { --s-bg: #FFFFFF; --s-ink: #111111; --s-mute: #666666; --s-accent: #111111; --s-line: #E5E5E5; --s-font: var(--serif); }
@@ -68,7 +73,7 @@
 
 <section class="intro">
   <div>
-    <h1>Rough notes in. A board-ready deck out, with every number traced.</h1>
+    <h1>Rough notes in. A board-ready deck out, <mark class="marker">with every number traced</mark>.</h1>
     <p>Paste what you have — bullets, a transcript extract, a messy brief. The factory builds an SCQA storyline, applies fixed brand tokens, and marks every figure as traced to a source line or flagged. Nothing exports until you have read the flags.</p>
   </div>
   <div class="facts" aria-label="How it runs">
@@ -97,6 +102,7 @@
         </label>
         <label class="field" for="theme"><span>Brand tokens</span>
           <select id="theme" class="select">
+            <option value="royal">Royal blue</option>
             <option value="slate">Enterprise slate</option>
             <option value="warm">Warm studio</option>
             <option value="mono">Mono serif</option>
@@ -453,7 +459,7 @@ ${facts.map(f => `${f.id}. ${f.line}`).join('\n')}`;
       setStation(3, check.flagged ? 'warn' : 'done', `${check.total - check.flagged} of ${check.total} traced${check.flagged ? `, ${check.flagged} flagged` : ''}`);
       setStation(5, 'active', 'Applying tokens…'); await sleep(250);
       renderDeck(plan, opts.theme); renderLedger(facts);
-      setStation(5, 'done', `${{ slate: 'Enterprise slate', warm: 'Warm studio', mono: 'Mono serif' }[opts.theme]}, 16:9 grid`);
+      setStation(5, 'done', `${{ royal: 'Royal blue and yellow', slate: 'Enterprise slate', warm: 'Warm studio', mono: 'Mono serif' }[opts.theme]}, 16:9 grid`);
       setStation(6, 'warn', 'Waiting for your review');
       setStatus(`${check.total - check.flagged} of ${check.total} numbers traced${check.flagged ? `, ${check.flagged} need a source` : ', clean'}`, check.flagged ? 'bad' : 'ok');
       $('deck-meta').textContent = `${plan.slides.length} slides, ${plan.mode}${plan.client ? ', ' + plan.client : ''}`;
