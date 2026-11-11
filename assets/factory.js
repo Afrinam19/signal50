@@ -200,7 +200,7 @@ window.Signal50Factory = (() => {
     ctx.beginPath(); ctx.arc(52, h - 36, 19, 0, Math.PI * 2); ctx.fillStyle = P.ink; ctx.fill();
     font(ctx, 13, 800); txt(ctx, spec.initials || 'AM', 52, h - 31, '#fff', 'center');
     font(ctx, 15, 800); txt(ctx, spec.author || 'Afrina M', 80, h - 38, P.ink);
-    font(ctx, 10, 500); txt(ctx, clip(ctx, spec.authorLine || 'Gemini & AI agents @ Google · $300M→$1B+', 240), 80, h - 24, P.mute);
+    font(ctx, 10, 500); txt(ctx, clip(ctx, spec.authorLine || '15+ yrs building product · Gemini & AI agents @ Google', 240), 80, h - 24, P.mute);
     // CTA pill: "Comment  [KEY]  to get the full setup"
     const m = /["“]([^"”]+)["”]/.exec(spec.cta || ''); const key = m ? m[1] : 'SETUP';
     const pre = (spec.cta || 'Comment "SETUP" to get the full setup').split(/["“][^"”]+["”]/)[0].trim() || 'Comment';

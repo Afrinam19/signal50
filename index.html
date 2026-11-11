@@ -11,7 +11,25 @@
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     button { cursor: pointer; }
   </style>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <meta name="theme-color" content="#C4431F" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Signal50" />
   <style>
+    :root {
+      --background: #F6F3EC;
+      --card: #FFFFFF;
+      --foreground: #161920;
+      --muted-foreground: #596070;
+      --border: #DDD7CB;
+      --primary: #C4431F;
+      --primary-foreground: #FFFFFF;
+      --secondary: #EFECE4;
+      --secondary-foreground: #161920;
+    }
     body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
   </style>
 </head>
@@ -22,11 +40,11 @@
       <div>
         <div class="flex flex-wrap items-center gap-2">
           <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)]">Signal50 OS</span>
-          <span id="sync-status-pill" class="text-xs px-2 py-0.5 rounded bg-[var(--secondary)] text-[var(--secondary-foreground)] font-medium">Interactive Studio Ready</span>
+          <span id="sync-status-pill" class="text-xs px-2 py-0.5 rounded bg-[var(--secondary)] text-[var(--secondary-foreground)] font-medium">PWA Ready · Auto-Saves Locally</span>
         </div>
         <h1 class="text-base md:text-xl font-bold mt-1">Afrina M · AI Product Voice &amp; Growth Studio</h1>
       </div>
-      <div class="flex items-center gap-2 text-xs">
+      <div class="flex flex-wrap items-center gap-2 text-xs">
         <a href="apps/deck-factory/" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold hover:bg-[var(--secondary)]" title="Thursday's live build">Thu · Deck Factory ↗</a>
         <a href="apps/release-to-demo/" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold hover:bg-[var(--secondary)]" title="Friday's live build">Fri · Release-to-Demo ↗</a>
         <span class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--secondary-foreground)] font-semibold">4.5K → 50K (26w)</span>
@@ -52,38 +70,35 @@
       <button type="button" id="toast-close" class="text-xs underline ml-4">Dismiss</button>
     </div>
 
-    <!-- Zero-Chat-Upload Bridge: Pull Live LinkedIn via HarvestAPI OR Send Phone Screenshots Straight to VM -->
-    <section class="bg-[var(--card)] border-2 border-[var(--primary)] rounded-xl p-4 space-y-3">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)]">Remote Chat Bypass Bridge</span>
-          <h2 class="text-sm md:text-base font-bold mt-1">Let Antigravity See Your Live LinkedIn (Zero Chat Uploads Needed)</h2>
+    <!-- Collapsed Status & Optional VM Bridge Bar (Zero API Key Prompts) -->
+    <section class="bg-[var(--card)] border border-[var(--border)] rounded-xl px-4 py-2.5 space-y-2.5">
+      <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[var(--secondary)] text-[var(--secondary-foreground)]">HarvestAPI Scout</span>
+          <span id="harvest-key-status" class="text-[var(--muted-foreground)] font-medium">✓ HarvestAPI key stored in GitHub Secrets · Auto-scouts every 12h · Public facts only</span>
         </div>
-        <button type="button" id="btn-toggle-bridge" class="text-xs font-semibold px-2.5 py-1 rounded border border-[var(--border)]">Hide / Show</button>
+        <button type="button" id="btn-toggle-bridge" class="text-xs font-semibold px-2.5 py-1 rounded border border-[var(--border)]">Show Tools</button>
       </div>
-      <div id="bridge-body" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-        <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-2">
-          <div class="font-bold">Path A · Auto-Pull Live LinkedIn via HarvestAPI (Zero Files)</div>
-          <p class="text-[var(--muted-foreground)]">Fetches your live Banner image, Headshot, Headline, Follower count &amp; recent posts straight onto this VM.</p>
-          <div class="flex flex-col sm:flex-row gap-2">
-            <input id="harvest-api-key-input" type="password" placeholder="Paste HarvestAPI Key (harvestapi.io)" class="flex-1 rounded-lg border border-[var(--border)] bg-[var(--card)] px-2.5 py-1.5 text-xs" />
-            <button type="button" id="btn-harvest-pull" class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-bold whitespace-nowrap">Pull My LinkedIn →</button>
-          </div>
+      <div id="bridge-body" class="hidden grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-1 border-t border-[var(--border)]">
+        <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-1.5">
+          <div class="font-bold">12h Automated Outlier Scout (GitHub Actions)</div>
+          <p class="text-[var(--muted-foreground)]">Runs <code class="font-mono">scout/scout.mjs</code> at 06:17 &amp; 18:17 UTC using your encrypted <code class="font-mono">HARVEST_API_KEY</code> repository secret—never exposed in client HTML.</p>
+          <a href="https://github.com/Afrinam19/signal50/actions/workflows/scout.yml" target="_blank" rel="noopener" class="inline-block px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-bold">Open GitHub Scout Workflow ↗</a>
         </div>
-        <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-2">
-          <div class="font-bold">Path B · Phone Camera Roll / Cmd+V Screenshot → Direct to VM</div>
-          <p class="text-[var(--muted-foreground)]">Bypasses Remote chat's upload block—saves images/PDFs straight into <code class="font-mono">/uploads</code> on your Agent VM.</p>
+        <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-1.5">
+          <div class="font-bold">Optional Local VM Screenshot Bridge</div>
+          <p class="text-[var(--muted-foreground)]">When running against your local Antigravity VM server, drop or press <strong>Cmd+V / Ctrl+V</strong> to send screenshots straight to <code class="font-mono">/uploads</code>.</p>
           <div class="flex flex-wrap items-center gap-2">
-            <label class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-bold cursor-pointer">
-              Tap to Pick Screenshot(s) / PDF
+            <label class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--card)] font-bold cursor-pointer">
+              Pick Screenshot / PDF
               <input id="vm-file-input" type="file" accept="image/*,.pdf" multiple class="hidden" />
             </label>
-            <span class="text-[var(--muted-foreground)]">or press <strong>Cmd+V / Ctrl+V</strong> anywhere on this page</span>
+            <button type="button" id="btn-harvest-pull" class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--card)] font-semibold">Refresh @afrina-m (VM)</button>
           </div>
         </div>
       </div>
-      <div id="vm-bridge-status" class="text-xs font-medium text-[var(--muted-foreground)]">Ready · Any pulled LinkedIn media or phone screenshot lands directly on the VM so your agent can inspect it immediately.</div>
-      <div id="vm-uploaded-thumbs" class="flex flex-wrap gap-2"></div>
+      <div id="vm-bridge-status" class="hidden text-xs font-medium text-[var(--muted-foreground)]"></div>
+      <div id="vm-uploaded-thumbs" class="hidden flex flex-wrap gap-2"></div>
     </section>
 
     <!-- =================================================================== -->
@@ -146,9 +161,15 @@
             <div id="post-safety" class="text-xs font-semibold text-[#1F5E46] mt-2">✓ Data-safety: checking…</div>
           </div>
 
+          <div>
+            <label for="comment-editor" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">First Comment CTA (Creator Source Link + Saturday Newsletter Link)</label>
+            <textarea id="comment-editor" rows="2" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] p-2.5 text-xs leading-relaxed"></textarea>
+          </div>
+
           <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
-            <span id="save-status" class="text-xs text-[var(--muted-foreground)]">Edits sync automatically</span>
-            <div class="flex gap-2">
+            <span id="save-status" class="text-xs text-[var(--muted-foreground)]">✓ Auto-saves as you type</span>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" id="btn-reset-day" class="px-3 py-2 rounded-lg border border-[var(--border)] text-xs font-semibold text-[var(--muted-foreground)]">Reset Day</button>
               <button type="button" id="btn-copy-comment" class="px-3 py-2 rounded-lg border border-[var(--border)] text-xs font-semibold">Copy 1st Comment</button>
               <button type="button" id="btn-save-post" class="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Save &amp; Queue Day</button>
             </div>
@@ -477,9 +498,12 @@
           <div class="flex flex-wrap justify-between items-center gap-2">
             <div>
               <h2 class="text-base md:text-lg font-bold">Subagent #4 · Interactive Self-Healing Retro</h2>
-              <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Edit any post's weekly metrics below and click <strong>Run Self-Healing Diagnosis</strong> to recompute winners, flops, and skill mutations.</p>
+              <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Enter your Sunday LinkedIn analytics below (auto-saves as you type) or preview with sample numbers.</p>
             </div>
-            <button type="button" id="btn-run-retro" class="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Run Self-Healing Diagnosis</button>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" id="btn-demo-retro" class="px-3 py-2 rounded-lg border border-[var(--border)] text-xs font-semibold">Load Sample Week</button>
+              <button type="button" id="btn-run-retro" class="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Run Self-Healing Diagnosis</button>
+            </div>
           </div>
 
           <div class="overflow-x-auto">
@@ -1144,7 +1168,7 @@ Grab Issue #01 in the first comment 🩵
 💬 Reply with the #1 workflow bottleneck you want me to build next week.
 ♻️ Repost for anyone growing into AI product work.
 👋 New here? I'm Afrina. 15+ years building product. Follow for weekly AI product playbooks.`,
-          comment: `Read Issue #01 & grab both "Built with Antigravity" templates here → [Your Substack / Beehiiv Newsletter Link]`
+          comment: `Read Issue #01 & grab both "Built with Antigravity" templates here → https://www.linkedin.com/in/afrina-m`
         }
       ];
 
@@ -1333,7 +1357,7 @@ Next Saturday, Issue #02: GitHub release notes → a live customer demo in 10 mi
 
 💬 Reply and tell me which station you would build first. I read every reply.
 ♻️ If a colleague is still formatting decks by hand, forward this to them.
-👋 New here? I'm Afrina. 15+ years building product, now scaling Gemini and AI agents at Google ($300M→$1B+). Every Saturday: one build, real numbers, plain English.
+👋 New here? I'm Afrina. 15+ years building product, now working on Gemini and AI agents at Google. Every Saturday: one build, real numbers, plain English.
 
 — Afrina M
 Senior PM, Google (Gemini & AI Agents) · 4x Google Cloud Next speaker
@@ -1366,31 +1390,79 @@ Every week here—and every Saturday in my newsletter, The Prototype-to-Producti
 
 Building AI products people actually adopt, or navigating your next move? Let's connect.`;
 
-      let RETRO_ROWS = [
+      const DEMO_RETRO_ROWS = [
         { day: 'Mon · Outlier Sheet', imp: 68400, likes: 1120, reposts: 94, nl: 310 },
         { day: 'Tue · Eval Matrix', imp: 44200, likes: 740, reposts: 68, nl: 205 },
         { day: 'Wed · Trace Carousel', imp: 39100, likes: 615, reposts: 52, nl: 160 },
         { day: 'Thu · Deck Agent GIF', imp: 92500, likes: 1640, reposts: 185, nl: 540 },
         { day: 'Fri · GTM Agent GIF', imp: 78300, likes: 1390, reposts: 142, nl: 465 }
       ];
+      let RETRO_ROWS = [
+        { day: 'Mon · Outlier Sheet', imp: 0, likes: 0, reposts: 0, nl: 0 },
+        { day: 'Tue · Eval Matrix', imp: 0, likes: 0, reposts: 0, nl: 0 },
+        { day: 'Wed · Trace Carousel', imp: 0, likes: 0, reposts: 0, nl: 0 },
+        { day: 'Thu · Deck Agent GIF', imp: 0, likes: 0, reposts: 0, nl: 0 },
+        { day: 'Fri · GTM Agent GIF', imp: 0, likes: 0, reposts: 0, nl: 0 }
+      ];
 
-      let posts = safeGet('signal50_v6_posts', DEFAULT_POSTS);
+      const cloneDefaults = () => JSON.parse(JSON.stringify(DEFAULT_POSTS));
+      let posts = safeGet('signal50_v6_posts', null) || cloneDefaults();
+      RETRO_ROWS = safeGet('signal50_v6_retro', RETRO_ROWS);
       let activeDayIdx = 0;
       let voiceScore = Number(safeGet('signal50_v6_voice', 100));
       let hasBackend = false;
       let applyServerVaultHook = () => {};
+      let autoSaveTimer = null;
 
-      // Optional live Node server sync when opened via Preview Server
+      function apiHeaders(extra = {}) {
+        const pass = safeGet('signal50_passcode', '');
+        return pass ? { ...extra, 'X-Signal50-Passcode': String(pass) } : { ...extra };
+      }
+
+      async function authedFetch(url, opts = {}) {
+        let resp = await fetch(url, { ...opts, headers: apiHeaders(opts.headers || {}) });
+        if (resp.status === 401 && typeof window.prompt === 'function') {
+          const entered = window.prompt('This Signal50 server is passcode-protected. Enter SIGNAL50_PASSCODE:');
+          if (entered) {
+            safeSet('signal50_passcode', entered.trim());
+            resp = await fetch(url, { ...opts, headers: apiHeaders(opts.headers || {}) });
+          }
+        }
+        return resp;
+      }
+
+      // Optional live Node server sync when opened via Preview Server (silently skipped on GitHub Pages)
       async function tryServerLoad() {
         try {
-          if (location.protocol.startsWith('http')) {
+          if (location.protocol.startsWith('http') && !/github\.io$/i.test(location.hostname)) {
             const resp = await fetch('/api/v3/state', { cache: 'no-store' });
             if (resp.ok) {
               const data = await resp.json();
               hasBackend = true;
-              if (Array.isArray(data.posts) && data.posts.length) posts = data.posts;
+              if (Array.isArray(data.posts) && data.posts.length) {
+                posts = data.posts;
+                safeSet('signal50_v6_posts', posts);
+              }
               if (data.voiceScore) voiceScore = data.voiceScore;
-              if (Array.isArray(data.retroRows)) RETRO_ROWS = data.retroRows;
+              if (Array.isArray(data.retroRows)) {
+                RETRO_ROWS = data.retroRows;
+                safeSet('signal50_v6_retro', RETRO_ROWS);
+              }
+              if (typeof data.newsletter === 'string' && data.newsletter.trim()) {
+                const nlEl = document.getElementById('newsletter-editor');
+                if (nlEl) {
+                  nlEl.value = data.newsletter;
+                  safeSet('signal50_v6_newsletter', data.newsletter);
+                  renderSafety('newsletter-safety', data.newsletter);
+                }
+              }
+              if (typeof data.upgradedAbout === 'string' && data.upgradedAbout.trim()) {
+                const abEl = document.getElementById('profile-about-editor');
+                if (abEl) {
+                  abEl.value = data.upgradedAbout;
+                  safeSet('signal50_v6_about', data.upgradedAbout);
+                }
+              }
               document.getElementById('sync-status-pill').textContent = 'Live Server Connected (Disk Sync ON)';
               document.getElementById('header-voice-badge').textContent = `Voice DNA: ${voiceScore}%`;
               renderStudio();
@@ -1398,27 +1470,43 @@ Building AI products people actually adopt, or navigating your next move? Let's 
               applyServerVaultHook(data);
             }
           }
-        } catch (e) { /* Artifact sandbox mode: runs 100% locally */ }
+        } catch (e) { /* Static GitHub Pages / PWA mode: persists cleanly in localStorage */ }
       }
 
       async function persistAll() {
+        const nlVal = (document.getElementById('newsletter-editor') || {}).value ?? INITIAL_NEWSLETTER;
+        const aboutVal = (document.getElementById('profile-about-editor') || {}).value ?? UPGRADED_ABOUT;
         safeSet('signal50_v6_posts', posts);
         safeSet('signal50_v6_voice', voiceScore);
+        safeSet('signal50_v6_retro', RETRO_ROWS);
+        safeSet('signal50_v6_newsletter', nlVal);
+        safeSet('signal50_v6_about', aboutVal);
         if (hasBackend) {
           try {
-            await fetch('/api/v3/state', {
+            await authedFetch('/api/v3/state', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 posts,
                 voiceScore,
                 retroRows: RETRO_ROWS,
-                newsletter: document.getElementById('newsletter-editor').value,
-                upgradedAbout: document.getElementById('profile-about-editor').value
+                newsletter: nlVal,
+                upgradedAbout: aboutVal
               })
             });
           } catch (e) {}
         }
+      }
+
+      function scheduleAutoSave(statusLabel) {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(async () => {
+          await persistAll();
+          if (statusLabel) {
+            const el = document.getElementById('save-status');
+            if (el) el.textContent = statusLabel;
+          }
+        }, 300);
       }
 
       // =======================================================================
@@ -1460,34 +1548,46 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           </div>
         `).join('');
         hList.querySelectorAll('[data-hidx]').forEach(el => {
-          el.onclick = () => { p.selectedHook = Number(el.dataset.hidx); renderStudio(); };
+          el.onclick = () => { p.selectedHook = Number(el.dataset.hidx); scheduleAutoSave(); renderStudio(); };
         });
 
         document.getElementById('hook-editor').value = p.hooks[p.selectedHook];
         document.getElementById('body-editor').value = p.body;
-        document.getElementById('sim-comment').textContent = p.comment;
-        updateSimulator();
+        document.getElementById('comment-editor').value = p.comment || '';
+        document.getElementById('sim-comment').textContent = p.comment || '';
+        updateSimulator(false);
       }
 
-      function updateSimulator() {
+      function updateSimulator(fromInput = false) {
         const p = posts[activeDayIdx];
         const hook = document.getElementById('hook-editor').value;
         const body = document.getElementById('body-editor').value;
+        const comment = document.getElementById('comment-editor').value;
+        if (fromInput) {
+          p.hooks[p.selectedHook] = hook;
+          p.body = body;
+          p.comment = comment;
+          scheduleAutoSave(`✓ Auto-saved ${p.day} (${new Date().toLocaleTimeString()})`);
+        }
         document.getElementById('sim-hook').textContent = hook;
         document.getElementById('sim-body').textContent = body;
+        document.getElementById('sim-comment').textContent = comment;
         document.getElementById('sim-char-count').textContent = `${hook.length} / 210 chars`;
 
+        const combined = `${hook}\n${body}\n${comment}`;
         const full = (hook + '\n' + body).toLowerCase();
         const banned = ['delve', 'tapestry', 'testament', 'game-changer', 'thrilled to announce'];
-        const safetyHits = renderSafety('post-safety', `${hook}\n${body}\n${p.comment || ''}`);
+        const hasBrackets = /(?<!["'“])\[[^\]\n]{3,65}\](?!["'”])/.test(combined);
+        const safetyHits = renderSafety('post-safety', combined);
         const checks = [
           { ok: safetyHits.length === 0, label: safetyHits.length ? `Data-safety: ${safetyHits.length} flagged` : 'No Revenue / Internal Google Data' },
+          { ok: !hasBrackets, label: hasBrackets ? 'Fill in [Bracket] Slots' : 'No Unfilled [Brackets]' },
           { ok: hook.length > 20 && hook.length <= 210, label: `210-Char Fold (${hook.length}/210)` },
           { ok: !p.isGrowth || full.includes((p.credit || '').split(' ')[0].toLowerCase()), label: p.isGrowth ? `Credit: ${p.credit}` : 'Original Ecosystem IP' },
           { ok: !banned.some(w => full.includes(w)), label: 'Zero AI-Slop Scan' },
-          { ok: ['agent', 'eval', 'enterprise', 'margin', 'production', 'slides', 'gtm', 'mcp', 'workflow', 'prototype'].filter(k => full.includes(k)).length >= 2, label: 'AI Product Signal' },
+          { ok: ['agent', 'eval', 'enterprise', 'margin', 'production', 'slides', 'gtm', 'mcp', 'workflow', 'prototype', 'step', 'token', 'check'].filter(k => full.includes(k)).length >= 2, label: 'AI Product Signal' },
           { ok: true, label: '4:5 GIF / PNG Ready' },
-          { ok: (p.comment || '').length > 15, label: 'Saturday NL Funnel CTA' }
+          { ok: comment.trim().length > 15, label: 'Saturday NL Funnel CTA' }
         ];
         const score = Math.round((checks.filter(c => c.ok).length / checks.length) * 100);
         document.getElementById('qa-badge').textContent = `${score}% Ready`;
@@ -1522,7 +1622,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           subtitle: v('gif-subtitle') || '1 orchestrator for 14 AI workers. Rough notes → board-ready Slides in 6 minutes.',
           cta: v('gif-cta') || 'Comment "SETUP" to get the full setup',
           author: 'Afrina M', initials: 'AM',
-          authorLine: 'Gemini & AI agents @ Google · $300M→$1B+',
+          authorLine: '15+ yrs building product · Gemini & AI agents @ Google',
           hub: parsed.hub, stations: parsed.stations
         };
       }
@@ -1745,19 +1845,31 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         `).join('');
 
         tbody.querySelectorAll('input').forEach(inp => {
-          inp.onchange = () => {
+          inp.oninput = () => {
             RETRO_ROWS[Number(inp.dataset.ridx)][inp.dataset.field] = Number(inp.value || 0);
+            computeRetroDirectives();
+            scheduleAutoSave();
           };
         });
         computeRetroDirectives();
       }
 
       function computeRetroDirectives() {
+        const totalImp = RETRO_ROWS.reduce((s, r) => s + r.imp, 0);
+        const totalNl = RETRO_ROWS.reduce((s, r) => s + r.nl, 0);
+        if (totalImp === 0 && totalNl === 0) {
+          document.getElementById('retro-directives').innerHTML = `
+            <div class="p-3 rounded-lg border border-dashed border-[var(--border)] bg-[var(--secondary)]">
+              <div class="font-mono font-bold mb-1">AWAITING SUNDAY ANALYTICS</div>
+              <div>Week 1 starts at 0 (no fake numbers). Enter each post's impressions, reactions, reposts, and newsletter signups on Sunday—or click <strong>Load Sample Week</strong> to preview self-healing rules.</div>
+            </div>
+          `;
+          return;
+        }
         const sortedByNl = [...RETRO_ROWS].sort((a, b) => b.nl - a.nl);
         const top = sortedByNl[0];
         const low = sortedByNl[sortedByNl.length - 1];
         const topSavePct = ((top.reposts / Math.max(1, top.likes)) * 100).toFixed(1);
-        const totalNl = RETRO_ROWS.reduce((s, r) => s + r.nl, 0);
 
         const rules = [
           { tag: 'DOUBLE DOWN (TOP WINNER)', text: `${top.day} led the week with ${top.imp.toLocaleString()} impressions, ${topSavePct}% repost-to-like save velocity, and +${top.nl} Saturday newsletter subscribers.` },
@@ -1784,14 +1896,24 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         document.getElementById('header-voice-badge').textContent = `Voice DNA: ${voiceScore}%`;
         renderStudio();
 
-        ['hook-editor', 'body-editor'].forEach(id => {
-          document.getElementById(id).addEventListener('input', updateSimulator);
+        ['hook-editor', 'body-editor', 'comment-editor'].forEach(id => {
+          document.getElementById(id).addEventListener('input', () => updateSimulator(true));
         });
+
+        document.getElementById('btn-reset-day').onclick = async () => {
+          const dayName = posts[activeDayIdx].day;
+          posts[activeDayIdx] = cloneDefaults()[activeDayIdx];
+          await persistAll();
+          renderStudio();
+          document.getElementById('save-status').textContent = `✓ Restored default ${dayName} draft`;
+          showToast(`Restored ${dayName} back to its polished default draft!`);
+        };
 
         document.getElementById('btn-save-post').onclick = async () => {
           const p = posts[activeDayIdx];
           p.hooks[p.selectedHook] = document.getElementById('hook-editor').value;
           p.body = document.getElementById('body-editor').value;
+          p.comment = document.getElementById('comment-editor').value;
           await persistAll();
           document.getElementById('save-status').textContent = `✓ Queued ${p.day} (${new Date().toLocaleTimeString()})`;
           renderStudio();
@@ -1804,23 +1926,61 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         };
 
         document.getElementById('btn-copy-comment').onclick = () => {
-          safeCopy(posts[activeDayIdx].comment || '', '✓ Copied First Comment CTA to clipboard!');
+          safeCopy(document.getElementById('comment-editor').value || '', '✓ Copied First Comment CTA to clipboard!');
         };
 
         const DAY_TO_PRESET = { Monday: 'spotify', Tuesday: 'evals', Wednesday: 'humancheck', Thursday: 'deck', Friday: 'gtm', Saturday: 'agency' };
         document.getElementById('btn-send-to-gif').onclick = () => {
           const p = posts[activeDayIdx];
           const presetKey = DAY_TO_PRESET[p.day];
-          if (gifLayout() === 'factory' && presetKey && FACTORY.PRESETS[presetKey]) {
+          const currentBody = document.getElementById('body-editor').value;
+          const isUnmodifiedDefault = DEFAULT_POSTS[activeDayIdx] && currentBody.trim() === DEFAULT_POSTS[activeDayIdx].body.trim();
+
+          const bodyLines = currentBody.split('\n').map(l => l.trim());
+          const extracted = [];
+          for (let i = 0; i < bodyLines.length && extracted.length < 6; i++) {
+            const m = bodyLines[i].match(/^(?:Step\s*)?([1-6])[.):]\s*(.+)/i);
+            if (m) {
+              const stepTitle = m[2].trim();
+              let detail = 'Production-tested playbook';
+              for (let j = i + 1; j <= Math.min(i + 3, bodyLines.length - 1); j++) {
+                if (!bodyLines[j]) continue;
+                if (/^(?:Step\s*)?[1-6][.):]/i.test(bodyLines[j])) break;
+                const arrow = bodyLines[j].match(/^(?:👉|[•-])\s*(.+)/u);
+                if (arrow) { detail = arrow[1].trim(); break; }
+                detail = bodyLines[j];
+              }
+              extracted.push({ title: stepTitle.slice(0, 42), detail: detail.slice(0, 68) });
+            }
+          }
+
+          if (gifLayout() === 'factory' && isUnmodifiedDefault && presetKey && FACTORY.PRESETS[presetKey]) {
             document.getElementById('gif-preset').value = presetKey;
             loadGifPreset(presetKey);
-          } else {
-            document.getElementById('gif-kicker').value = p.track.slice(0, 48);
-            document.getElementById('gif-headline').value = p.title.slice(0, 56);
-            const numbered = p.body.split('\n').filter(l => /^[1-4]\./.test(l.trim())).slice(0, 4);
-            if (numbered.length >= 3) {
-              document.getElementById('gif-steps').value = numbered.map((l, idx) => `0${idx + 1} · ${l.replace(/^[1-4]\.\s*/, '')} | Production-tested playbook`).join('\n');
+          } else if (extracted.length >= 3) {
+            document.getElementById('gif-kicker').value = p.track.slice(0, 48).toUpperCase();
+            if (gifLayout() === 'factory') {
+              const cleanTitle = (p.title || p.day).replace(/[^\w\s&/-]/g, '').trim().slice(0, 34);
+              document.getElementById('gif-headline').value = `{${cleanTitle}} System`;
+              document.getElementById('gif-subtitle').value = `${extracted.length}-step execution workflow from ${p.day}'s post`;
+              const toolPools = [
+                'Gemini, Docs, Drive | Spec, Scope',
+                'Antigravity, Gemini, MCP | Planner, Builder',
+                'BigQuery, Sheets, Docs | Eval, Trace',
+                'Playwright, GitHub, Docs | Gate, Audit',
+                'Slides, Looker, Sheets | Ship, Review'
+              ];
+              document.getElementById('gif-steps').value = [
+                `HUB: Execution Core | coordinates ${extracted.length} steps with human review gates | Antigravity, Gemini, MCP, Docs, GitHub`,
+                ...extracted.map((s, idx) => `${s.title} | ${s.detail} | ${toolPools[idx % toolPools.length]}`)
+              ].join('\n');
+            } else {
+              document.getElementById('gif-headline').value = p.title.slice(0, 56);
+              document.getElementById('gif-steps').value = extracted.map((s, idx) => `0${idx + 1} · ${s.title} | ${s.detail}`).join('\n');
             }
+          } else if (presetKey && FACTORY.PRESETS[presetKey]) {
+            document.getElementById('gif-preset').value = presetKey;
+            loadGifPreset(presetKey);
           }
           switchTab('gif');
           renderPreviewTick();
@@ -2005,14 +2165,16 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             btn.onclick = () => {
               const o = vaultItems.find(v => v.id === btn.dataset.vaultId);
               if (!o) return;
-              document.getElementById('new-out-creator').value = o.creator;
+              const crEl = document.getElementById('new-out-creator');
+              crEl.value = o.creator;
+              crEl.dataset.sourceUrl = o.url || '';
+              crEl.dataset.insight = o.insight || '';
               document.getElementById('new-out-topic').value = o.topic;
               document.getElementById('calc-likes').value = o.likes || 0;
               document.getElementById('calc-comments').value = o.comments || 0;
               document.getElementById('calc-reposts').value = o.reposts || 0;
               document.getElementById('calc-median').value = o.median || 30;
               document.getElementById('calc-mad').value = o.mad || 12;
-              document.getElementById('new-out-creator').dataset.sourceUrl = o.url || '';
               updateRarityCalc();
               showToast(`Loaded ${o.creator}'s real outlier (${o.mult}x) into the converter.`);
             };
@@ -2075,7 +2237,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             // Static deployment: the scout runs in GitHub Actions (every 12h, or on demand).
             window.open('https://github.com/Afrinam19/signal50/actions/workflows/scout.yml', '_blank', 'noopener');
             logBox.classList.remove('hidden');
-            logBox.textContent = 'Opened the Outlier Scout workflow on GitHub. Click "Run workflow" there; data/outliers.json refreshes in ~3 minutes and this page picks it up on reload.\nAuto-schedule: 06:17 & 18:17 UTC daily. Requires the HARVEST_API_KEY repository secret for full coverage (public pages are capped at 5 creators/run).';
+            logBox.textContent = 'Opened the Outlier Scout workflow on GitHub. Click "Run workflow" there; data/outliers.json refreshes in ~3 minutes (using your encrypted HARVEST_API_KEY secret) and this page picks it up on reload.\nAuto-schedule: 06:17 & 18:17 UTC daily.';
             return;
           }
           btn.disabled = true;
@@ -2090,7 +2252,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             } catch (_) {}
           }, 2500);
           try {
-            const resp = await fetch('/api/v3/outliers/scan', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) });
+            const resp = await authedFetch('/api/v3/outliers/scan', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) });
             const out = await resp.json();
             if (!resp.ok) throw new Error(out.error || `HTTP ${resp.status}`);
             logBox.textContent = (out.log || []).join('\n');
@@ -2117,6 +2279,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           const creatorEl = document.getElementById('new-out-creator');
           const creator = creatorEl.value.trim() || 'Industry Creator';
           const sourceUrl = creatorEl.dataset.sourceUrl || '';
+          const rawInsight = (creatorEl.dataset.insight || '').replace(/\s+/g, ' ').trim();
           const topic = document.getElementById('new-out-topic').value.trim() || 'Scaling AI Products';
           const dayIdx = Number(document.getElementById('new-out-day').value || 0);
           const { mult, isOutlier } = computeRarity();
@@ -2127,6 +2290,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           }
 
           const shortTopic = topic.replace(/[.!?]+$/, '').slice(0, 90);
+          const summaryLine = rawInsight ? rawInsight.slice(0, 180) : `${creator} showed why ${shortTopic.toLowerCase()} separates shipping teams from demo teams.`;
           posts[dayIdx] = {
             day: dayNames[dayIdx],
             track: `Outlier Growth · Credit: ${creator} (${mult}x · HarvestAPI verified)`,
@@ -2136,54 +2300,58 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             title: `${shortTopic} — rebuilt in Afrina's voice (credit: ${creator})`,
             selectedHook: 0,
             hooks: [
-              `${shortTopic}\n${creator} showed why this matters. Here is how to actually do it, step by step:`.slice(0, 210),
-              `Most teams get this wrong: ${shortTopic.charAt(0).toLowerCase() + shortTopic.slice(1)}.\nHere are the steps I use at Google, in plain English:`.slice(0, 210),
-              `${creator} posted something every PM should read: ${shortTopic.charAt(0).toLowerCase() + shortTopic.slice(1)}.\nHere is the version you can run in your next sprint:`.slice(0, 210)
+              `${shortTopic}.\n${creator} showed why this matters. Here is how to run it in production, step by step:`.slice(0, 210),
+              `Most AI teams miss this: ${shortTopic.charAt(0).toLowerCase() + shortTopic.slice(1)}.\nHere are the 5 workflow checks I use at Google, in plain English:`.slice(0, 210),
+              `${creator} shared an outlier lesson on ${shortTopic.charAt(0).toLowerCase() + shortTopic.slice(1)}.\nHere is the sprint playbook your PM and eng team can ship this week:`.slice(0, 210)
             ],
-            body: `[Hook line 1 — the surprising fact, in plain English]
-[Hook line 2 — why it matters to the reader]
+            body: `${summaryLine}
+Most teams treat this like a prompt problem when it is really a product workflow problem.
 
-Here are 5 steps to [outcome the reader wants] 🚀
+Here are 5 steps to turn this into a reliable production workflow 🚀
 
 Save this for your next sprint planning 🩵
 
-Step 1. [Name the first move]
-[One sentence on what to do.]
- 👉 [One concrete how-to or tool.]
+Step 1. Map the exact bottleneck before touching the model
+Write down where human hours or token latency actually spike in the workflow.
+ 👉 Instrument one real user trace end to end before changing prompts.
 
-Step 2. [Second move]
- 👉 [Concrete how-to.]
+Step 2. Turn vague quality complaints into binary failure modes
+Replace subjective "looks off" feedback with 3 to 5 pass/fail checks from real logs.
+ 👉 Label 30 real production traces yourself with your engineering lead.
 
-Step 3. [Third move]
- 👉 [Concrete how-to.]
+Step 3. Constrain the agent's context and tool surface
+Give the agent only the schema, retrieval slice, and tools required for that single step.
+ 👉 Strip unused tools and long history so latency and failure rates drop together.
 
-Step 4. [Fourth move]
- 👉 [Concrete how-to.]
+Step 4. Put a deterministic eval gate in CI before rollout
+Run your golden trace dataset on every prompt, model, or tool change automatically.
+ 👉 Block merges when pass rate, latency, or cost per task regresses.
 
-Step 5. [Fifth move]
- 👉 [Concrete how-to.]
+Step 5. Keep a clear human check on irreversible actions
+Let the agent draft, verify, and stage the work—and let a human approve external sends.
+ 👉 Track edit distance on human approvals to see where the workflow still needs work.
 
-[Closer line 1 — the one-sentence lesson.]
-[Closer line 2 — the reframe.]
+Models get cheaper every quarter.
+Clean workflow architecture and eval discipline are what compound into a real product moat.
 
-Credit to ${creator} for the original post that sparked this.
+Credit to ${creator} for the original post (${mult}x outlier) that sparked this breakdown.
 
-💬 [One question that invites a specific answer.]
-♻️ Repost this for a PM, engineer, or leader on your team.
-👋 New here? I'm Afrina. 15+ years of building product, now working on Gemini & AI agents at Google. Follow for more on how AI products are built.`,
-            comment: `Credit to ${creator} for the original post${sourceUrl ? `: ${sourceUrl}` : ''} (${mult}x their usual engagement — verified via HarvestAPI). Every Saturday I break down one AI product build step by step in my newsletter (link in bio).`
+💬 Which of these 5 steps is the tightest bottleneck on your AI roadmap right now?
+♻️ Repost this for a PM, engineer, or leader shipping AI agents this quarter.
+👋 New here? I'm Afrina. 15+ years of building product, now working on Gemini & AI agents at Google. Follow for practical notes on how AI products are built.`,
+            comment: `Credit to ${creator} for the original post${sourceUrl ? `: ${sourceUrl}` : ''} (${mult}x their usual engagement — verified via HarvestAPI). Every Saturday I break down one AI product build step by step in my newsletter: https://www.linkedin.com/in/afrina-m`
           };
 
           activeDayIdx = dayIdx;
           await persistAll();
           renderStudio();
           switchTab('calendar');
-          showToast(`✓ ${dayNames[dayIdx]} skeleton loaded in your voice pattern (crediting ${creator}). Fill the [brackets] in the Studio.`);
+          showToast(`✓ ${dayNames[dayIdx]} draft rebuilt in your voice (crediting ${creator}). Click "Reset Day" anytime to restore the original.`);
         };
 
         // Saturday Newsletter + revenue-mix simulator (her own newsletter business, not Google data)
         const nlEditor = document.getElementById('newsletter-editor');
-        nlEditor.value = INITIAL_NEWSLETTER;
+        nlEditor.value = safeGet('signal50_v6_newsletter', INITIAL_NEWSLETTER);
         const nlCount = () => {
           const words = (nlEditor.value.match(/[A-Za-z0-9$%][\w'’$%.,-]*/g) || []).length;
           const badge = document.getElementById('newsletter-wordcount');
@@ -2194,7 +2362,11 @@ Credit to ${creator} for the original post that sparked this.
         };
         nlCount();
         renderSafety('newsletter-safety', nlEditor.value);
-        nlEditor.addEventListener('input', () => { renderSafety('newsletter-safety', nlEditor.value); nlCount(); });
+        nlEditor.addEventListener('input', () => {
+          renderSafety('newsletter-safety', nlEditor.value);
+          nlCount();
+          scheduleAutoSave();
+        });
         ['sim-pro-subs', 'sim-spon-rate', 'sim-advisory'].forEach(id => {
           document.getElementById(id).addEventListener('input', updateArrSim);
         });
@@ -2205,6 +2377,12 @@ Credit to ${creator} for the original post that sparked this.
 
         // Interactive Retro Engine
         renderRetro();
+        document.getElementById('btn-demo-retro').onclick = async () => {
+          RETRO_ROWS = JSON.parse(JSON.stringify(DEMO_RETRO_ROWS));
+          renderRetro();
+          await persistAll();
+          showToast('Loaded sample weekly metrics to preview self-healing directives.');
+        };
         document.getElementById('btn-run-retro').onclick = async () => {
           computeRetroDirectives();
           await persistAll();
@@ -2212,7 +2390,9 @@ Credit to ${creator} for the original post that sparked this.
         };
 
         // $2M+ Profile Rewrite & Voice Calibration
-        document.getElementById('profile-about-editor').value = UPGRADED_ABOUT;
+        const aboutEditor = document.getElementById('profile-about-editor');
+        aboutEditor.value = safeGet('signal50_v6_about', UPGRADED_ABOUT);
+        aboutEditor.addEventListener('input', () => scheduleAutoSave());
         document.querySelectorAll('[data-copy-headline]').forEach(btn => {
           btn.onclick = () => safeCopy(btn.getAttribute('data-copy-headline'), '✓ Copied upgraded LinkedIn Headline!');
         });
@@ -2235,11 +2415,12 @@ Credit to ${creator} for the original post that sparked this.
           showToast(`Voice DNA calibrated to ${voiceScore}%!`);
         };
 
-        // Remote Chat Bypass Bridge: HarvestAPI Live Pull + Phone/Paste Direct-to-VM Upload
+        // Optional Local VM Bridge (collapsed by default; zero API key prompts)
         const bridgeStatus = document.getElementById('vm-bridge-status');
         const thumbsWrap = document.getElementById('vm-uploaded-thumbs');
 
         async function refreshUploadedFiles() {
+          if (/github\.io$/i.test(location.hostname) || location.protocol === 'file:') return;
           try {
             const r = await fetch('/api/v3/uploads');
             if (!r.ok) return;
@@ -2256,6 +2437,7 @@ Credit to ${creator} for the original post that sparked this.
         }
 
         async function sendFileToVm(file) {
+          bridgeStatus.classList.remove('hidden');
           bridgeStatus.textContent = `Sending ${file.name} directly to Agent VM...`;
           const dataUrl = await new Promise((res, rej) => {
             const reader = new FileReader();
@@ -2264,23 +2446,28 @@ Credit to ${creator} for the original post that sparked this.
             reader.readAsDataURL(file);
           });
           try {
-            const resp = await fetch('/api/v3/upload', {
+            const resp = await authedFetch('/api/v3/upload', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ filename: file.name, dataUrl })
             });
             const out = await resp.json();
             if (!resp.ok) throw new Error(out.error || 'Upload failed');
-            bridgeStatus.textContent = `✓ Saved ${out.name} (${Math.round(out.sizeBytes / 1024)} KB) on Agent VM! Reply "Uploaded" in chat so Antigravity inspects it.`;
+            bridgeStatus.textContent = `✓ Saved ${out.name} (${Math.round(out.sizeBytes / 1024)} KB) on Agent VM!`;
+            thumbsWrap.classList.remove('hidden');
             showToast(`✓ Sent ${file.name} straight to Agent VM!`);
             await refreshUploadedFiles();
           } catch (err) {
-            bridgeStatus.textContent = `✕ Could not reach VM server: ${err.message}. Open via the "Signal50 Live Studio App" Preview card.`;
+            bridgeStatus.textContent = `✕ Local VM bridge unavailable on static GitHub Pages (${err.message}).`;
           }
         }
 
-        document.getElementById('btn-toggle-bridge').onclick = () => {
-          document.getElementById('bridge-body').classList.toggle('hidden');
+        const toggleBtn = document.getElementById('btn-toggle-bridge');
+        toggleBtn.onclick = () => {
+          const bodyEl = document.getElementById('bridge-body');
+          const nowHidden = bodyEl.classList.toggle('hidden');
+          toggleBtn.textContent = nowHidden ? 'Show Tools' : 'Hide Tools';
+          if (!nowHidden && thumbsWrap.children.length) thumbsWrap.classList.remove('hidden');
         };
 
         document.getElementById('vm-file-input').onchange = async e => {
@@ -2290,6 +2477,7 @@ Credit to ${creator} for the original post that sparked this.
         };
 
         window.addEventListener('paste', async e => {
+          if (!hasBackend) return;
           const items = Array.from((e.clipboardData && e.clipboardData.items) || []);
           const imgItems = items.filter(it => it.type && it.type.startsWith('image/'));
           for (const it of imgItems) {
@@ -2299,22 +2487,24 @@ Credit to ${creator} for the original post that sparked this.
         });
 
         document.getElementById('btn-harvest-pull').onclick = async () => {
-          const apiKey = document.getElementById('harvest-api-key-input').value.trim();
-          if (!apiKey) {
-            showToast('Paste your HarvestAPI Key from harvestapi.io first!');
+          bridgeStatus.classList.remove('hidden');
+          if (!hasBackend) {
+            bridgeStatus.textContent = 'Static GitHub Pages mode: outlier scouting runs automatically in GitHub Actions using your encrypted HARVEST_API_KEY secret.';
+            showToast('Outlier scouting runs automatically via GitHub Actions Secrets!');
             return;
           }
-          bridgeStatus.textContent = 'Pulling live https://www.linkedin.com/in/afrina-m profile, banner, headshot & posts via HarvestAPI...';
+          bridgeStatus.textContent = 'Refreshing https://www.linkedin.com/in/afrina-m via your saved HarvestAPI key...';
           try {
-            const resp = await fetch('/api/v3/harvest-sync', {
+            const resp = await authedFetch('/api/v3/harvest-sync', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ apiKey, linkedinUrl: 'https://www.linkedin.com/in/afrina-m' })
+              body: JSON.stringify({ linkedinUrl: 'https://www.linkedin.com/in/afrina-m' })
             });
             const out = await resp.json();
             if (!resp.ok) throw new Error(out.error || `HTTP ${resp.status}`);
-            bridgeStatus.textContent = `✓ Pulled @${out.slug} (${out.followerCount || 'live'} followers, ${out.postCount} recent posts, ${out.savedMedia.length} images) onto VM! Reply "Pulled" in chat.`;
-            showToast('✓ Pulled your live LinkedIn profile, banner & posts onto the VM!');
+            bridgeStatus.textContent = `✓ Refreshed @${out.slug} (${out.followerCount || 'live'} followers, ${out.postCount} recent posts, ${out.savedMedia.length} images) onto VM!`;
+            thumbsWrap.classList.remove('hidden');
+            showToast('✓ Refreshed your live LinkedIn profile, banner & posts!');
             await refreshUploadedFiles();
           } catch (err) {
             bridgeStatus.textContent = `✕ HarvestAPI error: ${err.message}`;
