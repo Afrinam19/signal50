@@ -3,239 +3,196 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Release-to-Demo Agent — release notes → customer demo pack · Built with Antigravity</title>
-<meta name="description" content="Paste raw release notes. Get the customer-visible wins, three buyer lenses, a 30-second demo script, a one-page brief and a 4:5 demo card — every number traced back to the notes. Runs in your browser. Built with Antigravity + Gemini by Afrina M." />
+<title>Release-to-Demo agent — release notes to a customer demo pack, every number traced</title>
+<meta name="description" content="Paste raw release notes. Get the customer-visible wins, three buyer lenses, a 30-second demo script, a one-page brief and a 4:5 demo card, with every number traced back to the notes. Runs in your browser. Built with Antigravity by Afrina M." />
+<link rel="stylesheet" href="../shared/ui.css" />
 <style>
-  :root {
-    --cream:#F3EDE3; --paper:#FFFFFF; --ink:#1F1A17; --mute:#6E655C; --line:#D8CFC2; --terra:#B5543A; --terra-dark:#8E3F2B; --terra-pale:#EBD2C6;
-    --sage:#9DB8A4; --sage-pale:#DFEADF; --blue:#8FA6C4; --blue-pale:#DCE5F0; --mauve:#B79DBE; --amber:#D9A441; --red:#B42318; --green:#1F5E46;
-    --radius:14px; --shadow:0 6px 18px rgba(60,35,20,.10);
-    --font:-apple-system,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  }
-  * { box-sizing:border-box; }
-  html,body { margin:0; background:var(--cream); color:var(--ink); font-family:var(--font); font-size:15px; line-height:1.45; }
-  a { color:var(--terra); }
-  header { padding:22px 20px 10px; max-width:1240px; margin:0 auto; }
-  .pill { display:inline-block; border:1.5px solid var(--terra); color:var(--terra); border-radius:999px; padding:3px 12px; font-size:11px; font-weight:800; letter-spacing:.06em; background:var(--paper); }
-  h1 { font-size:34px; line-height:1.1; margin:12px 0 6px; letter-spacing:-.01em; }
-  h1 em { font-style:normal; color:var(--terra); }
-  .sub { color:var(--mute); font-size:15px; margin:0 0 8px; max-width:860px; }
-  .sub b { color:var(--terra); }
-  .links { font-size:12.5px; color:var(--mute); }
-  .links a { margin-right:14px; }
-  main { max-width:1240px; margin:0 auto; padding:10px 20px 60px; display:grid; grid-template-columns:minmax(300px,380px) 1fr; gap:18px; }
-  @media (max-width:900px) { main { grid-template-columns:1fr; } }
-  .card { background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px; }
-  .card + .card { margin-top:18px; }
-  .card h2 { font-size:14px; margin:0 0 10px; text-transform:uppercase; letter-spacing:.06em; color:var(--mute); }
-  label { display:block; font-size:12px; font-weight:700; color:var(--mute); margin:10px 0 4px; }
-  textarea, input, select { width:100%; border:1px solid var(--line); border-radius:10px; padding:9px 10px; font:inherit; font-size:13px; background:#FFFDF9; color:var(--ink); }
-  textarea { min-height:320px; font-family:var(--mono); font-size:12.5px; line-height:1.5; resize:vertical; }
-  .row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .btn { display:inline-flex; align-items:center; gap:8px; border:0; border-radius:999px; padding:11px 18px; font:inherit; font-weight:800; font-size:14px; cursor:pointer; background:var(--terra); color:#fff; box-shadow:var(--shadow); }
-  .btn:disabled { opacity:.45; cursor:not-allowed; box-shadow:none; }
-  .btn.secondary { background:var(--paper); color:var(--ink); border:1.5px solid var(--line); box-shadow:none; font-weight:700; }
-  .btn.small { padding:8px 13px; font-size:12.5px; }
-  .hint { font-size:11.5px; color:var(--mute); margin-top:6px; }
-  .stations { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-  @media (max-width:1100px) { .stations { grid-template-columns:repeat(2,1fr); } }
-  .station { border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#FFFDF9; min-height:92px; position:relative; transition:background .3s, border-color .3s; }
-  .station .n { position:absolute; top:10px; right:10px; width:22px; height:22px; border-radius:50%; background:var(--line); color:#fff; font-size:11px; font-weight:800; display:grid; place-items:center; }
-  .station h3 { margin:0 24px 2px 0; font-size:13.5px; }
-  .station p { margin:0; font-size:11.5px; color:var(--mute); }
-  .station .m { margin-top:6px; font-size:11.5px; font-family:var(--mono); color:var(--ink); min-height:16px; }
-  .station.active { border-color:var(--terra); background:#FFF7F2; }
-  .station.active .n { background:var(--terra); }
-  .station.done { border-color:var(--sage); background:var(--sage-pale); }
-  .station.done .n { background:var(--green); }
-  .station.warn { border-color:var(--amber); background:#FFF9E8; }
-  .station.warn .n { background:var(--amber); }
-  .clock { font-family:var(--mono); font-size:13px; color:var(--mute); }
-  .clock b { color:var(--ink); font-size:16px; }
-  .toolbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:12px 0; }
-  .gate { display:flex; align-items:flex-start; gap:10px; background:#FFF7F2; border:1px dashed var(--terra); border-radius:12px; padding:10px 12px; font-size:13px; }
-  .gate input { width:auto; margin-top:3px; }
-  .flagcount { font-weight:800; }
-  .flagcount.bad { color:var(--red); }
-  .flagcount.ok { color:var(--green); }
-  .empty { color:var(--mute); font-size:13.5px; padding:30px 10px; text-align:center; border:1px dashed var(--line); border-radius:12px; }
   /* filter list */
-  .filter { display:grid; gap:6px; }
-  .chg { display:grid; grid-template-columns:22px 1fr auto; gap:10px; align-items:start; padding:8px 10px; border:1px solid var(--line); border-radius:10px; background:#FFFDF9; font-size:12.5px; }
-  .chg input { width:auto; margin-top:3px; }
-  .chg.out { opacity:.62; background:#F7F3EC; }
-  .chg .why { color:var(--mute); font-size:11.5px; }
-  .tag { display:inline-block; font-size:10px; font-weight:800; letter-spacing:.06em; padding:1px 7px; border-radius:999px; text-transform:uppercase; border:1px solid var(--line); color:var(--mute); white-space:nowrap; }
-  .tag.speed { background:var(--blue-pale); color:#2F4A6B; border-color:transparent; }
-  .tag.security { background:var(--sage-pale); color:var(--green); border-color:transparent; }
-  .tag.workflow { background:var(--terra-pale); color:var(--terra-dark); border-color:transparent; }
-  .tag.integration { background:#E8DDEB; color:#5C3F66; border-color:transparent; }
-  .tag.reliability { background:#EFE9DF; color:#5B5247; border-color:transparent; }
-  .tag.headsup { background:#FFF1CC; color:#7A5A00; border-color:transparent; }
-  .tag.known { background:#FFF1CC; color:#7A5A00; border-color:transparent; }
-  .tag.internal { background:#EEE; color:#777; border-color:transparent; }
-  .tag.context, .tag.meta { background:#EEE; color:#777; border-color:transparent; }
+  .changes { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: var(--r-3); overflow: hidden; }
+  .chg { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 12px; align-items: start; padding: 11px 14px; border-bottom: 1px solid var(--line); font-size: 14px; cursor: pointer; transition: background .15s; }
+  .chg:last-child { border-bottom: 0; }
+  .chg:hover { background: var(--well); }
+  .chg input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--verified); cursor: pointer; }
+  .chg.out .text { color: var(--ink-3); }
+  .chg .why { color: var(--ink-3); font-size: 12.5px; margin-top: 2px; }
+  .cat { font-size: 12.5px; font-weight: 600; color: var(--ink-2); white-space: nowrap; padding: 2px 8px; border-radius: 999px; background: var(--well-2); }
+  .cat.speed { background: #E3ECFA; color: #2B4C86; }
+  .cat.security { background: var(--verified-bg); color: var(--verified); }
+  .cat.workflow { background: #EDE7F6; color: #4B3A75; }
+  .cat.integration { background: #E6F2F1; color: #1F5F5B; }
+  .cat.reliability { background: var(--well-2); color: var(--ink-2); }
+  .cat.headsup, .cat.known { background: var(--caution-bg); color: var(--caution); }
+  .cat.internal { background: transparent; color: var(--ink-3); border: 1px solid var(--line); }
   /* demo script */
-  .beats { width:100%; border-collapse:collapse; font-size:13px; }
-  .beats th, .beats td { text-align:left; vertical-align:top; padding:8px 8px; border-bottom:1px solid var(--line); }
-  .beats th { font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--mute); }
-  .beats td.t { font-family:var(--mono); white-space:nowrap; color:var(--terra); font-weight:800; }
-  .beats td.show { color:var(--mute); font-size:12.5px; }
-  .timeline { display:flex; height:10px; border-radius:999px; overflow:hidden; margin:8px 0 12px; border:1px solid var(--line); }
-  .timeline span { display:block; height:100%; }
-  .checklist { font-size:12.5px; color:var(--mute); columns:2; column-gap:18px; margin:8px 0 0; padding-left:18px; }
-  @media (max-width:700px) { .checklist { columns:1; } }
-  .demo-grid { display:grid; grid-template-columns:1fr 300px; gap:16px; align-items:start; }
-  @media (max-width:1000px) { .demo-grid { grid-template-columns:1fr; } }
-  .cardprev svg { width:100%; height:auto; display:block; border-radius:10px; border:1px solid var(--line); box-shadow:var(--shadow); }
+  .demo-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+  @media (max-width: 1100px) { .demo-grid { grid-template-columns: minmax(0, 1fr); } }
+  .timeline { display: flex; height: 8px; border-radius: 999px; overflow: hidden; margin: 0 0 14px; background: var(--well-2); }
+  .timeline span { display: block; height: 100%; border-right: 2px solid #fff; }
+  .timeline span:last-child { border-right: 0; }
+  .beats { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .beats th, .beats td { text-align: left; vertical-align: top; padding: 10px 10px; border-bottom: 1px solid var(--line); }
+  .beats th { font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
+  .beats td.t { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 600; width: 1%; }
+  .beats td.show { color: var(--ink-3); font-size: 13px; }
+  .checklist { margin: 14px 0 0; padding-left: 18px; font-size: 13.5px; color: var(--ink-2); columns: 2; column-gap: 24px; }
+  @media (max-width: 700px) { .checklist { columns: 1; } }
+  .cardprev svg { width: 100%; height: auto; display: block; border-radius: var(--r-2); border: 1px solid var(--line); }
+  .cardprev .cap { font-size: 12.5px; color: var(--ink-3); margin-top: 8px; }
   /* brief */
-  .brief { border:1px solid var(--line); border-radius:10px; padding:22px 26px; background:#FFFDF9; }
-  .brief .k { font-size:11px; letter-spacing:.12em; text-transform:uppercase; font-weight:800; color:var(--terra); }
-  .brief h2.t { font-size:24px; line-height:1.15; margin:6px 0 4px; text-transform:none; letter-spacing:-.01em; color:var(--ink); }
-  .brief .lead { color:var(--mute); margin:0 0 14px; font-size:14px; }
-  .brief h3 { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--mute); margin:18px 0 8px; border-bottom:1px solid var(--line); padding-bottom:4px; }
-  .brief .win { margin:0 0 14px; }
-  .brief .win h4 { margin:0 0 6px; font-size:15px; }
-  .brief .lenses { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; font-size:12.5px; }
-  @media (max-width:800px) { .brief .lenses { grid-template-columns:1fr; } }
-  .brief .lens { background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:8px 10px; }
-  .brief .lens b { display:block; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--terra); margin-bottom:3px; }
-  .brief .proof { font-size:11.5px; color:var(--mute); font-family:var(--mono); margin-top:6px; }
-  .brief ul { margin:0; padding-left:20px; font-size:13px; }
-  .brief li { margin:3px 0; }
-  .brief .faq p { margin:4px 0 10px; font-size:13px; }
-  .brief .faq .q { font-weight:700; }
-  .brief .faq .a[contenteditable] { outline:none; border-bottom:1px dashed var(--line); padding-bottom:2px; }
-  .brief .faq .a:focus { background:#FFF7F2; }
-  .brief .two { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  @media (max-width:700px) { .brief .two { grid-template-columns:1fr; } }
-  .brief table { width:100%; border-collapse:collapse; font-size:12.5px; }
-  .brief th, .brief td { text-align:left; padding:5px 6px; border-bottom:1px solid var(--line); vertical-align:top; }
-  .brief th { font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--mute); }
-  .flag { background:#FDE8E6; color:var(--red); border-radius:4px; padding:0 4px; font-weight:700; }
-  .ok { border-bottom:2px solid var(--sage); }
-  .todo { background:#FFF1CC; color:#7A5A00; border-radius:4px; padding:0 4px; font-weight:700; }
+  .brief { border: 1px solid var(--line); border-radius: var(--r-3); padding: 28px 32px; }
+  .brief .k { font-size: 13px; color: var(--ink-3); }
+  .brief h2.t { font-size: 24px; margin: 6px 0 6px; letter-spacing: -.015em; text-wrap: balance; }
+  .brief .lead { color: var(--ink-2); max-width: 70ch; }
+  .brief h3 { font-size: 13px; font-weight: 600; color: var(--ink-2); margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  .brief .win { margin: 0 0 18px; }
+  .brief .win h4 { font-size: 15.5px; margin-bottom: 8px; line-height: 1.35; }
+  .brief .lenses { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; font-size: 13.5px; }
+  @media (max-width: 860px) { .brief .lenses { grid-template-columns: 1fr; } }
+  .brief .lens { background: var(--well); border-radius: var(--r-2); padding: 10px 12px; line-height: 1.5; }
+  .brief .lens b { display: block; font-size: 12.5px; color: var(--ink-2); margin-bottom: 4px; }
+  .brief .proof { font-size: 12.5px; color: var(--ink-3); margin-top: 8px; }
+  .brief .proof code { background: var(--well); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+  .brief ul { margin: 0; padding-left: 20px; font-size: 14px; }
+  .brief li { margin: 4px 0; }
+  .brief .faq p { margin: 0 0 12px; font-size: 14px; }
+  .brief .faq .q { font-weight: 600; display: block; }
+  .brief .faq .a[contenteditable] { display: block; outline: none; border-bottom: 1px dashed var(--line-2); padding: 2px 0; margin-top: 2px; }
+  .brief .faq .a:focus { border-bottom-color: var(--focus); background: #F6F9FF; }
+  .brief .two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 700px) { .brief .two { grid-template-columns: 1fr; } }
   /* snippets */
-  .snips { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  @media (max-width:900px) { .snips { grid-template-columns:1fr; } }
-  .snip { border:1px solid var(--line); border-radius:10px; background:#FFFDF9; padding:10px 12px; }
-  .snip h4 { margin:0 0 6px; font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--mute); display:flex; justify-content:space-between; align-items:center; }
-  .snip pre { white-space:pre-wrap; font-family:var(--font); font-size:12.5px; margin:0; line-height:1.45; }
-  .ledger { font-size:12.5px; width:100%; border-collapse:collapse; }
-  .ledger th, .ledger td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
-  .ledger code { font-family:var(--mono); font-size:11.5px; }
-  footer { max-width:1240px; margin:0 auto; padding:0 20px 40px; font-size:12.5px; color:var(--mute); }
+  .snips { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 900px) { .snips { grid-template-columns: minmax(0, 1fr); } }
+  .snip { border: 1px solid var(--line); border-radius: var(--r-3); padding: 14px 16px; }
+  .snip h4 { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px; margin-bottom: 8px; }
+  .snip pre { white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--font); font-size: 13.5px; margin: 0; line-height: 1.5; color: var(--ink-2); }
   @media print {
-    @page { size:Letter; margin:.5in; }
-    body { background:#fff; }
-    header, main > .left, .toolbar, .stations, .gate, footer, .card h2, .noprint, .clockbar, #filter-card, #demo-card, #snips-card, #ledger-card { display:none !important; }
-    main { display:block; padding:0; max-width:none; }
-    .card { border:0; box-shadow:none; padding:0; margin:0 !important; }
-    .brief { border:0; padding:0; background:#fff; font-size:12px; }
-    .brief .lenses { grid-template-columns:repeat(3,1fr); }
-    .brief .lens { border-color:#ddd; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-    .flag, .todo, .ok { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    @page { size: Letter; margin: .5in; }
+    #filter-section, #demo-section, #snips-section, #ledger-section, #brief-section .section-head { display: none !important; }
+    .brief { border: 0; padding: 0; font-size: 12px; }
+    .brief .lenses { grid-template-columns: repeat(3, 1fr); }
+    .brief .lens, .flag, .todo { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 </style>
 </head>
 <body>
-<header>
-  <span class="pill">BUILT WITH ANTIGRAVITY</span>
-  <h1>The <em>Release-to-Demo</em> Agent</h1>
-  <p class="sub">Paste raw release notes. Get the <b>customer-visible wins</b> (internal cleanup filtered out, with reasons), each one translated for the <b>exec buyer, the daily user and the partner</b>, plus a 30-second demo script, a one-page customer brief, a 4:5 demo card and Slack/CRM/email snippets — with <b>every number traced back to the notes</b>. Runs in your browser; nothing is uploaded.</p>
-  <div class="links">
-    <a href="../../">← Signal50 Studio</a>
-    <a href="../deck-factory/">Thursday build: Deck Factory</a>
-    <a href="https://github.com/Afrinam19/signal50/tree/main/apps/release-to-demo" target="_blank" rel="noopener">Source on GitHub</a>
-    <a href="https://www.linkedin.com/in/afrina-m/" target="_blank" rel="noopener">Afrina M on LinkedIn</a>
-  </div>
+<a class="skip" href="#main">Skip to the workbench</a>
+<header class="topbar">
+  <a class="brand" href="./" aria-label="Release-to-Demo home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h10M4 17h7"/><path d="m16 15 3 3 3-3M19 11v7"/></svg>
+    Release-to-Demo <small>by Signal50</small>
+  </a>
+  <nav class="topnav" aria-label="Site">
+    <span class="built"><i></i>Built with Antigravity</span>
+    <a href="../deck-factory/" class="hide-sm">Deck Factory</a>
+    <a href="../../" class="hide-sm">Studio</a>
+    <a href="https://github.com/Afrinam19/signal50/tree/main/apps/release-to-demo" target="_blank" rel="noopener">Source</a>
+    <a href="https://www.linkedin.com/in/afrina-m/" target="_blank" rel="noopener">Afrina M</a>
+  </nav>
 </header>
 
-<main>
-  <section class="left">
-    <div class="card">
-      <h2>Station 2 · Intake</h2>
-      <label for="notes">Raw release notes, changelog, or PR titles (one change per line)</label>
-      <textarea id="notes" spellcheck="false"></textarea>
-      <div class="row">
-        <div>
-          <label for="product">Product (auto-detected, editable)</label>
-          <input id="product" placeholder="e.g. Acme Flow" />
-        </div>
-        <div>
-          <label for="audience">Lead with</label>
-          <select id="audience">
-            <option value="exec">Exec buyer (ROI &amp; risk)</option>
-            <option value="user">Daily user (time saved)</option>
-            <option value="partner">Partner / agency (repeatable)</option>
+<section class="intro">
+  <div>
+    <h1>Raw release notes in. A customer demo pack out, with every claim traced.</h1>
+    <p>Paste a changelog or a list of PR titles. The agent keeps the wins customers can feel, drops internal cleanup and says why, translates each win for the exec buyer, the daily user and the partner, then packages a 30-second demo script, a one-page brief, a 4:5 card and the Slack, CRM and email snippets.</p>
+  </div>
+  <div class="facts" aria-label="How it runs">
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Runs in your browser</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Nothing is uploaded</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Human review before export</span>
+  </div>
+</section>
+
+<main id="main" class="shell">
+  <aside class="side">
+    <form class="panel" id="form" onsubmit="return false">
+      <h2>Release notes</h2>
+      <label class="field" for="notes">
+        <span>Changelog, release notes, or PR titles</span>
+        <textarea id="notes" class="textarea" spellcheck="false" rows="16"></textarea>
+        <span class="help">One change per line. Conventional-commit prefixes and GitHub "What's changed" lists both work.</span>
+      </label>
+      <div class="row2">
+        <label class="field" for="product"><span>Product</span>
+          <input id="product" class="input" placeholder="Detected from the notes" />
+        </label>
+        <label class="field" for="audience"><span>Lead with</span>
+          <select id="audience" class="select">
+            <option value="exec">Exec buyer</option>
+            <option value="user">Daily user</option>
+            <option value="partner">Partner or agency</option>
           </select>
-        </div>
+        </label>
       </div>
-      <label for="gkey">Optional · Gemini API key (free from Google AI Studio)</label>
-      <input id="gkey" type="password" autocomplete="off" placeholder="Leave empty to run the local translator" />
-      <label for="gmodel">Model</label>
-      <select id="gmodel"><option value="">auto (newest Flash)</option></select>
-      <p class="hint">The key stays in this browser's local storage and is sent to Google's Gemini API directly from your browser. Without a key, a deterministic local translator writes the lenses from templates — the filter and the fact-checker run either way.</p>
-      <div class="toolbar" style="margin-top:14px">
-        <button class="btn" id="run">Run the agent →</button>
-        <button class="btn secondary small" id="sample">Reload sample release</button>
+      <div class="row2">
+        <label class="field" for="gkey"><span>Gemini API key (optional)</span>
+          <input id="gkey" class="input" type="password" autocomplete="off" placeholder="Free from AI Studio" />
+        </label>
+        <label class="field" for="gmodel"><span>Gemini model</span>
+          <select id="gmodel" class="select"><option value="">Newest Flash</option></select>
+        </label>
       </div>
-      <div class="clock clockbar" id="clock">Clock starts when you run. Target: demo pack + human review in under <b>10:00</b>.</div>
-    </div>
-  </section>
-
-  <section class="right">
-    <div class="card">
-      <h2>The agent · who does what</h2>
-      <div class="stations" id="stations"></div>
-    </div>
-
-    <div class="card">
-      <h2>Station 6 · Ship + QA</h2>
-      <div class="toolbar">
-        <span class="clock">Fact check: <span id="flagsum" class="flagcount">—</span></span>
-        <span style="flex:1"></span>
-        <button class="btn secondary small" id="dl-md" disabled>Download brief .md</button>
-        <button class="btn secondary small" id="dl-png" disabled>Download 4:5 card .png</button>
-        <button class="btn secondary small" id="dl-json" disabled>Download pack .json</button>
-        <button class="btn small" id="print" disabled>Print 1-page brief (PDF)</button>
+      <p class="help" style="margin-top:6px">Stored only in this browser and sent straight to Google's Gemini API. Without a key, a local translator writes the lenses from templates. The filter and the fact-checker run either way.</p>
+      <div class="run-row">
+        <button class="btn" id="run" type="button">Build the demo pack</button>
+        <button class="btn ghost sm" id="sample" type="button">Reload the sample</button>
       </div>
-      <div class="gate" id="gate">
-        <input type="checkbox" id="reviewed" disabled />
-        <label for="reviewed" style="margin:0; font-weight:600; color:var(--ink)">I checked every claim against the release notes and filled or removed the <span class="todo">[needs confirmation]</span> items. <span class="hint" style="display:block; margin-top:2px">Exports and copy buttons stay locked until this is ticked. The agent filters, translates and packages; a human still decides what customers hear.</span></label>
+    </form>
+  </aside>
+
+  <div class="work">
+    <section class="railwrap" aria-label="Pipeline">
+      <div class="railhead">
+        <h2>Six stations, one orchestrator</h2>
+        <div class="clock" id="clock">Target: pack and review in under <b>10:00</b></div>
+      </div>
+      <ol class="rail" id="stations"></ol>
+    </section>
+
+    <div class="review" role="region" aria-label="Review and export">
+      <div class="status">
+        <span class="chip neutral" id="flagsum">Not built yet</span>
+        <label class="gate" id="gate"><input type="checkbox" id="reviewed" disabled /><span>I checked the claims and filled the open answers</span></label>
+      </div>
+      <div class="actions">
+        <button class="btn secondary sm" id="dl-md" type="button" disabled>Download brief (.md)</button>
+        <button class="btn secondary sm" id="dl-png" type="button" disabled>Download 4:5 card (.png)</button>
+        <button class="btn secondary sm" id="dl-json" type="button" disabled>Download pack (.json)</button>
+        <button class="btn sm" id="print" type="button" disabled>Print brief</button>
       </div>
     </div>
 
-    <div class="card" id="filter-card">
-      <h2>Station 3 · Filter (customer-visible in, internal out — flip any line)</h2>
-      <div id="filter" class="filter"><div class="empty">Run the agent to see what gets kept, what gets dropped, and why.</div></div>
-    </div>
+    <section class="section" id="filter-section">
+      <div class="section-head"><h2>Filter</h2><span class="meta" id="filter-meta">Customer-visible in, internal out. Flip any line.</span></div>
+      <div id="filter"><div class="empty">Build the pack to see what is kept, what is dropped, and why.</div></div>
+    </section>
 
-    <div class="card" id="demo-card">
-      <h2>Station 5 · 30-second demo script + 4:5 demo card</h2>
-      <div id="demo"><div class="empty">The demo script and the card appear after the run.</div></div>
-    </div>
+    <section class="section" id="demo-section">
+      <div class="section-head"><h2>30-second demo</h2><span class="meta">Beat by beat, plus the 4:5 card for the post</span></div>
+      <div id="demo"><div class="empty">The script and the card appear after the build.</div></div>
+    </section>
 
-    <div class="card" id="brief-card">
-      <h2 class="noprint">Station 5 · One-page customer brief (edit the dashed answers before export)</h2>
-      <div id="brief"><div class="empty">The brief appears after the run.</div></div>
-    </div>
+    <section class="section" id="brief-section">
+      <div class="section-head"><h2>Customer brief</h2><span class="meta">One page. Edit the dashed answers before you export.</span></div>
+      <div id="brief"><div class="empty">The brief appears after the build.</div></div>
+    </section>
 
-    <div class="card" id="snips-card">
-      <h2>Station 5 · Snippets (Slack · CRM · email · social)</h2>
-      <div id="snips"><div class="empty">Snippets appear after the run.</div></div>
-    </div>
+    <section class="section" id="snips-section">
+      <div class="section-head"><h2>Snippets</h2><span class="meta">Slack, CRM, email, social</span></div>
+      <div id="snips"><div class="empty">Snippets appear after the build.</div></div>
+    </section>
 
-    <div class="card" id="ledger-card">
-      <h2>Appendix · source ledger (every number, where it came from)</h2>
-      <div id="ledger" class="hint">Appears after the run.</div>
-    </div>
-  </section>
+    <section class="section" id="ledger-section">
+      <div class="section-head"><h2>Source ledger</h2><span class="meta">Every number in the notes and the line it came from</span></div>
+      <div id="ledger" class="empty">Appears after the first build.</div>
+    </section>
+  </div>
 </main>
 
-<footer>
-  Built with Antigravity + Gemini by <a href="https://www.linkedin.com/in/afrina-m/">Afrina M</a> · Senior PM, Google (Gemini &amp; AI agents) · This is a personal build, not a Google product. Part of <a href="../../">Signal50</a>, the open studio behind the weekly posts. Thursday's build: <a href="../deck-factory/">the Enterprise Deck Factory</a>.
-</footer>
+<footer class="foot"><div class="in">
+  <span>Built with Antigravity and Gemini by <a href="https://www.linkedin.com/in/afrina-m/">Afrina M</a>, Senior PM at Google. A personal build, not a Google product.</span>
+  <span>Part of <a href="../../">Signal50</a>, the open studio behind the weekly posts. Thursday's build: <a href="../deck-factory/">the Deck Factory</a>.</span>
+</div></footer>
 
 <script>
 (() => {
@@ -261,26 +218,25 @@ feat(admin): audit log export to S3 and BigQuery with retention up to 7 years (#
 Known issue: drag-and-drop in the editor is intermittently slow on Safari 17; fix scheduled for 4.2.1`;
 
   const STATIONS = [
-    { n: 1, t: 'Orchestrator', d: 'Reads the release, locks the audience and the proof rule. Never writes a claim.' },
-    { n: 2, t: 'Intake', d: 'One line per change → type, scope, numbers, PR reference.' },
-    { n: 3, t: 'Filter', d: 'Customer-visible wins in, internal cleanup out — with the reason. You can flip any line.' },
+    { n: 1, t: 'Orchestrate', d: 'Reads the release, locks the audience and the proof rule. Never writes a claim.' },
+    { n: 2, t: 'Intake', d: 'One line per change: type, scope, numbers, PR reference.' },
+    { n: 3, t: 'Filter', d: 'Customer-visible wins in, internal cleanup out, with the reason.' },
     { n: 4, t: 'Translate', d: 'Each win in three lenses: exec buyer, daily user, partner.' },
-    { n: 5, t: 'Package', d: '30-second demo script, 1-page brief, 4:5 card, Slack/CRM/email snippets.' },
-    { n: 6, t: 'Ship + QA', d: 'Every number traced to the notes. Human checks before anything leaves.' }
+    { n: 5, t: 'Package', d: 'Demo script, one-page brief, 4:5 card, snippets.' },
+    { n: 6, t: 'Ship', d: 'Every number traced. A human checks before anything leaves.' }
   ];
 
   const $ = id => document.getElementById(id);
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
-  const lower1 = s => s; // keep the author's casing after a colon (release notes are full of proper nouns: Salesforce, Okta, Safari)
+  const lower1 = s => s; // keep the author's casing after a colon (release notes are full of proper nouns)
   const short = (s, n = 90) => s.length > n ? s.slice(0, n - 1).replace(/[,;:\s]+\S*$/, '') + '…' : s;
   const clause = (s, n = 72) => { let c = s.split(/[;:]|,\s(?=[a-z])/)[0].trim().replace(/\.$/, ''); if (c.length > n) c = c.slice(0, n).replace(/\s+\S*$/, '') + '…'; return c; };
-  // the customer-facing clause: prefer the part of the line that carries the number (e.g. "search results return in under 300ms"), not the technical lead-in
   const headClause = (w, n = 110) => { const parts = w.text.split(/;\s*/).map(p => p.trim()).filter(Boolean); const pick = parts.find(p => w.ba && w.ba.after && p.includes(w.ba.after.replace(/^under\s+/, ''))) || parts.find(p => /\d/.test(p)) || parts[0] || w.text; return short(pick.replace(/\.$/, ''), n); };
 
   // ------------------------------------------------------------------
-  // Station 2 · Intake: lines → changes with type, scope, numbers, PR refs
+  // Station 2 · Intake
   // ------------------------------------------------------------------
   const NUM_RE = /(?:\$\s?)?\d[\d,]*(?:\.\d+)?\s?(?:%|x\b|k\b|K\b|M\b|B\b|bn\b|ms\b|s\b|secs?\b|seconds?\b|mins?\b|minutes?\b|hrs?\b|hours?\b|days?\b|weeks?\b|months?\b|years?\b|rows?\b|records?\b|accounts?\b|users?\b|seats?\b|customers?\b|services?\b)?/g;
   const normNum = raw => raw.replace(/[\s,$]/g, '').toLowerCase().replace(/(seconds?|secs?)$/, 's').replace(/(minutes?|mins?)$/, 'm').replace(/(hours?|hrs?)$/, 'h').replace(/days?$/, 'd').replace(/weeks?$/, 'w').replace(/months?$/, 'mo').replace(/years?$/, 'y').replace(/rows?$|records?$|accounts?$|users?$|seats?$|customers?$|services?$/, '');
@@ -314,19 +270,20 @@ Known issue: drag-and-drop in the editor is intermittently slow on Safari 17; fi
 
   const KEEP_BY_DEFAULT = new Set(['speed', 'security', 'workflow', 'integration', 'reliability', 'headsup', 'known']);
   const REASON = {
-    speed: 'customers feel it: time or latency win with a number',
+    speed: 'customers feel it: a time or latency win with a number',
     security: 'procurement and security reviews ask about this',
     workflow: 'removes a manual step customers do today',
     integration: 'data moves between tools customers already use',
     reliability: 'a visible bug; tell affected accounts before they notice',
-    headsup: 'action needed by customers — must be said, not pitched',
+    headsup: 'action needed by customers; must be said, not pitched',
     known: 'say it before they find it',
-    internal: 'internal cleanup — customers never see it',
-    context: 'release header — used for product, version and date',
+    internal: 'internal cleanup; customers never see it',
+    context: 'release header, used for product, version and date',
     meta: 'changelog boilerplate'
   };
+  const CAT_LABEL = { speed: 'Speed', security: 'Security', workflow: 'Workflow', integration: 'Integration', reliability: 'Reliability', headsup: 'Heads-up', known: 'Known issue', internal: 'Internal', context: 'Context', meta: 'Meta' };
 
-  function categorize(type, text, raw) {
+  function categorize(type, text) {
     const s = text.toLowerCase();
     if (type === 'release') return 'context';
     if (type === 'meta') return 'meta';
@@ -370,11 +327,11 @@ Known issue: drag-and-drop in the editor is intermittently slow on Safari 17; fi
     speed: {
       exec: w => `Time is the cost line here: ${headClause(w)}. ${w.ba.before ? `Going from ${w.ba.before} to ${w.ba.after} means fewer people waiting on the system and fewer escalations to your team.` : 'Fewer people waiting on the system means fewer escalations to your team.'}`,
       user: w => `${w.ba.after ? `You wait ${baPhrase(w)} when you use ${w.scope || 'this'}` : `${cap(w.scope || 'This')} is faster`}. Start it, keep working, it is done.`,
-      partner: w => `The easiest thing to demo live: run ${w.scope || 'it'} on a client's real data and let the clock talk${w.ba.before ? ` — ${w.ba.before} → ${w.ba.after}` : ''}. Works as a two-minute proof in any QBR.`
+      partner: w => `The easiest thing to demo live: run ${w.scope || 'it'} on a client's real data and let the clock talk${w.ba.before ? ` (${w.ba.before} to ${w.ba.after})` : ''}. Works as a two-minute proof in any QBR.`
     },
     security: {
       exec: w => `Risk reduction, not a feature. ${cap(w.text)}. This shortens security reviews and procurement questionnaires, and it is the kind of control auditors ask about.`,
-      user: w => `Nothing changes in your day-to-day. ${cap(w.text)} — protection that runs in the background.`,
+      user: w => `Nothing changes in your day-to-day. ${cap(w.text)}: protection that runs in the background.`,
       partner: w => `Unblocks regulated clients (finance, health, public sector) who could not sign before. Lead with it in those accounts: ${lower1(clause(w.text, 90))}.`
     },
     workflow: {
@@ -384,11 +341,11 @@ Known issue: drag-and-drop in the editor is intermittently slow on Safari 17; fi
     },
     integration: {
       exec: w => `Data moves between systems without a person copying it. ${cap(w.text)}. Fewer reconciliation errors and fresher numbers in the tools your leaders already open.`,
-      user: w => `What you change here shows up there. ${cap(w.text)} — no more exporting and re-importing.`,
+      user: w => `What you change here shows up there. ${cap(w.text)}, so no more exporting and re-importing.`,
       partner: w => `Build a short "connect and verify" playbook you can sell to every client on that stack: ${lower1(clause(w.text, 90))}.`
     },
     reliability: {
-      exec: w => `A fix customers asked for: ${lower1(w.text)}. Tell affected accounts before they notice — it is cheaper than an escalation.`,
+      exec: w => `A fix customers asked for: ${lower1(w.text)}. Tell affected accounts before they notice; it is cheaper than an escalation.`,
       user: w => `Fixed: ${lower1(w.text)}.`,
       partner: w => `Mention it to affected clients in the next check-in: ${lower1(clause(w.text, 90))}. Free goodwill.`
     },
@@ -405,10 +362,7 @@ Known issue: drag-and-drop in the editor is intermittently slow on Safari 17; fi
   };
   const BASE_SCORE = { speed: 4, security: 4, workflow: 3, integration: 3, reliability: 1, headsup: 0, known: 0 };
   const scoreWin = w => (BASE_SCORE[w.category] || 0) + (w.nums.length ? 2 : 0) + (w.ba.before ? 2 : 0) + (w.ba.after ? 1 : 0);
-
-  function translateLocal(kept) {
-    return kept.map(w => { const t = TEMPLATES[w.category] || TEMPLATES.workflow; return { ...w, lens: { exec: t.exec(w), user: t.user(w), partner: t.partner(w) } }; });
-  }
+  function translateLocal(kept) { return kept.map(w => { const t = TEMPLATES[w.category] || TEMPLATES.workflow; return { ...w, lens: { exec: t.exec(w), user: t.user(w), partner: t.partner(w) } }; }); }
 
   function buildPack(changes, meta, opts, translated) {
     const wins = translated.filter(w => !/headsup|known/.test(w.category)).sort((a, b) => scoreWin(b) - scoreWin(a));
@@ -416,26 +370,26 @@ Known issue: drag-and-drop in the editor is intermittently slow on Safari 17; fi
     const heads = translated.filter(w => w.category === 'headsup'), known = translated.filter(w => w.category === 'known');
     const dropped = changes.filter(c => !c.keep && !/context|meta/.test(c.category));
     const name = `${meta.product}${meta.version ? ' ' + meta.version : ''}`;
-    const w1 = top[0], w2 = top[1], w3 = top[2];
+    const w1 = top[0], w2 = top[1];
     const beats = [
       { t: '0:00', len: 4, say: `${name} just shipped. Here is what changes your week.`, show: 'Face or title card. Product name on screen.' },
       { t: '0:04', len: 6, say: w1 ? (w1.ba.before ? `Until now, ${w1.scope || 'this'} took ${w1.ba.before}.` : `Until now you did this by hand: ${lower1(clause(w1.text, 70))}.`) : 'Until now this was manual.', show: 'The old way. One screen, no narration over it.' },
       { t: '0:10', len: 7, say: w1 ? `In this release: ${headClause(w1, 120)}.` : '—', show: 'Run it live. Keep the cursor slow.' },
       { t: '0:17', len: 6, say: w2 ? `Also: ${headClause(w2, 120)}.` : (w1 ? 'Same workspace, nothing to configure.' : '—'), show: 'Second win. Cut, do not scroll.' },
-      { t: '0:23', len: 4, say: w1 && w1.ba.after ? `No slides. Just the clock: ${w1.ba.before ? `${w1.ba.before} → ${w1.ba.after}` : w1.ba.after}.` : (w1 && w1.nums.length ? `The number to remember: ${w1.nums[0].raw}.` : 'Nothing to install, it is already in your workspace.'), show: 'Hold the number on screen. Big type.' },
+      { t: '0:23', len: 4, say: w1 && w1.ba.after ? `No slides. Just the clock: ${w1.ba.before ? `${w1.ba.before} to ${w1.ba.after}` : w1.ba.after}.` : (w1 && w1.nums.length ? `The number to remember: ${w1.nums[0].raw}.` : 'Nothing to install, it is already in your workspace.'), show: 'Hold the number on screen. Big type.' },
       { t: '0:27', len: 3, say: 'Want it on your workspace? Reply DEMO and I will set it up.', show: 'End card with the CTA and your name.' }
     ];
     const lead = { exec: 'exec buyer', user: 'daily user', partner: 'partner' }[opts.audience];
     const faq = [
       ...heads.map(h => ({ q: `What do I have to do${(h.text.match(/\b\d{4}-\d{2}-\d{2}\b/) || [])[0] ? ` before ${(h.text.match(/\b\d{4}-\d{2}-\d{2}\b/) || [])[0]}` : ''}?`, a: `${cap(h.text)}. Offer a migration call; do not wait for renewal.` })),
-      ...known.map(k => ({ q: `Is there anything you are not telling me?`, a: `Known issue: ${lower1(k.text)}. Say it first.` })),
+      ...known.map(k => ({ q: 'Is there anything you are not telling me?', a: `Known issue: ${lower1(k.text)}. Say it first.` })),
       { q: 'Does this change pricing or my plan?', a: '[needs confirmation]', todo: true },
       { q: 'Is it on by default, or do we have to turn it on?', a: '[needs confirmation]', todo: true },
       { q: 'Which plans and regions get it, and when?', a: '[needs confirmation]', todo: true }
     ];
     const bullets = top.map(w => `• ${clause(w.text, 110)}`).join('\n');
     const snippets = {
-      slack: `:rocket: ${name} shipped${meta.date ? ' ' + meta.date : ''}. What to tell customers this week:\n${bullets}${heads[0] ? `\nHeads-up to mention: ${clause(heads[0].text, 110)}` : ''}${known[0] ? `\nKnown issue to say first: ${clause(known[0].text, 110)}` : ''}\nOne-page brief + demo script: link the exported brief here.`,
+      slack: `${name} shipped${meta.date ? ' ' + meta.date : ''}. What to tell customers this week:\n${bullets}${heads[0] ? `\nHeads-up to mention: ${clause(heads[0].text, 110)}` : ''}${known[0] ? `\nKnown issue to say first: ${clause(known[0].text, 110)}` : ''}\nOne-page brief and demo script: link the exported brief here.`,
       crm: `${name}${meta.date ? ` (${meta.date})` : ''}: ${top.map(w => lower1(clause(w.text, 80))).join('; ')}.${heads[0] ? ` Heads-up: ${lower1(clause(heads[0].text, 90))}.` : ''} Next step: offer the short walkthrough.`,
       email: `Subject: ${name}: ${w1 ? clause(w1.text, 60) : 'what shipped'}\n\nHi {first name},\n\nQuick one. In ${name} we shipped:\n${bullets}\n${heads[0] ? `\nOne thing that needs your attention: ${lower1(clause(heads[0].text, 120))}.\n` : ''}\nIf you want to see it on your own workspace, reply DEMO and I will set up a short walkthrough.\n\n{your name}`,
       social: `${name} is out.\n${top.map(w => cap(clause(w.text, 90)) + '.').join('\n')}\nDetails and the ${lead} view in the comments.`
@@ -479,7 +433,7 @@ ${kept.map(c => `${c.id}. [${c.category}] ${c.text}`).join('\n')}`;
   }
 
   // ------------------------------------------------------------------
-  // Station 6 · Fact check: every number in the pack must exist in the notes; no claim words
+  // Station 6 · Fact check
   // ------------------------------------------------------------------
   const CLAIM_RE = /\b(fastest|best[- ]in[- ]class|guaranteed?|game[- ]?changer|seamless(?:ly)?|unlock(?:s|ed)?|leverage[sd]?|revolutionary|cutting[- ]edge|world[- ]class|effortless(?:ly)?|unprecedented|industry[- ]leading)\b/gi;
   let check = { total: 0, flagged: 0, claims: 0 };
@@ -487,11 +441,10 @@ ${kept.map(c => `${c.id}. [${c.category}] ${c.text}`).join('\n')}`;
     const cores = new Set(changes.flatMap(c => c.nums.map(n => n.core)).filter(Boolean));
     const norms = new Set(changes.flatMap(c => c.nums.map(n => n.norm)));
     const segHtml = seg => esc(seg)
-      .replace(CLAIM_RE, m => { check.claims++; return `<span class="flag" title="claim word — not in the notes, not in the brief">${m} ⚑</span>`; })
+      .replace(CLAIM_RE, m => { check.claims++; return `<span class="flag" title="Claim word: not in the notes, not in the brief">${m} ⚑</span>`; })
       .replace(/\[needs confirmation\]/g, '<span class="todo">[needs confirmation]</span>');
     return text => {
       const s = String(text || '');
-      // tokenize on the raw text first (never on escaped HTML — the "39" in &#39; is not a number)
       const toks = []; let m; NUM_RE.lastIndex = 0;
       while ((m = NUM_RE.exec(s))) { if (/\d/.test(m[0])) toks.push([m.index, m.index + m[0].length, m[0]]); }
       let out = '', last = 0;
@@ -501,7 +454,7 @@ ${kept.map(c => `${c.id}. [${c.category}] ${c.text}`).join('\n')}`;
         check.total++;
         const ok = norms.has(norm) || cores.has(core);
         if (!ok) check.flagged++;
-        out += ok ? `<span class="ok" title="traced to the release notes">${esc(tok)}</span>` : `<span class="flag" title="not in the release notes">${esc(tok)} ⚑</span>`;
+        out += ok ? `<span class="ok" title="Traced to the release notes">${esc(tok)}</span>` : `<span class="flag" title="Not in the release notes">${esc(tok)} ⚑</span>`;
         last = b;
       }
       return out + segHtml(s.slice(last));
@@ -509,88 +462,88 @@ ${kept.map(c => `${c.id}. [${c.category}] ${c.text}`).join('\n')}`;
   }
 
   // ------------------------------------------------------------------
-  // Station 5 · Package: render filter, demo, card, brief, snippets, ledger
+  // Station 5 · Package: render
   // ------------------------------------------------------------------
+  const whyText = c => `${c.keep ? 'Kept' : 'Dropped'}: ${c.reason}${c.prs.length ? `. PR #${c.prs.join(', #')}` : ''}. Line ${c.id}.`;
   function renderFilter(changes) {
-    $('filter').innerHTML = changes.filter(c => !/context|meta/.test(c.category)).map(c => `<label class="chg ${c.keep ? '' : 'out'}"><input type="checkbox" data-id="${c.id}" ${c.keep ? 'checked' : ''} /><span><span>${esc(c.text)}</span><div class="why">${c.keep ? 'kept' : 'dropped'} · ${esc(c.reason)}${c.prs.length ? ` · PR #${c.prs.join(', #')}` : ''} · L${c.id}</div></span><span class="tag ${c.category}">${c.category}</span></label>`).join('');
-    $('filter').querySelectorAll('input[type=checkbox]').forEach(cb => cb.onchange = () => { const c = changes.find(x => x.id === Number(cb.dataset.id)); c.keep = cb.checked; c.reason = cb.checked ? 'kept by you (human override)' : 'dropped by you (human override)'; const row = cb.closest('.chg'); row.classList.toggle('out', !cb.checked); row.querySelector('.why').textContent = `${c.keep ? 'kept' : 'dropped'} · ${c.reason}${c.prs.length ? ` · PR #${c.prs.join(', #')}` : ''} · L${c.id}`; repackage(); });
+    const list = changes.filter(c => !/context|meta/.test(c.category));
+    $('filter').innerHTML = `<ul class="changes">${list.map(c => `<li><label class="chg ${c.keep ? '' : 'out'}"><input type="checkbox" data-id="${c.id}" ${c.keep ? 'checked' : ''} aria-label="Keep: ${esc(short(c.text, 60))}" /><span><span class="text">${esc(c.text)}</span><div class="why">${esc(whyText(c))}</div></span><span class="cat ${c.category}">${CAT_LABEL[c.category] || c.category}</span></label></li>`).join('')}</ul>`;
+    $('filter').querySelectorAll('input[type=checkbox]').forEach(cb => cb.onchange = () => { const c = changes.find(x => x.id === Number(cb.dataset.id)); c.keep = cb.checked; c.reason = cb.checked ? 'kept by you' : 'dropped by you'; const row = cb.closest('.chg'); row.classList.toggle('out', !cb.checked); row.querySelector('.why').textContent = whyText(c); repackage(); });
   }
 
   function renderDemo(pack, mark) {
     const total = pack.beats.reduce((a, b) => a + b.len, 0);
-    const colors = ['var(--terra)', 'var(--blue)', 'var(--sage)', 'var(--mauve)', 'var(--amber)', 'var(--terra-dark)'];
+    const shades = ['#15171A', '#3F4651', '#6B7380', '#8B93A1', '#AEB6C2', '#157F5A'];
     $('demo').innerHTML = `<div class="demo-grid"><div>
-      <div class="timeline">${pack.beats.map((b, i) => `<span style="width:${(b.len / total * 100).toFixed(1)}%;background:${colors[i]}" title="${b.t} · ${esc(b.say)}"></span>`).join('')}</div>
-      <table class="beats"><thead><tr><th>Time</th><th>Say</th><th>Show</th></tr></thead><tbody>${pack.beats.map(b => `<tr><td class="t">${b.t}</td><td>${mark(b.say)}</td><td class="show">${esc(b.show)}</td></tr>`).join('')}</tbody></table>
-      <p class="hint" style="margin-top:10px"><b>Recording checklist</b> (what makes it watchable on a phone):</p>
-      <ul class="checklist"><li>Crop 4:5 (1080×1350); most of LinkedIn is mobile</li><li>Burn captions in; the majority watch without sound</li><li>Demo data only, no customer names or PII on screen</li><li>Show the clock or the number, not the settings page</li><li>End card: CTA + your name, hold it for the last beats</li><li>Under half a minute; cut anything that is a scroll</li></ul>
+      <div class="timeline" aria-hidden="true">${pack.beats.map((b, i) => `<span style="width:${(b.len / total * 100).toFixed(1)}%;background:${shades[i]}" title="${b.t} ${esc(b.say)}"></span>`).join('')}</div>
+      <table class="beats"><thead><tr><th>Time</th><th>Say</th><th>Show</th></tr></thead><tbody>${pack.beats.map(b => `<tr><td class="t">${b.t}</td><td>${mark(b.say)}</td><td class="show">${esc(b.show)}</td></tr>`).join('')}</tbody></table></div>
+      <ul class="checklist"><li>Crop to 4:5 (1080 by 1350); most of LinkedIn is watched on a phone</li><li>Burn captions in; most people watch without sound</li><li>Demo data only, no customer names or personal data on screen</li><li>Show the clock or the number, not the settings page</li><li>End card: the call to action and your name, held for the last beats</li><li>Under half a minute; cut anything that is a scroll</li></ul>
     </div>
-    <div class="cardprev" id="cardprev">${cardSvg(pack)}</div></div>`;
+    <div class="cardprev" id="cardprev">${cardSvg(pack)}<p class="cap">The 4:5 card, rendered from the same traced numbers. Download it from the review bar.</p></div></div>`;
   }
 
   function wrapText(s, max) { const words = String(s).split(/\s+/); const lines = []; let cur = ''; for (const w of words) { if ((cur + ' ' + w).trim().length > max && cur) { lines.push(cur); cur = w; } else cur = (cur + ' ' + w).trim(); } if (cur) lines.push(cur); return lines; }
   function cardSvg(pack) {
-    const W = 1080, H = 1350, F = 'Helvetica, Arial, sans-serif';
-    const tagFill = { speed: '#DCE5F0', security: '#DFEADF', workflow: '#EBD2C6', integration: '#E8DDEB', reliability: '#EFE9DF' };
-    const tagInk = { speed: '#2F4A6B', security: '#1F5E46', workflow: '#8E3F2B', integration: '#5C3F66', reliability: '#5B5247' };
-    const title = wrapText(pack.name, 24).slice(0, 2);
-    let y = 120;
-    let out = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="${F}">
-<rect width="${W}" height="${H}" fill="#F3EDE3"/>
-<rect x="64" y="56" width="334" height="40" rx="20" fill="#fff" stroke="#B5543A" stroke-width="3"/><text x="231" y="83" text-anchor="middle" font-size="18" font-weight="800" fill="#B5543A" letter-spacing="2">BUILT WITH ANTIGRAVITY</text>
-<text x="${W - 64}" y="84" text-anchor="end" font-size="18" font-weight="800" fill="#6E655C" letter-spacing="2">RELEASE → DEMO</text>`;
-    title.forEach(l => { y += 64; out += `<text x="64" y="${y}" font-size="60" font-weight="800" fill="#1F1A17" letter-spacing="-1">${esc(l)}</text>`; });
-    y += 42; out += `<text x="64" y="${y}" font-size="26" fill="#6E655C">What shipped${pack.meta.date ? ' · ' + esc(pack.meta.date) : ''} · the customer-visible wins</text>`;
-    y += 36;
-    const slots = pack.top.length || 1, gap = 22, availH = H - y - 150, h = Math.min(290, Math.floor((availH - gap * (slots - 1)) / slots));
+    const W = 1080, H = 1350, F = "'Instrument Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif";
+    const title = wrapText(pack.name, 22).slice(0, 2);
+    let y = 150;
+    let out = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="${F}" role="img" aria-label="${esc(pack.name)} demo card">
+<rect width="${W}" height="${H}" fill="#FFFFFF"/>
+<text x="72" y="92" font-size="22" font-weight="600" fill="#15171A">What shipped${pack.meta.date ? ', ' + esc(pack.meta.date) : ''}</text>
+<text x="${W - 72}" y="92" text-anchor="end" font-size="22" fill="#6B7380">Built with Antigravity</text>
+<line x1="72" y1="112" x2="${W - 72}" y2="112" stroke="#E4E7EB" stroke-width="2"/>`;
+    title.forEach(l => { y += 72; out += `<text x="72" y="${y}" font-size="68" font-weight="600" fill="#15171A" letter-spacing="-1.5">${esc(l)}</text>`; });
+    y += 44; out += `<text x="72" y="${y}" font-size="26" fill="#3F4651">The ${pack.top.length === 1 ? 'change' : pack.top.length + ' changes'} customers will feel. Internal work left out on purpose.</text>`;
+    y += 48;
+    const slots = pack.top.length || 1, availH = H - y - 140, h = Math.floor(availH / slots);
     pack.top.forEach((w, i) => {
-      const top = y + i * (h + gap);
+      const top = y + i * h;
       const big = w.ba.after ? (w.ba.before ? `${w.ba.before} → ${w.ba.after}` : w.ba.after) : (w.nums[0] ? w.nums[0].raw : '');
-      const bigSize = big.length > 14 ? 34 : big.length > 9 ? 44 : 56;
-      const textW = big ? 560 : 900;
-      const lines = wrapText(cap(headClause(w, 150)), Math.floor(textW / 15)).slice(0, 4);
-      out += `<rect x="64" y="${top}" width="${W - 128}" height="${h}" rx="22" fill="#fff" stroke="#D8CFC2" stroke-width="2"/>
-<text x="96" y="${top + 48}" font-size="20" font-weight="800" fill="#B5543A">0${i + 1}</text>
-<rect x="140" y="${top + 28}" width="${w.category.length * 12 + 28}" height="30" rx="15" fill="${tagFill[w.category] || '#EEE'}"/><text x="${140 + (w.category.length * 12 + 28) / 2}" y="${top + 49}" text-anchor="middle" font-size="15" font-weight="800" fill="${tagInk[w.category] || '#555'}" letter-spacing="1.5">${esc(w.category.toUpperCase())}</text>`;
-      lines.forEach((l, k) => { out += `<text x="96" y="${top + 100 + k * 38}" font-size="30" font-weight="700" fill="#1F1A17">${esc(l)}</text>`; });
-      if (big) out += `<text x="${W - 96}" y="${top + h / 2 + bigSize / 3}" text-anchor="end" font-size="${bigSize}" font-weight="800" fill="#B5543A" letter-spacing="-1">${esc(big)}</text>`;
-      if (w.prs.length) out += `<text x="96" y="${top + h - 24}" font-size="16" fill="#6E655C" font-family="Menlo, Consolas, monospace">PR #${esc(w.prs.join(', #'))} · source L${w.id}</text>`;
+      const bigSize = big.length > 14 ? 40 : big.length > 9 ? 52 : 64;
+      const textW = big ? 540 : 930;
+      const lines = wrapText(cap(headClause(w, 150)), Math.floor(textW / 15.5)).slice(0, 3);
+      out += `<line x1="72" y1="${top}" x2="${W - 72}" y2="${top}" stroke="#E4E7EB" stroke-width="2"/>
+<text x="72" y="${top + 48}" font-size="20" font-weight="600" fill="#6B7380">${CAT_LABEL[w.category] || w.category}${w.prs.length ? `<tspan dx="22">PR #${esc(w.prs[0])}</tspan>` : ''}</text>`;
+      lines.forEach((l, k) => { out += `<text x="72" y="${top + 100 + k * 40}" font-size="32" font-weight="600" fill="#15171A" letter-spacing="-0.4">${esc(l)}</text>`; });
+      if (big) { out += `<text x="${W - 72}" y="${top + h / 2 + bigSize / 3}" text-anchor="end" font-size="${bigSize}" font-weight="600" fill="#15171A" letter-spacing="-1.5">${esc(big)}</text><line x1="${W - 72 - Math.min(big.length * bigSize * .56, 480)}" y1="${top + h / 2 + bigSize / 3 + 14}" x2="${W - 72}" y2="${top + h / 2 + bigSize / 3 + 14}" stroke="#157F5A" stroke-width="5" stroke-linecap="round"/>`; }
     });
-    const fy = H - 92;
-    if (pack.heads[0] || pack.known[0]) out += `<text x="64" y="${fy}" font-size="20" fill="#7A5A00" font-weight="700">Heads-up: ${esc(short((pack.heads[0] || pack.known[0]).text, 80))}</text>`;
-    out += `<text x="64" y="${H - 44}" font-size="18" fill="#6E655C">Afrina M · Built with Antigravity + Gemini · afrinam19.github.io/signal50</text>
-<text x="${W - 64}" y="${H - 44}" text-anchor="end" font-size="18" fill="#6E655C">every number traced to the release notes</text></svg>`;
+    const fy = H - 110;
+    out += `<line x1="72" y1="${fy - 36}" x2="${W - 72}" y2="${fy - 36}" stroke="#E4E7EB" stroke-width="2"/>`;
+    if (pack.heads[0] || pack.known[0]) out += `<text x="72" y="${fy}" font-size="22" fill="#9A6700" font-weight="600">Heads-up: ${esc(short((pack.heads[0] || pack.known[0]).text, 72))}</text>`;
+    out += `<text x="72" y="${H - 52}" font-size="20" fill="#6B7380">Afrina M, Signal50. Every number traced to the release notes.</text>
+<text x="${W - 72}" y="${H - 52}" text-anchor="end" font-size="20" fill="#6B7380">afrinam19.github.io/signal50</text></svg>`;
     return out;
   }
 
   function renderBrief(pack, mark) {
-    const lensOrder = { exec: ['exec', 'user', 'partner'], user: ['user', 'exec', 'partner'], partner: ['partner', 'exec', 'user'] }[pack.lead === 'exec buyer' ? 'exec' : pack.lead === 'daily user' ? 'user' : 'partner'];
-    const lensName = { exec: 'Exec buyer · ROI & risk', user: 'Daily user · time saved', partner: 'Partner · repeatable use case' };
-    const win = w => `<div class="win"><h4>${mark(cap(w.text))}</h4><div class="lenses">${lensOrder.map(k => `<div class="lens"><b>${lensName[k]}</b>${mark(w.lens[k])}</div>`).join('')}</div><div class="proof">proof: ${w.nums.length ? w.nums.map(n => mark(n.raw)).join(' · ') : 'no number in the notes — do not quote one'} · source L${w.id}${w.prs.length ? ` · PR #${w.prs.join(', #')}` : ''}</div></div>`;
-    $('brief').innerHTML = `<div class="brief">
-      <div class="k">Customer brief · ${esc(pack.meta.date || new Date().toISOString().slice(0, 10))} · lead with the ${esc(pack.lead)}</div>
+    const lensOrder = { 'exec buyer': ['exec', 'user', 'partner'], 'daily user': ['user', 'exec', 'partner'], 'partner': ['partner', 'exec', 'user'] }[pack.lead];
+    const lensName = { exec: 'Exec buyer: ROI and risk', user: 'Daily user: time saved', partner: 'Partner: repeatable use case' };
+    const win = w => `<div class="win"><h4>${mark(cap(w.text))}</h4><div class="lenses">${lensOrder.map(k => `<div class="lens"><b>${lensName[k]}</b>${mark(w.lens[k])}</div>`).join('')}</div><div class="proof">Proof: ${w.nums.length ? w.nums.map(n => mark(n.raw)).join(', ') : 'no number in the notes, so do not quote one'}. Source <code>L${w.id}</code>${w.prs.length ? ` <code>PR #${w.prs.join(', #')}</code>` : ''}</div></div>`;
+    $('brief').innerHTML = `<article class="brief">
+      <div class="k">Customer brief, ${esc(pack.meta.date || new Date().toISOString().slice(0, 10))}. Written for the ${esc(pack.lead)} first.</div>
       <h2 class="t">${mark(pack.name)}: what it means for you</h2>
-      <p class="lead">${pack.top.length ? `The customer-visible changes in this release, translated for the people who buy, use and resell it. Internal work was filtered out on purpose.` : 'No customer-visible wins were kept. Flip lines in the filter or paste different notes.'}</p>
-      <h3>Top wins</h3>${pack.top.map(win).join('') || '<p class="hint">none</p>'}
-      ${pack.rest.length ? `<h3>Also shipped</h3><ul>${pack.rest.map(w => `<li>${mark(cap(w.text))} <span class="proof" style="display:inline">· L${w.id}</span></li>`).join('')}</ul>` : ''}
-      ${(pack.heads.length || pack.known.length) ? `<h3>Heads-up (say it before they ask)</h3><ul>${[...pack.heads, ...pack.known].map(w => `<li>${mark(cap(w.text))} <span class="proof" style="display:inline">· L${w.id}</span></li>`).join('')}</ul>` : ''}
-      <h3>FAQ &amp; objections</h3><div class="faq">${pack.faq.map((f, i) => `<p><span class="q">${esc(f.q)}</span><br/><span class="a" contenteditable="true" data-i="${i}" spellcheck="false">${mark(f.a)}</span></p>`).join('')}</div>
-      <div class="two"><div><h3>Do say</h3><ul>${pack.top.filter(w => w.nums.length).map(w => `<li>${w.nums.map(n => mark(n.raw)).join(', ')} — ${mark(lower1(clause(w.text, 80)))}</li>`).join('') || '<li>Only what is in the notes.</li>'}</ul></div>
-      <div><h3>Do not pitch</h3><ul>${pack.dropped.slice(0, 6).map(c => `<li>${esc(short(c.text, 70))} <span class="proof" style="display:inline">· ${esc(c.reason)}</span></li>`).join('') || '<li>Nothing was dropped.</li>'}<li>Any number, date or plan detail that is not in the release notes.</li></ul></div></div>
-      <h3>Proof points</h3><table><thead><tr><th>Number</th><th>Claim</th><th>Source</th></tr></thead><tbody>${[...pack.top, ...pack.rest].filter(w => w.nums.length).flatMap(w => w.nums.map(n => `<tr><td>${mark(n.raw)}</td><td>${esc(short(w.text, 90))}</td><td><code>L${w.id}${w.prs.length ? ' · #' + w.prs[0] : ''}</code></td></tr>`)).join('') || '<tr><td colspan="3">No numbers in the kept changes.</td></tr>'}</tbody></table>
-    </div>`;
+      <p class="lead">${pack.top.length ? 'The customer-visible changes in this release, translated for the people who buy, use and resell it. Internal work was filtered out on purpose.' : 'No customer-visible wins were kept. Flip lines in the filter or paste different notes.'}</p>
+      <h3>Top wins</h3>${pack.top.map(win).join('') || '<p>None.</p>'}
+      ${pack.rest.length ? `<h3>Also shipped</h3><ul>${pack.rest.map(w => `<li>${mark(cap(w.text))} <span class="proof" style="display:inline">(L${w.id})</span></li>`).join('')}</ul>` : ''}
+      ${(pack.heads.length || pack.known.length) ? `<h3>Heads-up: say it before they ask</h3><ul>${[...pack.heads, ...pack.known].map(w => `<li>${mark(cap(w.text))} <span class="proof" style="display:inline">(L${w.id})</span></li>`).join('')}</ul>` : ''}
+      <h3>Questions you will get</h3><div class="faq">${pack.faq.map((f, i) => `<p><span class="q">${esc(f.q)}</span><span class="a" contenteditable="true" data-i="${i}" spellcheck="false" aria-label="Answer, editable">${mark(f.a)}</span></p>`).join('')}</div>
+      <div class="two"><div><h3>Do say</h3><ul>${pack.top.filter(w => w.nums.length).map(w => `<li>${w.nums.map(n => mark(n.raw)).join(', ')}: ${mark(lower1(clause(w.text, 80)))}</li>`).join('') || '<li>Only what is in the notes.</li>'}</ul></div>
+      <div><h3>Do not pitch</h3><ul>${pack.dropped.slice(0, 6).map(c => `<li>${esc(short(c.text, 70))} <span class="proof" style="display:inline">(${esc(c.reason)})</span></li>`).join('') || '<li>Nothing was dropped.</li>'}<li>Any number, date or plan detail that is not in the release notes.</li></ul></div></div>
+      <h3>Proof points</h3><div class="tablewrap"><table class="table"><thead><tr><th>Number</th><th>Claim</th><th>Source</th></tr></thead><tbody>${[...pack.top, ...pack.rest].filter(w => w.nums.length).flatMap(w => w.nums.map(n => `<tr><td>${mark(n.raw)}</td><td>${esc(short(w.text, 90))}</td><td><code>L${w.id}${w.prs.length ? ', #' + w.prs[0] : ''}</code></td></tr>`)).join('') || '<tr><td colspan="3">No numbers in the kept changes.</td></tr>'}</tbody></table></div>
+    </article>`;
     $('brief').querySelectorAll('.a[contenteditable]').forEach(el => el.addEventListener('input', () => { pack.faq[Number(el.dataset.i)].a = el.textContent; updateGateSummary(); }));
   }
 
   function renderSnips(pack, mark) {
-    const items = [['slack', 'Slack · #customer-success'], ['crm', 'CRM note · account owners'], ['email', 'Customer email'], ['social', 'Social teaser']];
-    $('snips').innerHTML = `<div class="snips">${items.map(([k, t]) => `<div class="snip"><h4>${t}<button class="btn secondary small copy" data-k="${k}" disabled>Copy</button></h4><pre id="snip-${k}">${mark(pack.snippets[k])}</pre></div>`).join('')}</div>`;
-    $('snips').querySelectorAll('button.copy').forEach(b => b.onclick = async () => { const t = pack.snippets[b.dataset.k]; try { await navigator.clipboard.writeText(t); b.textContent = 'Copied'; setTimeout(() => b.textContent = 'Copy', 1200); } catch { download(`${b.dataset.k}.txt`, t); } });
+    const items = [['slack', 'Slack, #customer-success'], ['crm', 'CRM note for account owners'], ['email', 'Customer email'], ['social', 'Social teaser']];
+    $('snips').innerHTML = `<div class="snips">${items.map(([k, t]) => `<div class="snip"><h4>${t}<button class="btn secondary sm copy" data-k="${k}" type="button" disabled>Copy</button></h4><pre id="snip-${k}">${mark(pack.snippets[k])}</pre></div>`).join('')}</div>`;
+    $('snips').querySelectorAll('button.copy').forEach(b => b.onclick = async () => { const t = pack.snippets[b.dataset.k]; try { await navigator.clipboard.writeText(t); b.textContent = 'Copied'; setTimeout(() => b.textContent = 'Copy', 1400); } catch { download(`${b.dataset.k}.txt`, t); } });
   }
 
   function renderLedger(changes) {
     const rows = changes.filter(c => c.nums.length);
-    $('ledger').innerHTML = rows.length ? `<table class="ledger"><thead><tr><th>Line</th><th>Numbers</th><th>Category</th><th>Kept</th><th>Source text</th></tr></thead><tbody>${rows.map(c => `<tr><td><code>L${c.id}</code></td><td>${c.nums.map(n => `<code>${esc(n.raw)}</code>`).join(' ')}</td><td>${esc(c.category)}</td><td>${c.keep ? 'yes' : 'no'}</td><td>${esc(c.text)}${c.prs.length ? ` <code>#${c.prs.join(', #')}</code>` : ''}</td></tr>`).join('')}</tbody></table>` : '<span class="hint">No numbers found in the notes.</span>';
+    $('ledger').className = rows.length ? '' : 'empty';
+    $('ledger').innerHTML = rows.length ? `<div class="tablewrap"><table class="table"><thead><tr><th>Line</th><th>Numbers</th><th>Category</th><th>Kept</th><th>Source text</th></tr></thead><tbody>${rows.map(c => `<tr><td><code>L${c.id}</code></td><td>${c.nums.map(n => `<code>${esc(n.raw)}</code>`).join(' ')}</td><td>${CAT_LABEL[c.category] || esc(c.category)}</td><td>${c.keep ? 'Yes' : 'No'}</td><td>${esc(c.text)}${c.prs.length ? ` <code>#${c.prs.join(', #')}</code>` : ''}</td></tr>`).join('')}</tbody></table></div>` : 'No numbers found in the notes.';
   }
 
   // ------------------------------------------------------------------
@@ -599,16 +552,16 @@ ${kept.map(c => `${c.id}. [${c.category}] ${c.text}`).join('\n')}`;
   const plain = html => html.replace(/<[^>]+>/g, '').replace(/ ⚑/g, ' [not in notes]').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
   function toMarkdown(pack) {
     const L = (w, k) => w.lens[k];
-    const out = [`# ${pack.name}: what it means for you`, `_Customer brief · ${pack.meta.date || new Date().toISOString().slice(0, 10)} · lead with the ${pack.lead} · Built with Antigravity · translator: ${pack.mode}_`, ''];
+    const out = [`# ${pack.name}: what it means for you`, `_Customer brief, ${pack.meta.date || new Date().toISOString().slice(0, 10)}. Written for the ${pack.lead} first. Built with Antigravity; translator: ${pack.mode}._`, ''];
     out.push('## Top wins');
-    pack.top.forEach((w, i) => { out.push(`### ${i + 1}. ${cap(w.text)}`, `- **Exec buyer (ROI & risk):** ${L(w, 'exec')}`, `- **Daily user (time saved):** ${L(w, 'user')}`, `- **Partner (repeatable use case):** ${L(w, 'partner')}`, `- Proof: ${w.nums.map(n => n.raw).join(' · ') || 'no number in the notes — do not quote one'} · source L${w.id}${w.prs.length ? ` · PR #${w.prs.join(', #')}` : ''}`, ''); });
+    pack.top.forEach((w, i) => { out.push(`### ${i + 1}. ${cap(w.text)}`, `- **Exec buyer (ROI and risk):** ${L(w, 'exec')}`, `- **Daily user (time saved):** ${L(w, 'user')}`, `- **Partner (repeatable use case):** ${L(w, 'partner')}`, `- Proof: ${w.nums.map(n => n.raw).join(', ') || 'no number in the notes, so do not quote one'}. Source L${w.id}${w.prs.length ? `, PR #${w.prs.join(', #')}` : ''}`, ''); });
     if (pack.rest.length) { out.push('## Also shipped'); pack.rest.forEach(w => out.push(`- ${cap(w.text)} (L${w.id})`)); out.push(''); }
-    if (pack.heads.length || pack.known.length) { out.push('## Heads-up (say it before they ask)'); [...pack.heads, ...pack.known].forEach(w => out.push(`- ${cap(w.text)} (L${w.id})`)); out.push(''); }
-    out.push('## FAQ & objections'); pack.faq.forEach(f => out.push(`**${f.q}**  `, `${f.a}`, '')); 
+    if (pack.heads.length || pack.known.length) { out.push('## Heads-up: say it before they ask'); [...pack.heads, ...pack.known].forEach(w => out.push(`- ${cap(w.text)} (L${w.id})`)); out.push(''); }
+    out.push('## Questions you will get'); pack.faq.forEach(f => out.push(`**${f.q}**  `, `${f.a}`, ''));
     out.push('## 30-second demo script', '| Time | Say | Show |', '|---|---|---|'); pack.beats.forEach(b => out.push(`| ${b.t} | ${b.say} | ${b.show} |`)); out.push('');
-    out.push('## Do not pitch'); pack.dropped.forEach(c => out.push(`- ${c.text} — ${c.reason}`)); out.push('- Any number, date or plan detail that is not in the release notes.', '');
+    out.push('## Do not pitch'); pack.dropped.forEach(c => out.push(`- ${c.text} (${c.reason})`)); out.push('- Any number, date or plan detail that is not in the release notes.', '');
     out.push('## Snippets', '', '### Slack', '```', pack.snippets.slack, '```', '### CRM note', '```', pack.snippets.crm, '```', '### Customer email', '```', pack.snippets.email, '```', '### Social teaser', '```', pack.snippets.social, '```', '');
-    out.push('## Source ledger'); pack.changes.filter(c => c.nums.length).forEach(c => out.push(`- L${c.id} · ${c.nums.map(n => n.raw).join(', ')} · ${c.category} · ${c.keep ? 'kept' : 'dropped'} · ${c.text}`));
+    out.push('## Source ledger'); pack.changes.filter(c => c.nums.length).forEach(c => out.push(`- L${c.id}: ${c.nums.map(n => n.raw).join(', ')} (${c.category}, ${c.keep ? 'kept' : 'dropped'}) ${c.text}`));
     return out.join('\n');
   }
   function download(name, data, type = 'text/plain') {
@@ -627,22 +580,27 @@ ${kept.map(c => `${c.id}. [${c.category}] ${c.text}`).join('\n')}`;
   // ------------------------------------------------------------------
   // Orchestrator (Station 1)
   // ------------------------------------------------------------------
-  let changes = [], pack = null, translated = [], meta = null, opts = null, t0 = 0, clockTimer = null, mode = 'local';
+  let changes = [], pack = null, translated = [], meta = null, opts = null, t0 = 0, clockTimer = null, mode = 'local templates';
   const stationEls = {};
-  $('stations').innerHTML = STATIONS.map(s => `<div class="station" id="st-${s.n}"><div class="n">${s.n}</div><h3>${s.t}</h3><p>${s.d}</p><div class="m"></div></div>`).join('');
+  $('stations').innerHTML = STATIONS.map(s => `<li class="station" id="st-${s.n}"><div class="n" aria-hidden="true">${s.n}</div><h3>${s.t}</h3><p>${s.d}</p><div class="m" aria-live="polite"></div></li>`).join('');
   STATIONS.forEach(s => stationEls[s.n] = $('st-' + s.n));
   const setStation = (n, state, metric) => { const el = stationEls[n]; el.className = 'station ' + state; if (metric != null) el.querySelector('.m').textContent = metric; };
   const resetStations = () => STATIONS.forEach(s => setStation(s.n, '', ''));
   const fmt = ms => { const s = Math.floor(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
-  const startClock = () => { t0 = performance.now(); clearInterval(clockTimer); clockTimer = setInterval(() => { $('clock').innerHTML = `Clock: <b>${fmt(performance.now() - t0)}</b> · target under <b>10:00</b> including your review`; }, 500); };
-  const stopClock = () => { clearInterval(clockTimer); $('clock').innerHTML = `Packaged + reviewed in <b>${fmt(performance.now() - t0)}</b>. Target was 10:00.`; };
+  const startClock = () => { t0 = performance.now(); clearInterval(clockTimer); clockTimer = setInterval(() => { $('clock').innerHTML = `<b>${fmt(performance.now() - t0)}</b> elapsed, target under 10:00 including your review`; }, 500); };
+  const stopClock = () => { clearInterval(clockTimer); $('clock').innerHTML = `Packaged and reviewed in <b>${fmt(performance.now() - t0)}</b>. Target was 10:00.`; };
   const setExports = on => { ['dl-md', 'dl-png', 'dl-json', 'print'].forEach(id => $(id).disabled = !on); document.querySelectorAll('#snips button.copy').forEach(b => b.disabled = !on); };
+  const setStatus = (text, cls) => { const fs = $('flagsum'); fs.textContent = text; fs.className = 'chip ' + cls; };
   const todoCount = () => pack ? pack.faq.filter(f => /\[needs confirmation\]/.test(f.a)).length : 0;
   function updateGateSummary() {
-    const fs = $('flagsum'); const todo = todoCount();
-    fs.innerHTML = `${check.total - check.flagged}/${check.total} numbers traced${check.flagged ? ` · ${check.flagged} not in the notes` : ''}${check.claims ? ` · ${check.claims} claim word(s)` : ''}${todo ? ` · ${todo} [needs confirmation]` : ''}${!check.flagged && !check.claims && !todo ? ' · clean' : ''}`;
-    fs.className = 'flagcount ' + ((check.flagged || check.claims) ? 'bad' : 'ok');
-    if (!$('reviewed').checked) setStation(6, (check.flagged || check.claims) ? 'warn' : 'warn', todo ? `${todo} answer(s) still need a human` : 'waiting for human review');
+    const todo = todoCount();
+    const parts = [`${check.total - check.flagged} of ${check.total} numbers traced`];
+    if (check.flagged) parts.push(`${check.flagged} not in the notes`);
+    if (check.claims) parts.push(`${check.claims} claim word${check.claims > 1 ? 's' : ''}`);
+    if (todo) parts.push(`${todo} answer${todo > 1 ? 's' : ''} need you`);
+    if (!check.flagged && !check.claims && !todo) parts.push('clean');
+    setStatus(parts.join(', '), (check.flagged || check.claims) ? 'bad' : (todo ? 'todo' : 'ok'));
+    if (!$('reviewed').checked) setStation(6, 'warn', todo ? `${todo} answer${todo > 1 ? 's' : ''} still need a human` : 'Waiting for your review');
   }
 
   function repackage() {
@@ -652,65 +610,67 @@ ${kept.map(c => `${c.id}. [${c.category}] ${c.text}`).join('\n')}`;
     check = { total: 0, flagged: 0, claims: 0 };
     const mark = makeMarker(changes);
     renderDemo(pack, mark); renderBrief(pack, mark); renderSnips(pack, mark); renderLedger(changes);
-    setStation(3, 'done', `${changes.filter(c => c.keep).length} kept · ${changes.filter(c => !c.keep && !/context|meta/.test(c.category)).length} dropped`);
-    setStation(4, 'done', `${keptTranslated.length} wins × 3 lenses · ${mode}`);
-    setStation(5, 'done', `${pack.top.length} wins · ${pack.beats.length} beats · 4:5 card`);
-    $('reviewed').checked = false; $('reviewed').disabled = false; setExports(false);
+    const droppedN = changes.filter(c => !c.keep && !/context|meta/.test(c.category)).length;
+    setStation(3, 'done', `${changes.filter(c => c.keep).length} kept, ${droppedN} dropped`);
+    setStation(4, 'done', `${keptTranslated.length} wins, 3 lenses each, ${mode}`);
+    setStation(5, 'done', `${pack.top.length} top wins, ${pack.beats.length} beats, 4:5 card`);
+    $('filter-meta').textContent = `${changes.filter(c => c.keep).length} kept, ${droppedN} dropped. Flip any line and the pack rebuilds.`;
+    $('reviewed').checked = false; $('reviewed').disabled = false; $('gate').classList.remove('open'); setExports(false);
     updateGateSummary();
   }
 
   async function run() {
-    const text = $('notes').value.trim(); if (!text) { alert('Paste some release notes first.'); return; }
+    const text = $('notes').value.trim(); if (!text) { $('notes').focus(); setStatus('Paste some release notes first', 'todo'); return; }
     opts = { audience: $('audience').value };
     const key = $('gkey').value.trim(); localStorage.setItem('r2d.key', key); localStorage.setItem('r2d.notes', $('notes').value);
-    $('run').disabled = true; $('reviewed').checked = false; $('reviewed').disabled = true; setExports(false); resetStations(); startClock();
+    $('run').disabled = true; $('run').textContent = 'Building…'; $('reviewed').checked = false; $('reviewed').disabled = true; $('gate').classList.remove('open'); setExports(false); resetStations(); startClock(); setStatus('Building', 'neutral');
     try {
-      setStation(1, 'active', 'release received'); await sleep(250);
-      setStation(1, 'done', `lead: ${opts.audience} · proof rule: notes only`);
-      setStation(2, 'active', 'reading…'); await sleep(300);
+      setStation(1, 'active', 'Release received'); await sleep(250);
+      setStation(1, 'done', `Lead: ${{ exec: 'exec buyer', user: 'daily user', partner: 'partner' }[opts.audience]}. Proof rule: notes only`);
+      setStation(2, 'active', 'Reading…'); await sleep(300);
       changes = text.split('\n').map(s => s.trim()).filter(Boolean).map(parseLine);
       const typed = $('product'); meta = releaseMeta(changes, typed.dataset.auto === '0' && typed.value.trim() ? typed.value.trim() : '');
       if (typed.dataset.auto !== '0' || !typed.value.trim()) { typed.value = meta.product; typed.dataset.auto = '1'; }
-      setStation(2, 'done', `${changes.length} lines · ${changes.reduce((a, c) => a + c.nums.length, 0)} numbers · ${changes.reduce((a, c) => a + c.prs.length, 0)} PRs`);
-      setStation(3, 'active', 'sorting…'); await sleep(300);
+      setStation(2, 'done', `${changes.length} lines, ${changes.reduce((a, c) => a + c.nums.length, 0)} numbers, ${changes.reduce((a, c) => a + c.prs.length, 0)} PRs`);
+      setStation(3, 'active', 'Sorting…'); await sleep(300);
       renderFilter(changes);
       const kept = changes.filter(c => c.keep);
-      setStation(3, 'done', `${kept.length} kept · ${changes.filter(c => !c.keep && !/context|meta/.test(c.category)).length} dropped`);
-      setStation(4, 'active', key ? 'Gemini writing lenses…' : 'local templates…');
-      mode = 'local';
+      setStation(3, 'done', `${kept.length} kept, ${changes.filter(c => !c.keep && !/context|meta/.test(c.category)).length} dropped`);
+      setStation(4, 'active', key ? 'Gemini writing lenses…' : 'Local templates…');
+      mode = 'local templates';
       if (key) {
         let model = $('gmodel').value;
         if (!model) { const models = await listModels(key); model = pickModel(models); fillModels(models, model); }
-        translated = await translateGemini(kept, meta, opts, key, model); mode = `gemini:${model}`;
+        translated = await translateGemini(kept, meta, opts, key, model); mode = model;
       } else { await sleep(350); translated = translateLocal(kept); }
-      setStation(4, 'done', `${translated.length} wins × 3 lenses · ${mode}`);
-      setStation(5, 'active', 'packaging…'); await sleep(250);
+      setStation(4, 'done', `${translated.length} wins, 3 lenses each, ${mode}`);
+      setStation(5, 'active', 'Packaging…'); await sleep(250);
       repackage();
-      $('demo').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      $('filter-section').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
     } catch (e) {
       console.error(e);
-      setStation(4, 'warn', 'Gemini failed → local templates');
-      mode = 'local'; translated = translateLocal(changes.filter(c => c.keep)); repackage();
-      alert(`The Gemini call failed (${e.message}). The local translator wrote the lenses instead. Check the key or pick another model.`);
-    } finally { $('run').disabled = false; }
+      setStation(4, 'warn', 'Gemini failed, local templates used');
+      mode = 'local templates'; translated = translateLocal(changes.filter(c => c.keep)); repackage();
+      setStatus(`Gemini call failed (${e.message.slice(0, 60)}). Local templates wrote the lenses.`, 'todo');
+    } finally { $('run').disabled = false; $('run').textContent = 'Build the demo pack'; }
   }
 
   function fillModels(models, chosen) {
-    const sel = $('gmodel'); sel.innerHTML = `<option value="">auto (newest Flash)</option>` + models.map(m => `<option value="${esc(m)}" ${m === chosen ? 'selected' : ''}>${esc(m)}</option>`).join('');
+    const sel = $('gmodel'); sel.innerHTML = `<option value="">Newest Flash</option>` + models.map(m => `<option value="${esc(m)}" ${m === chosen ? 'selected' : ''}>${esc(m)}</option>`).join('');
   }
 
   $('run').onclick = run;
-  $('sample').onclick = () => { $('notes').value = SAMPLE; $('product').value = ''; $('product').dataset.auto = '1'; };
+  $('sample').onclick = () => { $('notes').value = SAMPLE; $('product').value = ''; $('product').dataset.auto = '1'; $('notes').focus(); };
   $('product').addEventListener('input', () => { $('product').dataset.auto = '0'; });
   $('audience').onchange = () => { if (pack) { opts.audience = $('audience').value; repackage(); } };
-  $('reviewed').onchange = e => { const on = e.target.checked; setExports(on); setStation(6, on ? 'done' : 'warn', on ? 'reviewed by a human · exports open' : 'waiting for human review'); if (on) stopClock(); };
+  $('reviewed').onchange = e => { const on = e.target.checked; setExports(on); $('gate').classList.toggle('open', on); setStation(6, on ? 'done' : 'warn', on ? 'Reviewed by you, exports open' : 'Waiting for your review'); if (on) stopClock(); };
   $('dl-md').onclick = () => download(`${(pack.name || 'release').replace(/[^\w.-]+/g, '-')}-customer-brief.md`, toMarkdown(pack), 'text/markdown');
   $('dl-json').onclick = () => download('release-to-demo-pack.json', JSON.stringify({ generatedAt: new Date().toISOString(), translator: pack.mode, factCheck: check, meta: pack.meta, changes: changes.map(c => ({ id: c.id, text: c.text, type: c.type, scope: c.scope, category: c.category, keep: c.keep, reason: c.reason, nums: c.nums.map(n => n.raw), prs: c.prs })), wins: [...pack.top, ...pack.rest].map(w => ({ id: w.id, text: w.text, lens: w.lens })), headsUp: [...pack.heads, ...pack.known].map(w => w.text), demo: pack.beats, faq: pack.faq, snippets: pack.snippets }, null, 2), 'application/json');
-  $('dl-png').onclick = async () => { try { const blob = await svgToPngBlob(cardSvg(pack), 1080, 1350); download(`${(pack.name || 'release').replace(/[^\w.-]+/g, '-')}-demo-card-1080x1350.png`, blob); } catch (e) { alert('Could not render the PNG in this browser: ' + e.message); } };
+  $('dl-png').onclick = async () => { try { const blob = await svgToPngBlob(cardSvg(pack), 1080, 1350); download(`${(pack.name || 'release').replace(/[^\w.-]+/g, '-')}-demo-card-1080x1350.png`, blob); } catch (e) { setStatus('Could not render the PNG in this browser: ' + e.message, 'todo'); } };
   $('print').onclick = () => window.print();
-  $('gkey').addEventListener('change', async () => { const k = $('gkey').value.trim(); if (!k) return; try { const models = await listModels(k); fillModels(models, pickModel(models)); } catch (e) { alert('Could not list models with that key: ' + e.message); } });
+  $('gkey').addEventListener('change', async () => { const k = $('gkey').value.trim(); if (!k) return; try { const models = await listModels(k); fillModels(models, pickModel(models)); } catch (e) { setStatus('Could not list models with that key: ' + e.message, 'todo'); } });
 
-  // test hook (no UI): lets the headless test render the PNG without a download
+  // test hook (no UI)
   window.__r2d = { cardPng: () => svgToPngBlob(cardSvg(pack), 1080, 1350), pack: () => pack, changes: () => changes, md: () => toMarkdown(pack) };
 
   // boot

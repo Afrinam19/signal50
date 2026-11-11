@@ -3,199 +3,167 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Deck Factory — rough notes → enterprise deck · Built with Antigravity</title>
-<meta name="description" content="Paste rough notes, get a board-ready SCQA deck with every number traced to its source line. Runs in your browser. Built with Antigravity + Gemini by Afrina M." />
+<title>Deck Factory — rough notes to a board-ready deck, every number traced</title>
+<meta name="description" content="Paste rough notes and get a board-ready SCQA deck where every number is traced to a source line or flagged. Runs in your browser; nothing is uploaded. Built with Antigravity by Afrina M." />
+<link rel="stylesheet" href="../shared/ui.css" />
 <style>
-  :root {
-    --cream:#F3EDE3; --paper:#FFFFFF; --ink:#1F1A17; --mute:#6E655C; --line:#D8CFC2; --terra:#B5543A; --terra-dark:#8E3F2B; --terra-pale:#EBD2C6;
-    --sage:#9DB8A4; --sage-pale:#DFEADF; --blue:#8FA6C4; --blue-pale:#DCE5F0; --mauve:#B79DBE; --amber:#D9A441; --red:#B42318; --green:#1F5E46;
-    --radius:14px; --shadow:0 6px 18px rgba(60,35,20,.10);
-    --font:-apple-system,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  }
-  * { box-sizing:border-box; }
-  html,body { margin:0; background:var(--cream); color:var(--ink); font-family:var(--font); font-size:15px; line-height:1.45; }
-  a { color:var(--terra); }
-  header { padding:22px 20px 10px; max-width:1240px; margin:0 auto; }
-  .pill { display:inline-block; border:1.5px solid var(--terra); color:var(--terra); border-radius:999px; padding:3px 12px; font-size:11px; font-weight:800; letter-spacing:.06em; background:var(--paper); }
-  h1 { font-size:34px; line-height:1.1; margin:12px 0 6px; letter-spacing:-.01em; }
-  h1 em { font-style:normal; color:var(--terra); }
-  .sub { color:var(--mute); font-size:15px; margin:0 0 8px; max-width:820px; }
-  .sub b { color:var(--terra); }
-  .links { font-size:12.5px; color:var(--mute); }
-  .links a { margin-right:14px; }
-  main { max-width:1240px; margin:0 auto; padding:10px 20px 60px; display:grid; grid-template-columns:minmax(300px,380px) 1fr; gap:18px; }
-  @media (max-width:900px) { main { grid-template-columns:1fr; } }
-  .card { background:var(--paper); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px; }
-  .card h2 { font-size:14px; margin:0 0 10px; text-transform:uppercase; letter-spacing:.06em; color:var(--mute); }
-  label { display:block; font-size:12px; font-weight:700; color:var(--mute); margin:10px 0 4px; }
-  textarea, input, select { width:100%; border:1px solid var(--line); border-radius:10px; padding:9px 10px; font:inherit; font-size:13px; background:#FFFDF9; color:var(--ink); }
-  textarea { min-height:300px; font-family:var(--mono); font-size:12.5px; line-height:1.5; resize:vertical; }
-  .row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .btn { display:inline-flex; align-items:center; gap:8px; border:0; border-radius:999px; padding:11px 18px; font:inherit; font-weight:800; font-size:14px; cursor:pointer; background:var(--terra); color:#fff; box-shadow:var(--shadow); }
-  .btn:disabled { opacity:.45; cursor:not-allowed; box-shadow:none; }
-  .btn.secondary { background:var(--paper); color:var(--ink); border:1.5px solid var(--line); box-shadow:none; font-weight:700; }
-  .btn.small { padding:8px 13px; font-size:12.5px; }
-  .hint { font-size:11.5px; color:var(--mute); margin-top:6px; }
-  .stations { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-  @media (max-width:1100px) { .stations { grid-template-columns:repeat(2,1fr); } }
-  .station { border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#FFFDF9; min-height:92px; position:relative; transition:background .3s, border-color .3s; }
-  .station .n { position:absolute; top:10px; right:10px; width:22px; height:22px; border-radius:50%; background:var(--line); color:#fff; font-size:11px; font-weight:800; display:grid; place-items:center; }
-  .station h3 { margin:0 24px 2px 0; font-size:13.5px; }
-  .station p { margin:0; font-size:11.5px; color:var(--mute); }
-  .station .m { margin-top:6px; font-size:11.5px; font-family:var(--mono); color:var(--ink); min-height:16px; }
-  .station.active { border-color:var(--terra); background:#FFF7F2; }
-  .station.active .n { background:var(--terra); }
-  .station.done { border-color:var(--sage); background:var(--sage-pale); }
-  .station.done .n { background:var(--green); }
-  .station.warn { border-color:var(--amber); background:#FFF9E8; }
-  .station.warn .n { background:var(--amber); }
-  .clock { font-family:var(--mono); font-size:13px; color:var(--mute); }
-  .clock b { color:var(--ink); font-size:16px; }
-  .toolbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:12px 0; }
-  .gate { display:flex; align-items:flex-start; gap:10px; background:#FFF7F2; border:1px dashed var(--terra); border-radius:12px; padding:10px 12px; font-size:13px; }
-  .gate input { width:auto; margin-top:3px; }
-  .flagcount { font-weight:800; }
-  .flagcount.bad { color:var(--red); }
-  .flagcount.ok { color:var(--green); }
-  /* ---- slides ---- */
-  .deck { display:grid; gap:18px; }
-  .slidewrap { break-inside:avoid; }
-  .slide { aspect-ratio:16/9; width:100%; border-radius:10px; overflow:hidden; position:relative; padding:5.2% 5.5% 4.6%; display:flex; flex-direction:column; background:var(--s-bg); color:var(--s-ink); font-family:var(--s-font); border:1px solid var(--line); box-shadow:var(--shadow); container-type:inline-size; }
-  .slide .kicker { font-size:1.5cqw; letter-spacing:.12em; text-transform:uppercase; font-weight:800; color:var(--s-accent); margin-bottom:1.2cqw; }
-  .slide h2.hl { font-size:3.6cqw; line-height:1.15; margin:0 0 2.2cqw; font-weight:800; letter-spacing:-.01em; max-width:92%; text-transform:none; color:var(--s-ink); }
-  .slide.title h2.hl { font-size:5.2cqw; max-width:85%; margin-top:auto; }
-  .slide.title .st { font-size:2.2cqw; color:var(--s-mute); max-width:80%; margin-bottom:auto; }
-  .slide ul { margin:0; padding-left:2.4cqw; font-size:2.1cqw; line-height:1.4; display:grid; gap:1.1cqw; }
-  .slide ul li::marker { color:var(--s-accent); }
-  .slide .two { display:grid; grid-template-columns:1fr 1fr; gap:3cqw; }
-  .slide .num { font-size:2.1cqw; }
-  .slide .big { font-size:6cqw; font-weight:800; color:var(--s-accent); line-height:1; margin:1cqw 0 .6cqw; }
-  .slide .cap { font-size:1.8cqw; color:var(--s-mute); }
-  .slide table { border-collapse:collapse; width:100%; font-size:1.9cqw; }
-  .slide th, .slide td { text-align:left; padding:.9cqw 1cqw; border-bottom:1px solid var(--s-line); }
-  .slide th { color:var(--s-mute); font-weight:700; font-size:1.6cqw; text-transform:uppercase; letter-spacing:.06em; }
-  .slide .foot { margin-top:auto; display:flex; justify-content:space-between; align-items:center; font-size:1.4cqw; color:var(--s-mute); padding-top:1.5cqw; border-top:1px solid var(--s-line); }
-  .slide .src { font-family:var(--mono); }
-  .slide .flag { background:#FDE8E6; color:var(--red); border-radius:4px; padding:0 .4cqw; font-weight:700; }
-  .slide .ok { border-bottom:2px solid var(--sage); }
-  .slide svg { width:100%; height:auto; display:block; }
-  .notes { font-size:12.5px; color:var(--mute); margin-top:6px; }
-  .notes summary { cursor:pointer; font-weight:700; color:var(--ink); }
-  .notes .flagline { color:var(--red); font-weight:700; }
-  .ledger { font-size:12.5px; width:100%; border-collapse:collapse; }
-  .ledger th, .ledger td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
-  .ledger code { font-family:var(--mono); font-size:11.5px; }
-  footer { max-width:1240px; margin:0 auto; padding:0 20px 40px; font-size:12.5px; color:var(--mute); }
-  .empty { color:var(--mute); font-size:13.5px; padding:30px 10px; text-align:center; border:1px dashed var(--line); border-radius:12px; }
-  /* themes (brand tokens — rules, not suggestions) */
-  .theme-slate { --s-bg:#0F172A; --s-ink:#F8FAFC; --s-mute:#A5B4CF; --s-accent:#60A5FA; --s-line:rgba(255,255,255,.14); --s-font:var(--font); }
-  .theme-warm { --s-bg:#FBF7F0; --s-ink:#1F1A17; --s-mute:#6E655C; --s-accent:#B5543A; --s-line:#E6DCCD; --s-font:var(--font); }
-  .theme-mono { --s-bg:#FFFFFF; --s-ink:#111111; --s-mute:#666666; --s-accent:#111111; --s-line:#E5E5E5; --s-font:Georgia,"Times New Roman",serif; }
+  /* ---- slides (the deck's own brand tokens; separate from the app UI) ---- */
+  .deck { display: grid; grid-template-columns: 1fr; gap: 22px; }
+  @media (min-width: 1600px) { .deck { grid-template-columns: 1fr 1fr; } }
+  .slidewrap { break-inside: avoid; min-width: 0; }
+  .slide { aspect-ratio: 16/9; width: 100%; border-radius: var(--r-2); overflow: hidden; position: relative; padding: 5.2% 5.5% 4.6%; display: flex; flex-direction: column; background: var(--s-bg); color: var(--s-ink); font-family: var(--s-font); border: 1px solid var(--line); container-type: inline-size; }
+  .slide .kicker { font-size: 1.8cqw; font-weight: 600; color: var(--s-accent); margin-bottom: 1.2cqw; }
+  .slide h2.hl { font-size: 3.6cqw; line-height: 1.15; margin: 0 0 2.2cqw; font-weight: 600; letter-spacing: -.015em; max-width: 92%; color: var(--s-ink); }
+  .slide.title h2.hl { font-size: 5.2cqw; max-width: 86%; margin-top: auto; }
+  .slide.title .st { font-size: 2.2cqw; color: var(--s-mute); max-width: 80%; margin-bottom: auto; }
+  .slide ul { margin: 0; padding-left: 2.4cqw; font-size: 2.3cqw; line-height: 1.4; display: grid; gap: 1.2cqw; }
+  .slide ul li::marker { color: var(--s-accent); }
+  .slide .two { display: grid; grid-template-columns: 1fr 1fr; gap: 3cqw; }
+  .slide .big { font-size: 6cqw; font-weight: 600; color: var(--s-accent); line-height: 1; margin: 1cqw 0 .6cqw; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .slide .cap { font-size: 1.9cqw; color: var(--s-mute); }
+  .slide table { border-collapse: collapse; width: 100%; font-size: 2.1cqw; }
+  .slide th, .slide td { text-align: left; padding: .9cqw 1cqw; border-bottom: 1px solid var(--s-line); }
+  .slide th { color: var(--s-mute); font-weight: 600; font-size: 1.7cqw; }
+  .slide .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 2cqw; font-size: 1.5cqw; color: var(--s-mute); padding-top: 1.5cqw; border-top: 1px solid var(--s-line); }
+  .slide .foot span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .slide .flag { background: #FCE8E6; color: #B42318; }
+  .slide .ok { text-decoration-color: var(--s-accent); }
+  .slide svg { width: 100%; height: auto; display: block; }
+  .notes { font-size: 13px; color: var(--ink-2); margin-top: 8px; }
+  .notes summary { cursor: pointer; font-weight: 600; color: var(--ink); list-style: none; display: flex; align-items: center; gap: 8px; }
+  .notes summary::-webkit-details-marker { display: none; }
+  .notes summary::before { content: ""; width: 7px; height: 7px; border-right: 1.5px solid var(--ink-3); border-bottom: 1.5px solid var(--ink-3); transform: rotate(-45deg); transition: transform .15s; margin-left: 2px; }
+  .notes[open] summary::before { transform: rotate(45deg); }
+  .notes .body { padding: 8px 0 0 17px; line-height: 1.5; }
+  .notes .flagline { color: var(--danger); font-weight: 600; margin-top: 6px; }
+  .theme-slate { --s-bg: #0F172A; --s-ink: #F8FAFC; --s-mute: #A5B4CF; --s-accent: #7DB0FF; --s-line: rgba(255, 255, 255, .14); --s-font: var(--font); }
+  .theme-warm { --s-bg: #FBF8F3; --s-ink: #1F1A17; --s-mute: #6E655C; --s-accent: #9A4B2F; --s-line: #E6DCCD; --s-font: var(--font); }
+  .theme-mono { --s-bg: #FFFFFF; --s-ink: #111111; --s-mute: #666666; --s-accent: #111111; --s-line: #E5E5E5; --s-font: var(--serif); }
+  .theme-mono h2.hl { font-weight: 400; letter-spacing: 0; }
+  .theme-mono .big { font-weight: 400; }
   @media print {
-    @page { size:13.333in 7.5in; margin:0; }
-    body { background:#fff; }
-    header, main > .left, .toolbar, .stations, .gate, .notes, footer, .card h2, #ledger-card, .clockbar, .noprint { display:none !important; }
-    main { display:block; padding:0; max-width:none; }
-    .card { border:0; box-shadow:none; padding:0; }
-    .deck { gap:0; }
-    .slidewrap { page-break-after:always; }
-    .slide { width:13.333in; height:7.5in; aspect-ratio:auto; border-radius:0; border:0; box-shadow:none; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    @page { size: 13.333in 7.5in; margin: 0; }
+    #ledger-section, .notes, .section-head { display: none !important; }
+    .deck { display: block; }
+    .slidewrap { page-break-after: always; }
+    .slide { width: 13.333in; height: 7.5in; aspect-ratio: auto; border-radius: 0; border: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 </style>
 </head>
 <body>
-<header>
-  <span class="pill">BUILT WITH ANTIGRAVITY</span>
-  <h1>The <em>Enterprise Deck</em> Factory</h1>
-  <p class="sub">Paste rough notes. Get a board-ready SCQA deck where <b>every number is traced to a source line</b> or flagged — and nothing ships until a human reads the flags. Runs in your browser; your notes never leave it.</p>
-  <div class="links">
-    <a href="../../" >← Signal50 Studio</a>
-    <a href="https://github.com/Afrinam19/signal50/tree/main/apps/deck-factory" target="_blank" rel="noopener">Source on GitHub</a>
-    <a href="https://www.linkedin.com/in/afrina-m/" target="_blank" rel="noopener">Afrina M on LinkedIn</a>
-  </div>
+<a class="skip" href="#main">Skip to the workbench</a>
+<header class="topbar">
+  <a class="brand" href="./" aria-label="Deck Factory home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 12l3-3 3 2 4-4"/></svg>
+    Deck Factory <small>by Signal50</small>
+  </a>
+  <nav class="topnav" aria-label="Site">
+    <span class="built"><i></i>Built with Antigravity</span>
+    <a href="../release-to-demo/" class="hide-sm">Release-to-Demo agent</a>
+    <a href="../../" class="hide-sm">Studio</a>
+    <a href="https://github.com/Afrinam19/signal50/tree/main/apps/deck-factory" target="_blank" rel="noopener">Source</a>
+    <a href="https://www.linkedin.com/in/afrina-m/" target="_blank" rel="noopener">Afrina M</a>
+  </nav>
 </header>
 
-<main>
-  <section class="left">
-    <div class="card">
-      <h2>Station 2 · Intake</h2>
-      <label for="notes">Rough notes, transcript extract, or bullets (one fact per line works best)</label>
-      <textarea id="notes" spellcheck="false"></textarea>
-      <div class="row">
-        <div>
-          <label for="audience">Audience</label>
-          <select id="audience">
-            <option value="board">Board / exec review</option>
-            <option value="cfo">CFO / budget owner</option>
+<section class="intro">
+  <div>
+    <h1>Rough notes in. A board-ready deck out, with every number traced.</h1>
+    <p>Paste what you have — bullets, a transcript extract, a messy brief. The factory builds an SCQA storyline, applies fixed brand tokens, and marks every figure as traced to a source line or flagged. Nothing exports until you have read the flags.</p>
+  </div>
+  <div class="facts" aria-label="How it runs">
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Runs in your browser</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Nothing is uploaded</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Human review before export</span>
+  </div>
+</section>
+
+<main id="main" class="shell">
+  <aside class="side">
+    <form class="panel" id="form" onsubmit="return false">
+      <h2>Notes</h2>
+      <label class="field" for="notes">
+        <span>Rough notes, transcript extract, or bullets</span>
+        <textarea id="notes" class="textarea" spellcheck="false" rows="16"></textarea>
+        <span class="help">One fact per line works best. Numbers you want on slides must be here; the factory will not invent them.</span>
+      </label>
+      <div class="row2">
+        <label class="field" for="audience"><span>Audience</span>
+          <select id="audience" class="select">
+            <option value="board">Board or exec review</option>
+            <option value="cfo">CFO or budget owner</option>
             <option value="customer">Customer executive</option>
           </select>
-        </div>
-        <div>
-          <label for="theme">Brand tokens</label>
-          <select id="theme">
-            <option value="slate">Enterprise Slate</option>
-            <option value="warm">Warm Studio</option>
-            <option value="mono">Mono Serif</option>
+        </label>
+        <label class="field" for="theme"><span>Brand tokens</span>
+          <select id="theme" class="select">
+            <option value="slate">Enterprise slate</option>
+            <option value="warm">Warm studio</option>
+            <option value="mono">Mono serif</option>
           </select>
-        </div>
+        </label>
       </div>
-      <label for="gkey">Optional · Gemini API key (free from Google AI Studio)</label>
-      <input id="gkey" type="password" autocomplete="off" placeholder="Leave empty to run the local planner" />
-      <div class="row">
-        <div>
-          <label for="gmodel">Model</label>
-          <select id="gmodel"><option value="">auto (newest Flash)</option></select>
-        </div>
-        <div>
-          <label for="slides">Deck length</label>
-          <select id="slides">
-            <option value="11">11 slides + appendix</option>
-            <option value="7">7 slides + appendix</option>
+      <div class="row2">
+        <label class="field" for="slides"><span>Deck length</span>
+          <select id="slides" class="select">
+            <option value="11">11 slides</option>
+            <option value="7">7 slides</option>
           </select>
-        </div>
+        </label>
+        <label class="field" for="gmodel"><span>Gemini model</span>
+          <select id="gmodel" class="select"><option value="">Newest Flash</option></select>
+        </label>
       </div>
-      <p class="hint">The key is kept in this browser's local storage only and is sent to Google's Gemini API directly from your browser. Without a key, a deterministic local planner builds the deck — the fact-checker runs either way.</p>
-      <div class="toolbar" style="margin-top:14px">
-        <button class="btn" id="run">Run the factory →</button>
-        <button class="btn secondary small" id="sample">Reload sample notes</button>
+      <label class="field" for="gkey">
+        <span>Gemini API key (optional)</span>
+        <input id="gkey" class="input" type="password" autocomplete="off" placeholder="Paste a free key from Google AI Studio" />
+        <span class="help">Stored only in this browser and sent straight to Google's Gemini API. Without a key, a local planner writes the storyline. The fact-checker runs either way.</span>
+      </label>
+      <div class="run-row">
+        <button class="btn" id="run" type="button">Build the deck</button>
+        <button class="btn ghost sm" id="sample" type="button">Reload the sample</button>
       </div>
-      <div class="clock clockbar" id="clock">Clock starts when you run. Target: deck + human review in under <b>6:00</b>.</div>
-    </div>
-  </section>
+    </form>
+  </aside>
 
-  <section class="right">
-    <div class="card" style="margin-bottom:18px">
-      <h2>The factory · who does what</h2>
-      <div class="stations" id="stations"></div>
+  <div class="work">
+    <section class="railwrap" aria-label="Pipeline">
+      <div class="railhead">
+        <h2>Six stations, one orchestrator</h2>
+        <div class="clock" id="clock">Target: deck and review in under <b>6:00</b></div>
+      </div>
+      <ol class="rail" id="stations"></ol>
+    </section>
+
+    <div class="review" role="region" aria-label="Review and export">
+      <div class="status">
+        <span class="chip neutral" id="flagsum">Not built yet</span>
+        <label class="gate" id="gate"><input type="checkbox" id="reviewed" disabled /><span>I read the flags in the speaker notes</span></label>
+      </div>
+      <div class="actions">
+        <button class="btn secondary sm" id="dl-md" type="button" disabled>Download outline (.md)</button>
+        <button class="btn secondary sm" id="copy-notes" type="button" disabled>Copy speaker notes</button>
+        <button class="btn secondary sm" id="dl-json" type="button" disabled>Download spec (.json)</button>
+        <button class="btn sm" id="print" type="button" disabled>Print PDF</button>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>Station 6 · Ship + QA</h2>
-      <div class="toolbar">
-        <span class="clock">Fact check: <span id="flagsum" class="flagcount">—</span></span>
-        <span style="flex:1"></span>
-        <button class="btn secondary small" id="dl-md" disabled>Download .md outline</button>
-        <button class="btn secondary small" id="copy-notes" disabled>Copy speaker notes</button>
-        <button class="btn secondary small" id="dl-json" disabled>Download spec .json</button>
-        <button class="btn small" id="print" disabled>Export PDF (16:9)</button>
-      </div>
-      <div class="gate" id="gate">
-        <input type="checkbox" id="reviewed" disabled />
-        <label for="reviewed" style="margin:0; font-weight:600; color:var(--ink)">I read the fact-check flags in the speaker notes. Nothing leaves the building until a human says so. <span class="hint" style="display:block; margin-top:2px">Exports stay locked until this is ticked — that is Station 6, not a formality.</span></label>
-      </div>
-      <div id="deck" class="deck" style="margin-top:16px"><div class="empty">Run the factory to build the deck. The sample notes are a real-shaped enterprise onboarding case.</div></div>
-    </div>
+    <section class="section" id="deck-section">
+      <div class="section-head"><h2>Deck</h2><span class="meta" id="deck-meta">The sample is a real-shaped enterprise onboarding case.</span></div>
+      <div id="deck" class="deck"><div class="empty">Build the deck to see the slides here. Every number will carry a mark: traced or flagged.</div></div>
+    </section>
 
-    <div class="card" id="ledger-card" style="margin-top:18px">
-      <h2>Appendix · source ledger (every number, where it came from)</h2>
-      <div id="ledger" class="hint">Appears after the run.</div>
-    </div>
-  </section>
+    <section class="section" id="ledger-section">
+      <div class="section-head"><h2>Source ledger</h2><span class="meta">Every number in your notes and the line it came from</span></div>
+      <div id="ledger" class="empty">Appears after the first build.</div>
+    </section>
+  </div>
 </main>
 
-<footer>
-  Built with Antigravity + Gemini by <a href="https://www.linkedin.com/in/afrina-m/">Afrina M</a> · Senior PM, Google (Gemini &amp; AI agents) · This is a personal build, not a Google product. Part of <a href="../../">Signal50</a>, the open studio behind the weekly posts.
-</footer>
+<footer class="foot"><div class="in">
+  <span>Built with Antigravity and Gemini by <a href="https://www.linkedin.com/in/afrina-m/">Afrina M</a>, Senior PM at Google. A personal build, not a Google product.</span>
+  <span>Part of <a href="../../">Signal50</a>, the open studio behind the weekly posts. Friday's build: <a href="../release-to-demo/">the Release-to-Demo agent</a>.</span>
+</div></footer>
 
 <script>
 (() => {
@@ -216,12 +184,12 @@ Risk: schema samples can contain PII; the agent must run inside our VPC and no c
 Decision needed by Friday so the first 4 accounts can start next week`;
 
   const STATIONS = [
-    { n: 1, t: 'Orchestrator', d: 'Routes the brief, locks brand + facts. Never writes a slide.' },
+    { n: 1, t: 'Orchestrate', d: 'Routes the brief, locks brand and facts. Never writes a slide.' },
     { n: 2, t: 'Intake', d: 'One reader per source. Returns facts, not raw text.' },
     { n: 3, t: 'Fact check', d: 'Every number traced to a source line, or flagged.' },
     { n: 4, t: 'Narrative', d: 'SCQA headlines. One so-what per slide.' },
-    { n: 5, t: 'Design system', d: 'Brand tokens as rules: type scale, grid, color.' },
-    { n: 6, t: 'Ship + QA', d: 'Editable outline + PDF. Human reads the flags first.' }
+    { n: 5, t: 'Design', d: 'Brand tokens as rules: type scale, grid, color.' },
+    { n: 6, t: 'Ship', d: 'Outline and PDF. A human reads the flags first.' }
   ];
 
   const $ = id => document.getElementById(id);
@@ -237,13 +205,12 @@ Decision needed by Friday so the first 4 accounts can start next week`;
 
   function intake(text) {
     const lines = text.split('\n').map(s => s.trim()).filter(Boolean);
-    const facts = lines.map((line, i) => {
+    return lines.map((line, i) => {
       const nums = [];
       let m; NUM_RE.lastIndex = 0;
       while ((m = NUM_RE.exec(line))) { if (/\d/.test(m[0])) nums.push({ raw: m[0].trim(), norm: normNum(m[0]), core: coreNum(m[0]) }); }
       return { id: i + 1, line: line.replace(/^[-•*]\s*/, ''), nums, kind: classify(line) };
     });
-    return facts;
   }
 
   function classify(l) {
@@ -287,7 +254,7 @@ Decision needed by Friday so the first 4 accounts can start next week`;
 
     const audienceLens = { board: 'the decision this quarter', cfo: 'the cost and the payback', customer: 'what changes for your team' }[opts.audience];
     const slides = [];
-    slides.push({ kind: 'title', headline: titleFrom(headlinePain, headlineSol), subtitle: `${client ? client + ' · ' : ''}A proposal focused on ${audienceLens}`, bullets: [], notes: `Open with the answer. The room should know the ask in the first 20 seconds.`, src: [headlinePain, headlineSol].filter(Boolean) });
+    slides.push({ kind: 'title', headline: titleFrom(headlinePain, headlineSol), subtitle: `${client ? client + ' — ' : ''}a proposal focused on ${audienceLens}`, bullets: [], notes: 'Open with the answer. The room should know the ask in the first 20 seconds.', src: [headlinePain, headlineSol].filter(Boolean) });
 
     slides.push({ kind: 'summary', headline: 'Executive summary', bullets: [
       pains[0] ? `Today: ${short(stripLead(pains[0].line), 110)}` : null,
@@ -302,9 +269,9 @@ Decision needed by Friday so the first 4 accounts can start next week`;
     slides.push({ kind: 'complication', headline: 'Complication: what the status quo costs', bullets: [], stats: costFacts.map(f => ({ big: (f.nums.find(n => /\$|%|h|d|m/.test(n.norm)) || f.nums[0]).raw, cap: short(sentenceCase(stripLead(f.line)), 70) })), notes: 'Each number here must appear in the source ledger. If a stat is flagged, remove it or add the source line.', src: costFacts });
 
     if (opts.len >= 11) slides.push({ kind: 'question', headline: `The question: ${headlineSol ? 'can we remove the wait without adding risk?' : 'what would it take to fix this?'}`, bullets: [
-      'Option A · Keep the manual process and add headcount',
-      headlineSol ? `Option B · ${short(sentenceCase(stripLead(headlineSol.line)), 100)}` : 'Option B · Automate the repeatable checks with a human gate',
-      'Option C · Do nothing this quarter and absorb the delay'
+      'Option A: keep the manual process and add headcount',
+      headlineSol ? `Option B: ${short(sentenceCase(stripLead(headlineSol.line)), 100)}` : 'Option B: automate the repeatable checks with a human gate',
+      'Option C: do nothing this quarter and absorb the delay'
     ], notes: 'Frame the choice. Boards decide between options, not on a single pitch.', src: headlineSol ? [headlineSol] : [] });
 
     slides.push({ kind: 'answer', headline: answers[0] ? short(sentenceCase(stripLead(answers[0].line)), 80) : (headlineSol ? short(sentenceCase(stripLead(headlineSol.line)), 80) : 'Recommendation'), bullets: [...answers, ...sols].slice(0, 4).map(f => short(sentenceCase(stripLead(f.line)), 120)), notes: 'One recommendation, stated as a sentence a non-technical exec can repeat.', src: [...answers, ...sols].slice(0, 4) });
@@ -320,9 +287,9 @@ Decision needed by Friday so the first 4 accounts can start next week`;
 
     slides.push({ kind: 'ask', headline: asks[0] ? `Decision needed: ${short(sentenceCase(stripLead(asks[0].line)), 70)}` : 'Decision needed', bullets: [...asks.slice(0, 3).map(f => short(sentenceCase(stripLead(f.line)), 120)), ...(facts.find(f => /next week|by friday|by monday|this quarter/i.test(f.line)) ? [short(sentenceCase(stripLead(facts.find(f => /next week|by friday|by monday|this quarter/i.test(f.line)).line)), 120)] : [])], notes: 'End on the ask and the date. Then stop talking.', src: asks.slice(0, 3) });
 
-    if (opts.len >= 11) slides.push({ kind: 'next', headline: 'Next 30 days', bullets: ['Week 1 · Approve scope, assign the owner, confirm the review gate', 'Week 2 · Run the first batch with full human review on every output', 'Week 3 · Move to sampling where the miss rate allows; publish the numbers', 'Week 4 · Decide: expand, hold, or stop — with the data from weeks 2–3'], notes: 'Generic by design: edit the weeks to match the notes. No numbers here, so nothing to flag.', src: [] });
+    if (opts.len >= 11) slides.push({ kind: 'next', headline: 'Next 30 days', bullets: ['Week 1: approve scope, assign the owner, confirm the review gate', 'Week 2: run the first batch with full human review on every output', 'Week 3: move to sampling where the miss rate allows; publish the numbers', 'Week 4: decide to expand, hold, or stop, with the data from weeks 2 and 3'], notes: 'Generic by design: edit the weeks to match the notes. No numbers here, so nothing to flag.', src: [] });
 
-    return { title: slides[0].headline, subtitle: slides[0].subtitle, slides, mode: 'local' };
+    return { title: slides[0].headline, subtitle: slides[0].subtitle, slides, mode: 'local planner' };
   }
 
   // ------------------------------------------------------------------
@@ -358,7 +325,7 @@ ${facts.map(f => `${f.id}. ${f.line}`).join('\n')}`;
     const parsed = JSON.parse(text.replace(/^```json\s*|```$/g, ''));
     const byId = Object.fromEntries(facts.map(f => [f.id, f]));
     parsed.slides = (parsed.slides || []).map(s => ({ ...s, bullets: s.bullets || [], src: (s.src || []).map(i => byId[i]).filter(Boolean) }));
-    parsed.mode = `gemini:${model}`;
+    parsed.mode = model;
     return parsed;
   }
 
@@ -369,16 +336,22 @@ ${facts.map(f => `${f.id}. ${f.line}`).join('\n')}`;
     const sourceCores = new Set(facts.flatMap(f => f.nums.map(n => n.core)).filter(Boolean));
     const sourceNorms = new Set(facts.flatMap(f => f.nums.map(n => n.norm)));
     let total = 0, flagged = 0;
-    const mark = (text) => String(text || '').replace(NUM_RE, m => {
-      if (!/\d/.test(m)) return m;
-      const core = coreNum(m), norm = normNum(m);
-      // slide numbering / week labels / option letters are not claims
-      if (/^(week|option|slide|q)\s/i.test(m) || /^\d{1,2}$/.test(core) && /week|option|step|slide|day\s\d/i.test(text) && !sourceCores.has(core)) return m;
-      total++;
-      const ok = sourceNorms.has(norm) || sourceCores.has(core);
-      if (!ok) flagged++;
-      return ok ? `<span class="ok" title="traced to source">${esc(m)}</span>` : `<span class="flag" title="not found in the notes">${esc(m)} ⚑</span>`;
-    });
+    const mark = (text) => {
+      const s = String(text || '');
+      const toks = []; let m; NUM_RE.lastIndex = 0;
+      while ((m = NUM_RE.exec(s))) { if (/\d/.test(m[0])) toks.push([m.index, m.index + m[0].length, m[0]]); }
+      let out = '', last = 0;
+      for (const [a, b, tok] of toks) {
+        out += esc(s.slice(last, a)); last = b;
+        const core = coreNum(tok), norm = normNum(tok);
+        if (/^(week|option|slide|q)\s/i.test(tok) || (/^\d{1,2}$/.test(core) && /week|option|step|slide|day\s\d/i.test(s) && !sourceCores.has(core))) { out += esc(tok); continue; }
+        total++;
+        const ok = sourceNorms.has(norm) || sourceCores.has(core);
+        if (!ok) flagged++;
+        out += ok ? `<span class="ok" title="Traced to the notes">${esc(tok)}</span>` : `<span class="flag" title="Not found in the notes">${esc(tok)} ⚑</span>`;
+      }
+      return out + esc(s.slice(last));
+    };
     plan.slides.forEach(s => {
       s._h = s.kind === 'next' ? esc(s.headline) : mark(s.headline); s._st = mark(s.subtitle || '');
       s._b = (s.bullets || []).map(mark);
@@ -396,34 +369,35 @@ ${facts.map(f => `${f.id}. ${f.line}`).join('\n')}`;
   // ------------------------------------------------------------------
   function renderDeck(plan, theme) {
     const deckEl = $('deck');
-    const srcChips = s => (s.src || []).length ? `source: ${s.src.map(f => 'L' + f.id).join(', ')}` : 'no numeric claims';
+    const srcChips = s => (s.src || []).length ? `Sources ${s.src.map(f => 'L' + f.id).join(', ')}` : 'No numeric claims';
     const flowSvg = steps => {
       const n = steps.length, w = 1000, h = 190, bw = Math.min(200, (w - 40 - (n - 1) * 28) / n), y = 50;
-      return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="process flow">${steps.map((t, i) => { const x = 20 + i * (bw + 28); const last = i === n - 1; const words = t.split(' '); const l1 = words.slice(0, Math.ceil(words.length / 2)).join(' '), l2 = words.slice(Math.ceil(words.length / 2)).join(' '); return `<rect x="${x}" y="${y}" width="${bw}" height="90" rx="12" fill="${last ? 'var(--s-accent)' : 'transparent'}" stroke="var(--s-accent)" stroke-width="2"/><text x="${x + bw / 2}" y="${y + 40}" text-anchor="middle" font-size="17" font-weight="700" fill="${last ? 'var(--s-bg)' : 'var(--s-ink)'}">${esc(l1)}</text><text x="${x + bw / 2}" y="${y + 64}" text-anchor="middle" font-size="17" font-weight="700" fill="${last ? 'var(--s-bg)' : 'var(--s-ink)'}">${esc(l2)}</text><text x="${x + 14}" y="${y - 14}" font-size="13" fill="var(--s-mute)" font-weight="700">0${i + 1}</text>${i < n - 1 ? `<path d="M${x + bw + 4} ${y + 45} h18 m-6 -6 l6 6 l-6 6" stroke="var(--s-mute)" stroke-width="2" fill="none"/>` : ''}`; }).join('')}</svg>`;
+      return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Process flow">${steps.map((t, i) => { const x = 20 + i * (bw + 28); const last = i === n - 1; const words = t.split(' '); const l1 = words.slice(0, Math.ceil(words.length / 2)).join(' '), l2 = words.slice(Math.ceil(words.length / 2)).join(' '); return `<rect x="${x}" y="${y}" width="${bw}" height="90" rx="12" fill="${last ? 'var(--s-accent)' : 'transparent'}" stroke="var(--s-accent)" stroke-width="2"/><text x="${x + bw / 2}" y="${y + 40}" text-anchor="middle" font-size="17" font-weight="600" fill="${last ? 'var(--s-bg)' : 'var(--s-ink)'}">${esc(l1)}</text><text x="${x + bw / 2}" y="${y + 64}" text-anchor="middle" font-size="17" font-weight="600" fill="${last ? 'var(--s-bg)' : 'var(--s-ink)'}">${esc(l2)}</text><text x="${x + 14}" y="${y - 14}" font-size="13" fill="var(--s-mute)" font-weight="600">${i + 1}</text>${i < n - 1 ? `<path d="M${x + bw + 4} ${y + 45} h18 m-6 -6 l6 6 l-6 6" stroke="var(--s-mute)" stroke-width="2" fill="none"/>` : ''}`; }).join('')}</svg>`;
     };
     deckEl.innerHTML = plan.slides.map((s, i) => {
       let body = '';
       if (s.kind === 'title') body = `<div class="kicker">${esc(plan.brand || 'Proposal')}</div><h2 class="hl">${s._h}</h2><div class="st">${s._st}</div>`;
       else if (s.kind === 'complication' && s._stats.length) body = `<h2 class="hl">${s._h}</h2><div class="two" style="grid-template-columns:repeat(${Math.min(3, s._stats.length)},1fr)">${s._stats.map(x => `<div><div class="big">${x.big}</div><div class="cap">${x.cap}</div></div>`).join('')}</div>`;
       else if (s.kind === 'system') body = `<h2 class="hl">${s._h}</h2>${flowSvg(s._flow.length ? s._flow : ['Intake', 'Checks', 'Draft', 'Human review'])}`;
-      else if (s.kind === 'case' && s._table.length) body = `<h2 class="hl">${s._h}</h2><table><thead><tr><th>Metric</th><th>Before</th><th>After</th></tr></thead><tbody>${s._table.map(r => `<tr><td>${r.metric}</td><td>${r.before}</td><td>${r.after}</td></tr>`).join('')}</tbody></table>`;
+      else if (s.kind === 'case' && s._table.length) body = `<h2 class="hl">${s._h}</h2><table><thead><tr><th>Metric</th><th>Before</th><th>After</th></tr></thead><tbody>${s._table.map(r => `<tr><td>${r.metric}</td><td>${r.before}</td><td>${r.after}</td></tr>`).join('')}</tbody></table></div>`;
       else body = `<h2 class="hl">${s._h}</h2><ul>${s._b.map(b => `<li>${b}</li>`).join('')}</ul>`;
-      const notes = `${esc(s.notes || '')}${s._flags.length ? `<div class="flagline">⚑ ${s._flags.length} number(s) not found in the notes: ${s._flags.map(esc).join(', ')} — add a source line or remove before this ships.</div>` : ''}`;
-      return `<div class="slidewrap"><div class="slide theme-${theme} ${s.kind}">${body}<div class="foot"><span>${esc(plan.client ? plan.client + ' · ' : '')}${esc(plan.title || '').slice(0, 60)}</span><span class="src">${srcChips(s)} · ${i + 1}/${plan.slides.length}</span></div></div><details class="notes" ${s._flags.length ? 'open' : ''}><summary>Speaker notes ${s._flags.length ? `· <span class="flagline">${s._flags.length} flag(s)</span>` : '· clean'}</summary><div>${notes}</div></details></div>`;
+      const notes = `${esc(s.notes || '')}${s._flags.length ? `<div class="flagline">${s._flags.length} number${s._flags.length > 1 ? 's' : ''} not found in the notes: ${s._flags.map(esc).join(', ')}. Add a source line or remove before this ships.</div>` : ''}`;
+      return `<div class="slidewrap"><div class="slide theme-${theme} ${s.kind}">${body}<div class="foot"><span>${esc(plan.client ? plan.client : '')}${plan.client && plan.title ? '&nbsp;&nbsp;' : ''}${esc(plan.title || '').slice(0, 60)}</span><span>${srcChips(s)}&nbsp;&nbsp;${i + 1} of ${plan.slides.length}</span></div></div><details class="notes" ${s._flags.length ? 'open' : ''}><summary>Speaker notes ${s._flags.length ? `<span class="chip bad">${s._flags.length} flag${s._flags.length > 1 ? 's' : ''}</span>` : '<span class="chip ok">clean</span>'}</summary><div class="body">${notes}</div></details></div>`;
     }).join('');
   }
 
   function renderLedger(facts) {
     const rows = facts.filter(f => f.nums.length);
-    $('ledger').innerHTML = rows.length ? `<table class="ledger"><thead><tr><th>Line</th><th>Numbers</th><th>Kind</th><th>Source text</th></tr></thead><tbody>${rows.map(f => `<tr><td><code>L${f.id}</code></td><td>${f.nums.map(n => `<code>${esc(n.raw)}</code>`).join(' ')}</td><td>${esc(f.kind)}</td><td>${esc(f.line)}</td></tr>`).join('')}</tbody></table>` : '<span class="hint">No numbers found in the notes. Add the figures you want on slides.</span>';
+    $('ledger').className = rows.length ? '' : 'empty';
+    $('ledger').innerHTML = rows.length ? `<div class="tablewrap"><table class="table"><thead><tr><th>Line</th><th>Numbers</th><th>Kind</th><th>Source text</th></tr></thead><tbody>${rows.map(f => `<tr><td><code>L${f.id}</code></td><td>${f.nums.map(n => `<code>${esc(n.raw)}</code>`).join(' ')}</td><td>${esc(f.kind)}</td><td>${esc(f.line)}</td></tr>`).join('')}</tbody></table></div>` : 'No numbers found in the notes. Add the figures you want on slides.';
   }
 
   // ------------------------------------------------------------------
   // Exports
   // ------------------------------------------------------------------
-  const plain = html => html.replace(/<[^>]+>/g, '').replace(/ ⚑/g, ' [needs source]');
+  const plain = html => html.replace(/<[^>]+>/g, '').replace(/ ⚑/g, ' [needs source]').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
   function toMarkdown(plan) {
-    const out = [`# ${plan.title}`, plan.subtitle ? `_${plan.subtitle}_` : '', '', `Built with Antigravity · planner: ${plan.mode} · ${new Date().toISOString().slice(0, 10)}`, ''];
+    const out = [`# ${plan.title}`, plan.subtitle ? `_${plan.subtitle}_` : '', '', `Built with Antigravity. Planner: ${plan.mode}. ${new Date().toISOString().slice(0, 10)}`, ''];
     plan.slides.forEach((s, i) => {
       out.push(`---`, `## ${i + 1}. ${plain(s._h)}`);
       if (s._st && s.kind === 'title') out.push(plain(s._st));
@@ -431,7 +405,7 @@ ${facts.map(f => `${f.id}. ${f.line}`).join('\n')}`;
       (s._stats || []).forEach(x => out.push(`- **${plain(x.big)}** — ${plain(x.cap)}`));
       if (s._table && s._table.length) { out.push('', '| Metric | Before | After |', '|---|---|---|'); s._table.forEach(r => out.push(`| ${plain(r.metric)} | ${plain(r.before)} | ${plain(r.after)} |`)); }
       if (s._flow && s._flow.length && s.kind === 'system') out.push(s._flow.map((f, k) => `${k + 1}. ${f}`).join(' → '));
-      out.push('', `> Speaker notes: ${s.notes || ''}${s._flags.length ? ` ⚑ Unsourced numbers: ${s._flags.join(', ')}` : ''}`, `> Sources: ${(s.src || []).map(f => 'L' + f.id).join(', ') || 'none'}`, '');
+      out.push('', `> Speaker notes: ${s.notes || ''}${s._flags.length ? ` Unsourced numbers: ${s._flags.join(', ')}` : ''}`, `> Sources: ${(s.src || []).map(f => 'L' + f.id).join(', ') || 'none'}`, '');
     });
     return out.join('\n');
   }
@@ -444,66 +418,68 @@ ${facts.map(f => `${f.id}. ${f.line}`).join('\n')}`;
   // ------------------------------------------------------------------
   let plan = null, facts = [], t0 = 0, clockTimer = null, check = { total: 0, flagged: 0 };
   const stationEls = {};
-  $('stations').innerHTML = STATIONS.map(s => `<div class="station" id="st-${s.n}"><div class="n">${s.n}</div><h3>${s.t}</h3><p>${s.d}</p><div class="m"></div></div>`).join('');
+  $('stations').innerHTML = STATIONS.map(s => `<li class="station" id="st-${s.n}"><div class="n" aria-hidden="true">${s.n}</div><h3>${s.t}</h3><p>${s.d}</p><div class="m" aria-live="polite"></div></li>`).join('');
   STATIONS.forEach(s => stationEls[s.n] = $('st-' + s.n));
   const setStation = (n, state, metric) => { const el = stationEls[n]; el.className = 'station ' + state; if (metric != null) el.querySelector('.m').textContent = metric; };
   const resetStations = () => STATIONS.forEach(s => setStation(s.n, '', ''));
   const fmt = ms => { const s = Math.floor(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
-  const startClock = () => { t0 = performance.now(); clearInterval(clockTimer); clockTimer = setInterval(() => { $('clock').innerHTML = `Clock: <b>${fmt(performance.now() - t0)}</b> · target under <b>6:00</b> including your review`; }, 500); };
-  const stopClock = () => { clearInterval(clockTimer); $('clock').innerHTML = `Built + reviewed in <b>${fmt(performance.now() - t0)}</b>. Target was 6:00.`; };
+  const startClock = () => { t0 = performance.now(); clearInterval(clockTimer); clockTimer = setInterval(() => { $('clock').innerHTML = `<b>${fmt(performance.now() - t0)}</b> elapsed, target under 6:00 including your review`; }, 500); };
+  const stopClock = () => { clearInterval(clockTimer); $('clock').innerHTML = `Built and reviewed in <b>${fmt(performance.now() - t0)}</b>. Target was 6:00.`; };
   const setExports = on => ['dl-md', 'copy-notes', 'dl-json', 'print'].forEach(id => $(id).disabled = !on);
+  const setStatus = (text, cls) => { const fs = $('flagsum'); fs.textContent = text; fs.className = 'chip ' + cls; };
 
   async function run() {
-    const text = $('notes').value.trim(); if (!text) { alert('Paste some notes first.'); return; }
+    const text = $('notes').value.trim(); if (!text) { $('notes').focus(); setStatus('Paste some notes first', 'todo'); return; }
     const opts = { audience: $('audience').value, len: Number($('slides').value), theme: $('theme').value };
     const key = $('gkey').value.trim(); localStorage.setItem('deckfactory.key', key); localStorage.setItem('deckfactory.notes', $('notes').value);
-    $('run').disabled = true; $('reviewed').checked = false; $('reviewed').disabled = true; setExports(false); resetStations(); startClock();
+    $('run').disabled = true; $('run').textContent = 'Building…'; $('reviewed').checked = false; $('reviewed').disabled = true; $('gate').classList.remove('open'); setExports(false); resetStations(); startClock(); setStatus('Building', 'neutral');
     try {
-      setStation(1, 'active', 'brief received'); await sleep(250);
-      setStation(1, 'done', `${opts.len} slides · ${opts.audience} · ${opts.theme}`);
-      setStation(2, 'active', 'reading…'); await sleep(300);
+      setStation(1, 'active', 'Brief received'); await sleep(250);
+      setStation(1, 'done', `${opts.len} slides for a ${{ board: 'board review', cfo: 'CFO review', customer: 'customer exec' }[opts.audience]}`);
+      setStation(2, 'active', 'Reading…'); await sleep(300);
       facts = intake(text);
-      setStation(2, 'done', `${facts.length} facts · ${facts.reduce((a, f) => a + f.nums.length, 0)} numbers`);
-      setStation(4, 'active', key ? 'Gemini drafting…' : 'local planner…');
+      setStation(2, 'done', `${facts.length} facts, ${facts.reduce((a, f) => a + f.nums.length, 0)} numbers`);
+      setStation(4, 'active', key ? 'Gemini drafting…' : 'Local planner drafting…');
       if (key) {
         let model = $('gmodel').value;
         if (!model) { const models = await listModels(key); model = pickModel(models); fillModels(models, model); }
         plan = await planGemini(facts, opts, key, model);
       } else { await sleep(350); plan = planLocal(facts, opts); }
       plan.client = (facts.find(f => f.kind === 'context') || { line: '' }).line.replace(/^[^:]+:\s*/, '').split(/[—–-]/)[0].trim();
-      plan.brand = 'Built with Antigravity';
-      setStation(4, 'done', `${plan.slides.length} slides · ${plan.mode}`);
-      setStation(3, 'active', 'tracing numbers…'); await sleep(300);
+      plan.brand = [plan.client, { board: 'Board review', cfo: 'Budget review', customer: 'Executive briefing' }[opts.audience]].filter(Boolean).join(', ');
+      setStation(4, 'done', `${plan.slides.length} slides, ${plan.mode}`);
+      setStation(3, 'active', 'Tracing numbers…'); await sleep(300);
       check = factCheck(plan, facts);
-      setStation(3, check.flagged ? 'warn' : 'done', `${check.total - check.flagged}/${check.total} traced${check.flagged ? ` · ${check.flagged} flagged` : ''}`);
-      setStation(5, 'active', 'applying tokens…'); await sleep(250);
+      setStation(3, check.flagged ? 'warn' : 'done', `${check.total - check.flagged} of ${check.total} traced${check.flagged ? `, ${check.flagged} flagged` : ''}`);
+      setStation(5, 'active', 'Applying tokens…'); await sleep(250);
       renderDeck(plan, opts.theme); renderLedger(facts);
-      setStation(5, 'done', `${opts.theme} tokens · 16:9 grid`);
-      setStation(6, 'warn', 'waiting for human review');
-      const fs = $('flagsum'); fs.textContent = `${check.total - check.flagged}/${check.total} numbers traced${check.flagged ? ` · ${check.flagged} need a source` : ' · clean'}`; fs.className = 'flagcount ' + (check.flagged ? 'bad' : 'ok');
+      setStation(5, 'done', `${{ slate: 'Enterprise slate', warm: 'Warm studio', mono: 'Mono serif' }[opts.theme]}, 16:9 grid`);
+      setStation(6, 'warn', 'Waiting for your review');
+      setStatus(`${check.total - check.flagged} of ${check.total} numbers traced${check.flagged ? `, ${check.flagged} need a source` : ', clean'}`, check.flagged ? 'bad' : 'ok');
+      $('deck-meta').textContent = `${plan.slides.length} slides, ${plan.mode}${plan.client ? ', ' + plan.client : ''}`;
       $('reviewed').disabled = false;
-      $('deck').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      $('deck-section').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
     } catch (e) {
       console.error(e);
-      setStation(4, 'warn', 'Gemini failed → local planner');
-      if (!plan || plan.mode !== 'local') { plan = planLocal(facts.length ? facts : intake(text), opts); plan.client = ''; plan.brand = 'Built with Antigravity'; check = factCheck(plan, facts); renderDeck(plan, opts.theme); renderLedger(facts); setStation(3, check.flagged ? 'warn' : 'done', `${check.total - check.flagged}/${check.total} traced`); setStation(5, 'done', `${opts.theme} tokens`); setStation(6, 'warn', 'waiting for human review'); $('reviewed').disabled = false; }
-      alert(`The Gemini call failed (${e.message}). The local planner built the deck instead. Check the key or pick another model.`);
-    } finally { $('run').disabled = false; }
+      setStation(4, 'warn', 'Gemini failed, local planner used');
+      if (!plan || plan.mode !== 'local planner') { plan = planLocal(facts.length ? facts : intake(text), opts); plan.client = ''; plan.brand = 'Proposal'; check = factCheck(plan, facts); renderDeck(plan, opts.theme); renderLedger(facts); setStation(3, check.flagged ? 'warn' : 'done', `${check.total - check.flagged} of ${check.total} traced`); setStation(5, 'done', `${opts.theme} tokens`); setStation(6, 'warn', 'Waiting for your review'); $('reviewed').disabled = false; }
+      setStatus(`Gemini call failed (${e.message.slice(0, 60)}). Local planner built the deck.`, 'todo');
+    } finally { $('run').disabled = false; $('run').textContent = 'Build the deck'; }
   }
 
   function fillModels(models, chosen) {
-    const sel = $('gmodel'); sel.innerHTML = `<option value="">auto (newest Flash)</option>` + models.map(m => `<option value="${esc(m)}" ${m === chosen ? 'selected' : ''}>${esc(m)}</option>`).join('');
+    const sel = $('gmodel'); sel.innerHTML = `<option value="">Newest Flash</option>` + models.map(m => `<option value="${esc(m)}" ${m === chosen ? 'selected' : ''}>${esc(m)}</option>`).join('');
   }
 
   $('run').onclick = run;
-  $('sample').onclick = () => { $('notes').value = SAMPLE; };
-  $('reviewed').onchange = e => { const on = e.target.checked; setExports(on); setStation(6, on ? 'done' : 'warn', on ? 'reviewed by a human · exports open' : 'waiting for human review'); if (on) stopClock(); };
+  $('sample').onclick = () => { $('notes').value = SAMPLE; $('notes').focus(); };
+  $('reviewed').onchange = e => { const on = e.target.checked; setExports(on); $('gate').classList.toggle('open', on); setStation(6, on ? 'done' : 'warn', on ? 'Reviewed by you, exports open' : 'Waiting for your review'); if (on) stopClock(); };
   $('theme').onchange = () => { if (plan) renderDeck(plan, $('theme').value); };
   $('dl-md').onclick = () => download('deck-outline.md', toMarkdown(plan), 'text/markdown');
   $('dl-json').onclick = () => download('deck-spec.json', JSON.stringify({ generatedAt: new Date().toISOString(), planner: plan.mode, factCheck: check, facts, slides: plan.slides.map(s => ({ kind: s.kind, headline: plain(s._h), bullets: s._b.map(plain), notes: s.notes, flags: s._flags, src: (s.src || []).map(f => f.id) })) }, null, 2), 'application/json');
-  $('copy-notes').onclick = async () => { const t = plan.slides.map((s, i) => `Slide ${i + 1} — ${plain(s._h)}\n${s.notes || ''}${s._flags.length ? `\n⚑ Unsourced: ${s._flags.join(', ')}` : ''}\nSources: ${(s.src || []).map(f => 'L' + f.id).join(', ') || 'none'}`).join('\n\n'); try { await navigator.clipboard.writeText(t); alert('Speaker notes copied.'); } catch { download('speaker-notes.txt', t); } };
+  $('copy-notes').onclick = async () => { const t = plan.slides.map((s, i) => `Slide ${i + 1} — ${plain(s._h)}\n${s.notes || ''}${s._flags.length ? `\nUnsourced: ${s._flags.join(', ')}` : ''}\nSources: ${(s.src || []).map(f => 'L' + f.id).join(', ') || 'none'}`).join('\n\n'); const b = $('copy-notes'); try { await navigator.clipboard.writeText(t); b.textContent = 'Copied'; setTimeout(() => b.textContent = 'Copy speaker notes', 1400); } catch { download('speaker-notes.txt', t); } };
   $('print').onclick = () => window.print();
-  $('gkey').addEventListener('change', async () => { const k = $('gkey').value.trim(); if (!k) return; try { const models = await listModels(k); fillModels(models, pickModel(models)); } catch (e) { alert('Could not list models with that key: ' + e.message); } });
+  $('gkey').addEventListener('change', async () => { const k = $('gkey').value.trim(); if (!k) return; try { const models = await listModels(k); fillModels(models, pickModel(models)); } catch (e) { setStatus('Could not list models with that key: ' + e.message, 'todo'); } });
 
   // boot
   $('notes').value = localStorage.getItem('deckfactory.notes') || SAMPLE;

@@ -3,55 +3,116 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Built with Antigravity — live builds by Afrina M</title>
-<meta name="description" content="The live apps behind the Thursday/Friday 'Built with Antigravity' posts. Each one runs in your browser, traces every number to its source and keeps a human at the gate." />
+<title>Built with Antigravity: live builds by Afrina M</title>
+<meta name="description" content="The live apps behind the Thursday and Friday 'Built with Antigravity' posts. Each one runs in your browser, traces every number to its source and keeps a human at the gate." />
+<link rel="stylesheet" href="shared/ui.css" />
 <style>
-  :root { --cream:#F3EDE3; --paper:#fff; --ink:#1F1A17; --mute:#6E655C; --line:#D8CFC2; --terra:#B5543A; --shadow:0 6px 18px rgba(60,35,20,.10); }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--cream); color:var(--ink); font-family:-apple-system,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif; line-height:1.45; }
-  main { max-width:960px; margin:0 auto; padding:40px 20px 60px; }
-  .pill { display:inline-block; border:1.5px solid var(--terra); color:var(--terra); border-radius:999px; padding:3px 12px; font-size:11px; font-weight:800; letter-spacing:.06em; background:var(--paper); }
-  h1 { font-size:36px; margin:14px 0 6px; letter-spacing:-.01em; }
-  h1 em { font-style:normal; color:var(--terra); }
-  p.sub { color:var(--mute); max-width:720px; margin:0 0 28px; }
-  .grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
-  @media (max-width:760px) { .grid { grid-template-columns:1fr; } }
-  a.card { display:block; background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:20px; box-shadow:var(--shadow); color:inherit; text-decoration:none; }
-  a.card:hover { border-color:var(--terra); }
-  .day { font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--terra); }
-  a.card h2 { margin:6px 0 8px; font-size:20px; }
-  a.card p { margin:0 0 10px; color:var(--mute); font-size:14px; }
-  ul { margin:0; padding-left:18px; color:var(--ink); font-size:13px; }
-  li { margin:2px 0; }
-  .open { display:inline-block; margin-top:12px; font-weight:800; color:var(--terra); }
-  footer { max-width:960px; margin:0 auto; padding:0 20px 40px; font-size:12.5px; color:var(--mute); }
-  footer a { color:var(--terra); }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 20px 8px; }
+  .builds { list-style: none; margin: 8px 0 0; padding: 0; border-top: 1px solid var(--line); }
+  .build { display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; gap: 12px 32px; padding: 28px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .build .when { font-size: 13.5px; color: var(--ink-3); line-height: 1.4; padding-top: 4px; }
+  .build .when b { display: block; color: var(--ink); font-weight: 600; }
+  .build h2 { font-size: 22px; letter-spacing: -0.015em; }
+  .build h2 a { text-decoration: none; }
+  .build h2 a:hover { text-decoration: underline; text-decoration-color: var(--line-2); }
+  .build .lede { color: var(--ink-2); margin-top: 6px; max-width: 62ch; }
+  .build .io { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin-top: 14px; font-size: 13.5px; }
+  .build .io dt { color: var(--ink-3); }
+  .build .io dd { margin: 0; color: var(--ink); }
+  .build .checks { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 13.5px; color: var(--ink-2); }
+  .build .checks li { display: inline-flex; align-items: center; gap: 7px; }
+  .build .checks svg { width: 15px; height: 15px; color: var(--verified); flex: none; }
+  .build .go { padding-top: 4px; display: flex; flex-direction: column; gap: 8px; align-items: stretch; min-width: 180px; }
+  .how { max-width: 1320px; margin: 40px auto 0; padding: 0 20px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 32px; }
+  .how h3 { font-size: 15px; }
+  .how p { color: var(--ink-2); font-size: 14px; margin-top: 6px; }
+  @media (max-width: 960px) {
+    .build { grid-template-columns: 1fr; gap: 10px; }
+    .build .when { display: flex; gap: 8px; padding-top: 0; }
+    .build .go { flex-direction: row; min-width: 0; }
+    .how { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
-<main>
-  <span class="pill">BUILT WITH ANTIGRAVITY</span>
-  <h1>The <em>live builds</em> behind the posts</h1>
-  <p class="sub">Every Thursday and Friday post ships with a working app, not a screenshot. Each one runs in your browser, nothing is uploaded, every number is traced back to its source, and exports stay locked until a human reads the flags.</p>
-  <div class="grid">
-    <a class="card" href="deck-factory/">
-      <div class="day">Thursday · #01</div>
-      <h2>The Enterprise Deck Factory</h2>
-      <p>Rough notes → board-ready SCQA deck in under six minutes.</p>
-      <ul><li>Every number traced to a source line or flagged ⚑</li><li>Brand tokens as rules: 3 themes, 16:9 grid</li><li>Human review gate before PDF / outline export</li><li>Optional free Gemini key; local planner without one</li></ul>
-      <span class="open">Open the factory →</span>
-    </a>
-    <a class="card" href="release-to-demo/">
-      <div class="day">Friday · #02</div>
-      <h2>The Release-to-Demo Agent</h2>
-      <p>Raw release notes → customer demo pack in under ten minutes.</p>
-      <ul><li>Filters internal cleanup out, with reasons you can override</li><li>Three lenses per win: exec buyer, daily user, partner</li><li>30-second demo script, 1-page brief, 4:5 card, Slack/CRM/email snippets</li><li>Every number traced; superlatives flagged; human gate</li></ul>
-      <span class="open">Open the agent →</span>
-    </a>
+<a class="skip" href="#builds">Skip to the builds</a>
+<header class="topbar">
+  <a class="brand" href="./" aria-label="Signal50 live builds">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5M4 12h16M20 5v14"/><path d="M8 9l4-3 4 3M8 15l4 3 4-3"/></svg>
+    Live builds <small>by Signal50</small>
+  </a>
+  <nav class="topnav" aria-label="Site">
+    <span class="built"><i></i>Built with Antigravity</span>
+    <a href="../" class="hide-sm">Studio</a>
+    <a href="https://github.com/Afrinam19/signal50/tree/main/apps" target="_blank" rel="noopener">Source</a>
+    <a href="https://www.linkedin.com/in/afrina-m/" target="_blank" rel="noopener">Afrina M</a>
+  </nav>
+</header>
+
+<section class="intro">
+  <div>
+    <h1>The working apps behind the Thursday and Friday posts.</h1>
+    <p>A post about building something should ship the thing. Each build below runs in your browser, nothing you paste is uploaded, every number in the output is traced back to a line of your source, and exports stay locked until a person has read the flags.</p>
   </div>
+  <div class="facts" aria-label="What every build guarantees">
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Runs locally, no upload</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Every number traced</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Human gate before export</span>
+  </div>
+</section>
+
+<main class="wrap" id="builds">
+  <ol class="builds">
+    <li class="build">
+      <div class="when"><b>Thursday</b> Build 01</div>
+      <div>
+        <h2><a href="deck-factory/">Deck Factory</a></h2>
+        <p class="lede">Rough notes become a board-ready SCQA deck in under six minutes. Every figure on every slide is either underlined to its source line or flagged for you to fix.</p>
+        <dl class="io">
+          <dt>In</dt><dd>Meeting notes, a data dump, an audience and a theme</dd>
+          <dt>Out</dt><dd>11 slides in a 16:9 grid, speaker notes, a source ledger, Markdown and print-to-PDF</dd>
+        </dl>
+        <ul class="checks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Three brand themes as rules, not templates</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Local planner works without a key; Gemini optional</li>
+        </ul>
+      </div>
+      <div class="go">
+        <a class="btn" href="deck-factory/">Open Deck Factory</a>
+        <a class="btn ghost sm" href="https://github.com/Afrinam19/signal50/tree/main/apps/deck-factory" target="_blank" rel="noopener">Read the source</a>
+      </div>
+    </li>
+    <li class="build">
+      <div class="when"><b>Friday</b> Build 02</div>
+      <div>
+        <h2><a href="release-to-demo/">Release-to-Demo agent</a></h2>
+        <p class="lede">Raw release notes become a customer demo pack in under ten minutes: internal cleanup filtered out with reasons you can override, each win told through three lenses, then a script, a brief and a card.</p>
+        <dl class="io">
+          <dt>In</dt><dd>Release notes or a changelog, product name and the audience you are selling to</dd>
+          <dt>Out</dt><dd>30-second demo script, one-page brief, 4:5 LinkedIn card, Slack, CRM and email snippets</dd>
+        </dl>
+        <ul class="checks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Superlatives flagged, unanswered FAQ marked for you</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Local templates work without a key; Gemini optional</li>
+        </ul>
+      </div>
+      <div class="go">
+        <a class="btn" href="release-to-demo/">Open the agent</a>
+        <a class="btn ghost sm" href="https://github.com/Afrinam19/signal50/tree/main/apps/release-to-demo" target="_blank" rel="noopener">Read the source</a>
+      </div>
+    </li>
+  </ol>
 </main>
-<footer>
-  Built with Antigravity + Gemini by <a href="https://www.linkedin.com/in/afrina-m/">Afrina M</a> · Senior PM, Google (Gemini &amp; AI agents) · Personal builds, not Google products · <a href="../">Signal50 Studio</a> · <a href="https://github.com/Afrinam19/signal50/tree/main/apps">Source</a>
-</footer>
+
+<section class="how" aria-label="How the builds are made">
+  <div><h3>Built in a day, in the open</h3><p>Each app is a single HTML file written with Antigravity. The commit history is the build log; the source link on each page goes straight to it.</p></div>
+  <div><h3>Evidence first</h3><p>Before anything renders, every number in the draft is checked against your pasted source. Matches are underlined green, misses are flagged red, open questions are amber.</p></div>
+  <div><h3>A person signs off</h3><p>Downloads stay disabled until the review box is ticked. The agent drafts; the human owns what leaves the building.</p></div>
+</section>
+
+<footer class="foot"><div class="in">
+  <span>Built with Antigravity and Gemini by <a href="https://www.linkedin.com/in/afrina-m/">Afrina M</a>, Senior PM at Google. Personal builds, not Google products.</span>
+  <span>Part of <a href="../">Signal50</a>, the open studio behind the weekly posts.</span>
+</div></footer>
 </body>
 </html>
