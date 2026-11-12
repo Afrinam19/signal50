@@ -301,15 +301,33 @@ Decision needed by Friday so the first 4 accounts can start next week`;
   // ------------------------------------------------------------------
   // Optional · Gemini planner (BYO key, called straight from the browser)
   // ------------------------------------------------------------------
+  const NON_TEXT_MODEL_RE = /(?:^|[-/])(image|imagen|veo|tts|audio|live|whisper|embedding|embed|aqa|medlm|learnlm|robotics|computer-use|gemma-3n)(?:$|[-/0-9])/i;
   async function listModels(key) {
     const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}&pageSize=200`);
     if (!r.ok) throw new Error(`models ${r.status}`);
     const j = await r.json();
-    return (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes('generateContent')).map(m => m.name.replace(/^models\//, ''));
+    return (j.models || [])
+      .filter(m => (m.supportedGenerationMethods || []).includes('generateContent'))
+      .map(m => m.name.replace(/^models\//, ''))
+      .filter(n => /^gemini-/i.test(n) && !NON_TEXT_MODEL_RE.test(n));
   }
   function pickModel(models) {
-    const score = n => (/flash/i.test(n) ? 10 : 0) + (/-lite|8b/i.test(n) ? -3 : 0) + (/preview|exp/i.test(n) ? -1 : 0) + (parseFloat((n.match(/gemini-(\d+(?:\.\d+)?)/) || [])[1] || 0) * 2);
-    return models.slice().sort((a, b) => score(b) - score(a))[0];
+    const score = n => {
+      if (NON_TEXT_MODEL_RE.test(n)) return -1e6;
+      if (/^gemini-2\.5-flash$/i.test(n)) return 60;
+      if (/^gemini-2\.5-pro$/i.test(n)) return 52;
+      if (/^gemini-2\.0-flash$/i.test(n)) return 46;
+      if (/^gemini-2\.5-flash-lite$/i.test(n)) return 42;
+      return (/flash/i.test(n) ? 10 : 0) + (/-lite|8b/i.test(n) ? -3 : 0) + (/preview|exp/i.test(n) ? -2 : 0) + (parseFloat((n.match(/gemini-(\d+(?:\.\d+)?)/) || [])[1] || 0) * 2);
+    };
+    return models.slice().sort((a, b) => score(b) - score(a))[0] || 'gemini-2.5-flash';
+  }
+  function parseJsonBlock(raw) {
+    const clean = String(raw || '').replace(/```json\s*|```/gi, '').trim();
+    try { return JSON.parse(clean); } catch (_) {}
+    const i = clean.indexOf('{'), j = clean.lastIndexOf('}');
+    if (i >= 0 && j > i) return JSON.parse(clean.slice(i, j + 1));
+    throw new Error('Could not parse JSON from Gemini response');
   }
   async function planGemini(facts, opts, key, model) {
     const prompt = `You are the Narrative station of a deck factory. Build an SCQA executive deck from the facts below for this audience: ${opts.audience}.
@@ -327,8 +345,9 @@ ${facts.map(f => `${f.id}. ${f.line}`).join('\n')}`;
     });
     if (!r.ok) throw new Error(`Gemini ${r.status}: ${(await r.text()).slice(0, 200)}`);
     const j = await r.json();
-    const text = j.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('') || '';
-    const parsed = JSON.parse(text.replace(/^```json\s*|```$/g, ''));
+    const parts = j.candidates?.[0]?.content?.parts || [];
+    const text = (parts.filter(p => !p.thought).map(p => p.text || '').join('') || parts.map(p => p.text || '').join('')).trim();
+    const parsed = parseJsonBlock(text);
     const byId = Object.fromEntries(facts.map(f => [f.id, f]));
     parsed.slides = (parsed.slides || []).map(s => ({ ...s, bullets: s.bullets || [], src: (s.src || []).map(i => byId[i]).filter(Boolean) }));
     parsed.mode = model;

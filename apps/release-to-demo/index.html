@@ -396,15 +396,33 @@ Known issue: drag-and-drop in the editor is intermittently slow on Safari 17; fi
   // ------------------------------------------------------------------
   // Optional · Gemini translator (BYO key, straight from the browser)
   // ------------------------------------------------------------------
+  const NON_TEXT_MODEL_RE = /(?:^|[-/])(image|imagen|veo|tts|audio|live|whisper|embedding|embed|aqa|medlm|learnlm|robotics|computer-use|gemma-3n)(?:$|[-/0-9])/i;
   async function listModels(key) {
     const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}&pageSize=200`);
     if (!r.ok) throw new Error(`models ${r.status}`);
     const j = await r.json();
-    return (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes('generateContent')).map(m => m.name.replace(/^models\//, ''));
+    return (j.models || [])
+      .filter(m => (m.supportedGenerationMethods || []).includes('generateContent'))
+      .map(m => m.name.replace(/^models\//, ''))
+      .filter(n => /^gemini-/i.test(n) && !NON_TEXT_MODEL_RE.test(n));
   }
   function pickModel(models) {
-    const score = n => (/flash/i.test(n) ? 10 : 0) + (/-lite|8b/i.test(n) ? -3 : 0) + (/preview|exp/i.test(n) ? -1 : 0) + (parseFloat((n.match(/gemini-(\d+(?:\.\d+)?)/) || [])[1] || 0) * 2);
-    return models.slice().sort((a, b) => score(b) - score(a))[0];
+    const score = n => {
+      if (NON_TEXT_MODEL_RE.test(n)) return -1e6;
+      if (/^gemini-2\.5-flash$/i.test(n)) return 60;
+      if (/^gemini-2\.5-pro$/i.test(n)) return 52;
+      if (/^gemini-2\.0-flash$/i.test(n)) return 46;
+      if (/^gemini-2\.5-flash-lite$/i.test(n)) return 42;
+      return (/flash/i.test(n) ? 10 : 0) + (/-lite|8b/i.test(n) ? -3 : 0) + (/preview|exp/i.test(n) ? -2 : 0) + (parseFloat((n.match(/gemini-(\d+(?:\.\d+)?)/) || [])[1] || 0) * 2);
+    };
+    return models.slice().sort((a, b) => score(b) - score(a))[0] || 'gemini-2.5-flash';
+  }
+  function parseJsonBlock(raw) {
+    const clean = String(raw || '').replace(/```json\s*|```/gi, '').trim();
+    try { return JSON.parse(clean); } catch (_) {}
+    const i = clean.indexOf('{'), j = clean.lastIndexOf('}');
+    if (i >= 0 && j > i) return JSON.parse(clean.slice(i, j + 1));
+    throw new Error('Could not parse JSON from Gemini response');
   }
   async function translateGemini(kept, meta, opts, key, model) {
     const prompt = `You are the Translate station of a release-to-demo agent for ${meta.product} ${meta.version}. For each change below write three short lenses in plain English.
@@ -421,8 +439,9 @@ ${kept.map(c => `${c.id}. [${c.category}] ${c.text}`).join('\n')}`;
     });
     if (!r.ok) throw new Error(`Gemini ${r.status}: ${(await r.text()).slice(0, 200)}`);
     const j = await r.json();
-    const text = j.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('') || '';
-    const parsed = JSON.parse(text.replace(/^```json\s*|```$/g, ''));
+    const parts = j.candidates?.[0]?.content?.parts || [];
+    const text = (parts.filter(p => !p.thought).map(p => p.text || '').join('') || parts.map(p => p.text || '').join('')).trim();
+    const parsed = parseJsonBlock(text);
     const byId = Object.fromEntries((parsed.wins || []).map(w => [w.id, w]));
     const local = translateLocal(kept);
     return local.map(w => byId[w.id] ? { ...w, lens: { exec: byId[w.id].exec || w.lens.exec, user: byId[w.id].user || w.lens.user, partner: byId[w.id].partner || w.lens.partner } } : w);

@@ -351,8 +351,8 @@ ${ex.points.map(p => '- ' + p).join('\n')}
 What it argues in one line: ${ex.idea}
 Numbers it uses (only these may appear as facts about the source): ${ex.numbers.map(n => n.value + ' (' + n.context + ')').join('; ') || 'none'}
 
-AFRINA'S ANGLE (first-hand, use it): ${angle || 'not provided. Do NOT invent first-hand experience; leave [bracketed prompts] where only she can fill it.'}
-A NUMBER OR EXAMPLE SHE CAN STAND BEHIND: ${proof || 'not provided. Do NOT invent one.'}
+MY OWN WORDS (first-hand — weave these in verbatim, never invent beyond them):
+${[angle, proof].filter(Boolean).join('\n') || 'not provided. Do NOT invent first-hand experience; leave [bracketed prompts] where only she can fill it.'}
 
 HOOK TECHNIQUES TO USE, one per hook, in this order:
 ${techBlock}
@@ -369,18 +369,33 @@ HARD RULES:
 
 Return JSON only: {"hooks":[{"technique":"<technique id>","text":"line 1\\nline 2"}],"body":"...","comment":"first comment: credit + link + one-line newsletter invite"}`;
   }
+  function parseJsonLoose(raw) {
+    const cleaned = String(raw || '').replace(/```json\s*|```/gi, '').trim();
+    try { return JSON.parse(cleaned); } catch (_) {}
+    const start = cleaned.indexOf('{'), end = cleaned.lastIndexOf('}');
+    if (start >= 0 && end > start) return JSON.parse(cleaned.slice(start, end + 1));
+    throw new Error('Gemini returned non-JSON text');
+  }
   async function draftWithGemini(ctx, key, model) {
     const prompt = geminiPrompt(ctx);
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.5, responseMimeType: 'application/json' } }) });
-    if (!r.ok) throw new Error(`Gemini HTTP ${r.status}: ${(await r.text()).slice(0, 140)}`);
-    const j = await r.json(); const raw = (j.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('');
-    const parsed = JSON.parse(raw.replace(/^```json\s*|```\s*$/g, '').trim());
-    const hooks = Array.isArray(parsed.hooks) ? parsed.hooks.map(h => ({ technique: ORDER.includes(h.technique) ? h.technique : null, text: String(h.text || '').trim().slice(0, 210) })).filter(h => h.text) : [];
-    return { hooks, body: typeof parsed.body === 'string' ? scrub(parsed.body) : '', comment: typeof parsed.comment === 'string' ? scrub(parsed.comment) : '' };
+    let parsed, usedModel = model;
+    if (cfg.callGemini) {
+      const res = await cfg.callGemini({ key, prompt, temperature: 0.5 });
+      parsed = res.parsed; usedModel = res.model || model;
+    } else {
+      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.5, responseMimeType: 'application/json' } }) });
+      if (!r.ok) throw new Error(`Gemini HTTP ${r.status}: ${(await r.text()).slice(0, 140)}`);
+      const j = await r.json();
+      const parts = (j.candidates?.[0]?.content?.parts || []).filter(p => !p.thought);
+      const raw = (parts.length ? parts : (j.candidates?.[0]?.content?.parts || [])).map(p => p.text || '').join('');
+      parsed = parseJsonLoose(raw);
+    }
+    const hooks = Array.isArray(parsed.hooks) ? parsed.hooks.map(h => (typeof h === 'string' ? { technique: null, text: scrub(h).trim().slice(0, 210) } : { technique: ORDER.includes(h.technique) ? h.technique : null, text: scrub(String(h.text || '')).trim().slice(0, 210) })).filter(h => h.text) : [];
+    return { model: usedModel, hooks, body: typeof parsed.body === 'string' ? scrub(parsed.body) : '', comment: typeof parsed.comment === 'string' ? scrub(parsed.comment) : '' };
   }
 
   // ------------------------------------------------------------------ UI
-  let cfg = { esc: s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]), toast: () => {}, getKey: () => '', resolveModel: null, onDraft: null, dayNames: ['Monday', 'Tuesday', 'Wednesday'] };
+  let cfg = { esc: s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]), toast: () => {}, getKey: () => '', resolveModel: null, callGemini: null, openKeyBar: null, onDraft: null, dayNames: ['Monday', 'Tuesday', 'Wednesday'] };
   let selected = null, extracted = null, lastDraft = null, allItems = [];
   const $ = id => document.getElementById(id);
   function init(options) { cfg = Object.assign(cfg, options || {}); const f = $('cv-form'); if (f) { f.addEventListener('submit', e => { e.preventDefault(); runDraft(); }); } const s = $('cv-search'); if (s) s.addEventListener('input', () => renderCards(allItems)); const re = $('cv-regen'); if (re) re.onclick = () => { if (lastDraft) { lastDraft.hooks = regenHooks(); renderDraft(lastDraft); } }; }
@@ -439,7 +454,6 @@ Return JSON only: {"hooks":[{"technique":"<technique id>","text":"line 1\\nline 
         </div>
       </div>
       ${exs.length ? `<div class="text-xs"><div class="font-semibold mb-1">Other hooks that used the same technique</div><ul class="space-y-1">${exs.map(e => `<li class="flex gap-2"><span class="shrink-0 px-1.5 rounded bg-[var(--secondary)] font-semibold">${esc(humanX(e.mult))}</span><span>${esc(e.hook.split('\n')[0].slice(0, 150))} <span class="text-[var(--muted-foreground)]">(${esc(e.creator)})</span></span></li>`).join('')}</ul></div>` : ''}`;
-    // technique select
     const sel = $('cv-technique'); if (sel) { sel.innerHTML = `<option value="source">Same as the source${top ? ` (${esc(top.name)})` : ''}</option>` + ORDER.map(id => `<option value="${id}">${esc(TECHNIQUES[id].name)}</option>`).join(''); }
     const fmtHint = $('cv-format-hint'); if (fmtHint) fmtHint.textContent = `Auto picks ${({ teardown: 'a teardown', runbook: 'a runbook', thesis: 'a thesis', story: 'a story' })[suggestFormat(ex)]} because the source reads as ${ex.structure === 'list' ? 'a list' : ex.structure === 'story' ? 'a story' : 'prose'}.`;
   }
@@ -452,63 +466,129 @@ Return JSON only: {"hooks":[{"technique":"<technique id>","text":"line 1\\nline 
     return list;
   }
   function regenHooks() { const techs = chosenTechniques(); return generateHooks({ techniques: techs, ex: extracted, angle: ($('cv-angle') || {}).value || '', proof: ($('cv-proof') || {}).value || '', creator: selected.creator }); }
-  async function runDraft() {
+  async function runDraft(requireGemini = false) {
     if (!extracted) { cfg.toast('Pick a post first.'); return; }
-    const btn = $('cv-write'); const status = $('cv-status');
+    const btn = $('cv-write'); const reBtn = $('cv-rewrite-gemini'); const status = $('cv-status');
     const angle = ($('cv-angle') || {}).value.trim(); const proof = ($('cv-proof') || {}).value.trim();
     const fmtPick = ($('cv-format') || {}).value || 'auto'; const format = fmtPick === 'auto' ? suggestFormat(extracted) : fmtPick;
     const dayIdx = Number(($('cv-day') || {}).value || 0);
+    const key = cfg.getKey ? cfg.getKey() : '';
+    if (requireGemini && !key) {
+      if (cfg.openKeyBar) cfg.openKeyBar();
+      if (status) status.textContent = 'Paste your free Google AI Studio key above, then click Rewrite with Gemini.';
+      cfg.toast('Paste your free Gemini key right above to rewrite with Gemini.');
+      return;
+    }
     let hooks = generateHooks({ techniques: chosenTechniques(), ex: extracted, angle, proof, creator: selected.creator });
     const techs = hooks.map(h => h.technique);
     let body = buildBody({ format, ex: extracted, angle, proof, creator: selected.creator });
     let comment = buildComment({ creator: selected.creator, url: selected.url });
-    let mode = 'local';
-    const key = cfg.getKey ? cfg.getKey() : '';
-    if (key && cfg.resolveModel) {
+    let mode = 'local', gemErr = '';
+    if (key && (cfg.callGemini || cfg.resolveModel)) {
       try {
-        if (btn) { btn.disabled = true; btn.textContent = 'Writing with Gemini…'; } if (status) status.textContent = 'Gemini is drafting with the technique brief and your angle…';
-        const model = await cfg.resolveModel(key);
+        if (btn) { btn.disabled = true; btn.textContent = 'Writing with Gemini…'; }
+        if (reBtn) { reBtn.disabled = true; reBtn.textContent = 'Writing with Gemini…'; }
+        if (status) status.textContent = 'Gemini is drafting with the technique brief and your own words…';
+        const model = cfg.callGemini ? 'gemini-2.5-flash' : await cfg.resolveModel(key);
         const exemplarMap = {}; techs.forEach(id => { exemplarMap[id] = exemplars(id, 4, selected.creator); });
         const g = await draftWithGemini({ ex: extracted, creator: selected.creator, url: selected.url, format, techIds: techs, angle, proof, exemplarMap }, key, model);
         const good = g.hooks.map((h, i) => ({ technique: h.technique || techs[i] || techs[0], text: h.text })).map(h => ({ ...h, score: scoreHook(h.text, h.technique) })).filter(h => h.score.score >= 70);
         if (good.length) hooks = good.concat(hooks.filter(h => !good.some(g2 => g2.technique === h.technique))).slice(0, 3);
-        if (g.body) body = g.body; if (g.comment) comment = g.comment; mode = model;
-      } catch (e) { if (status) status.textContent = `Gemini failed (${e.message.slice(0, 80)}). Showing the local draft.`; }
-      finally { if (btn) { btn.disabled = false; btn.textContent = 'Write the draft'; } }
+        if (g.body) body = g.body; if (g.comment) comment = g.comment; mode = g.model || model;
+      } catch (e) { gemErr = String(e && e.message || e).slice(0, 140); }
+      finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Write the draft'; }
+        if (reBtn) { reBtn.disabled = false; reBtn.textContent = 'Rewrite with Gemini'; }
+      }
     }
-    lastDraft = { hooks, body, comment, format, dayIdx, mode, technique: techs[0] };
-    renderDraft(lastDraft); if (status && mode !== 'local') status.textContent = `Drafted with ${mode}. Every hook was checked against its technique.`; else if (status) status.textContent = 'Drafted locally from the source post and your angle. Add a free Gemini key in the Calendar tab for a fuller rewrite.';
+    const myWords = [angle, proof].filter(Boolean).join(' — ');
+    lastDraft = { hooks, body, comment, format, dayIdx, mode, technique: techs[0], selectedHook: 0, myWords };
+    renderDraft(lastDraft);
+    if (status) {
+      if (mode !== 'local') status.textContent = `Drafted with ${mode}. Every hook was checked against its technique, and you can edit any line directly below.`;
+      else if (gemErr) status.textContent = `Gemini error (${gemErr}) — showing the editable local draft below.`;
+      else status.textContent = 'Drafted locally from the source post and your angle. Edit any line directly below, or connect your Gemini key above for a full AI rewrite.';
+    }
+  }
+  function renderQaStripHtml(d) {
+    const esc = cfg.esc;
+    const post = toPost(d, d.selectedHook || 0);
+    const qa = qaPost(post);
+    const hasBr = /\[[^\]]+\]/.test(d.body);
+    return qa.map(c => `<span class="px-2 py-1 rounded border border-[var(--border)] ${c.ok ? 'bg-[var(--secondary)]' : ''}">${c.ok ? '✓' : '!'} ${esc(c.label)}</span>`).join('') +
+      `<span class="px-2 py-1 rounded border border-[var(--border)] ${hasBr ? '' : 'bg-[var(--secondary)]'}">${hasBr ? '! Brackets to fill: type your own words in the box below' : '✓ Nothing left to fill'}</span>`;
   }
   function renderDraft(d) {
     const box = $('cv-draft'); if (!box) return; const esc = cfg.esc; box.classList.remove('hidden');
-    const post = toPost(d, 0);
-    const qa = qaPost(post);
+    const selIdx = Number(d.selectedHook || 0);
+    const activeHookObj = d.hooks[selIdx] || d.hooks[0] || { text: '', technique: d.technique };
     box.innerHTML = `
-      <div class="flex flex-wrap items-baseline justify-between gap-2"><h3 class="text-base font-bold">4. Your draft</h3><span class="text-xs text-[var(--muted-foreground)]">${esc(({ teardown: 'Teardown', runbook: 'Runbook', thesis: 'Thesis', story: 'Story' })[d.format])}, for ${esc(cfg.dayNames[d.dayIdx])}</span></div>
+      <div class="flex flex-wrap items-baseline justify-between gap-2">
+        <h3 class="text-base font-bold">4. Your draft <span class="text-xs font-normal text-[var(--muted-foreground)]">(editable — add or tweak your own words right here)</span></h3>
+        <span class="text-xs text-[var(--muted-foreground)]">${esc(({ teardown: 'Teardown', runbook: 'Runbook', thesis: 'Thesis', story: 'Story' })[d.format])}, for ${esc(cfg.dayNames[d.dayIdx])}${d.mode && d.mode !== 'local' ? ` · via ${esc(d.mode)}` : ''}</span>
+      </div>
       <div class="space-y-2">${d.hooks.map((h, i) => `
-        <label class="block p-2.5 rounded-lg border ${i === 0 ? 'border-[var(--primary)] bg-[var(--secondary)]' : 'border-[var(--border)]'} text-xs cursor-pointer">
-          <div class="flex flex-wrap justify-between gap-2 text-[var(--muted-foreground)] mb-1"><span><input type="radio" name="cv-hook" value="${i}" ${i === 0 ? 'checked' : ''} class="mr-1.5 accent-[var(--primary)]" />Hook ${i + 1}: ${esc(TECHNIQUES[h.technique] ? TECHNIQUES[h.technique].name : 'Technique')}</span><span>${h.score.score}% · ${h.text.length}/210</span></div>
-          <div class="whitespace-pre-wrap text-sm">${esc(h.text)}</div>
+        <label data-cv-hook-card="${i}" class="block p-2.5 rounded-lg border ${i === selIdx ? 'border-[var(--primary)] bg-[var(--secondary)]' : 'border-[var(--border)]'} text-xs cursor-pointer">
+          <div class="flex flex-wrap justify-between gap-2 text-[var(--muted-foreground)] mb-1"><span><input type="radio" name="cv-hook" value="${i}" ${i === selIdx ? 'checked' : ''} class="mr-1.5 accent-[var(--primary)]" />Hook ${i + 1}: ${esc(TECHNIQUES[h.technique] ? TECHNIQUES[h.technique].name : 'Technique')}</span><span data-cv-hook-meta="${i}">${h.score.score}% · ${h.text.length}/210</span></div>
+          <div data-cv-hook-preview="${i}" class="whitespace-pre-wrap text-sm">${esc(h.text)}</div>
           <div class="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-[var(--muted-foreground)]">${h.score.checks.map(c => `<span>${c.ok ? '✓' : '!'} ${esc(c.label)}</span>`).join('')}</div>
         </label>`).join('')}</div>
-      <div class="text-xs"><div class="font-semibold mb-1">Body</div><pre class="whitespace-pre-wrap font-sans text-sm p-3 rounded-lg border border-[var(--border)] bg-[var(--background)] max-h-96 overflow-auto">${esc(d.body)}</pre></div>
-      <div class="text-xs"><div class="font-semibold mb-1">First comment</div><pre class="whitespace-pre-wrap font-sans text-sm p-3 rounded-lg border border-[var(--border)] bg-[var(--background)]">${esc(d.comment)}</pre></div>
-      <div class="flex flex-wrap gap-2 text-xs">${qa.map(c => `<span class="px-2 py-1 rounded border border-[var(--border)] ${c.ok ? 'bg-[var(--secondary)]' : ''}">${c.ok ? '✓' : '!'} ${esc(c.label)}</span>`).join('')}<span class="px-2 py-1 rounded border border-[var(--border)] ${/\[[^\]]+\]/.test(d.body) ? '' : 'bg-[var(--secondary)]'}">${/\[[^\]]+\]/.test(d.body) ? '! Brackets to fill: only you can write those lines' : '✓ Nothing left to fill'}</span></div>
+      <label class="block text-xs">
+        <span class="flex justify-between font-semibold mb-1"><span>Edit active hook (2 lines, ≤210 chars)</span><span id="cv-draft-hook-count" class="font-mono text-[var(--muted-foreground)]">${activeHookObj.text.length}/210</span></span>
+        <textarea id="cv-draft-hook" data-cv-hook-edit rows="3" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2.5 text-sm">${esc(activeHookObj.text)}</textarea>
+      </label>
+      <label class="block text-xs">
+        <span class="block font-semibold mb-1">Edit post body (replace any [brackets] with your own words)</span>
+        <textarea id="cv-draft-body" data-cv-body rows="10" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-3 text-sm leading-relaxed">${esc(d.body)}</textarea>
+      </label>
+      <label class="block text-xs">
+        <span class="block font-semibold mb-1">Edit first comment (creator credit + newsletter invite)</span>
+        <textarea id="cv-draft-comment" rows="2" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2.5 text-xs leading-relaxed">${esc(d.comment)}</textarea>
+      </label>
+      <div id="cv-draft-qa" class="flex flex-wrap gap-2 text-xs">${renderQaStripHtml(d)}</div>
       <div class="flex flex-wrap gap-2">
         <button type="button" id="cv-load" class="px-3.5 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Open in the ${esc(cfg.dayNames[d.dayIdx])} editor</button>
+        <button type="button" id="cv-rewrite-gemini" class="px-3.5 py-2 rounded-lg border border-[var(--primary)] text-[var(--primary)] text-xs font-bold">Rewrite with Gemini</button>
         <button type="button" id="cv-regen" class="px-3.5 py-2 rounded-lg border border-[var(--border)] text-xs font-semibold">New hooks</button>
         <button type="button" id="cv-copy" class="px-3.5 py-2 rounded-lg border border-[var(--border)] text-xs font-semibold">Copy the post</button>
       </div>`;
-    box.querySelectorAll('input[name="cv-hook"]').forEach(r => r.onchange = () => { d.selectedHook = Number(r.value); });
+    const hookInput = $('cv-draft-hook');
+    const bodyInput = $('cv-draft-body');
+    const commentInput = $('cv-draft-comment');
+    const qaBox = $('cv-draft-qa');
+    const refreshQa = () => { if (qaBox) qaBox.innerHTML = renderQaStripHtml(d); };
+    box.querySelectorAll('input[name="cv-hook"]').forEach(r => r.onchange = () => {
+      d.selectedHook = Number(r.value);
+      const cur = d.hooks[d.selectedHook] || d.hooks[0];
+      if (hookInput && cur) hookInput.value = cur.text;
+      const cnt = $('cv-draft-hook-count'); if (cnt && cur) cnt.textContent = `${cur.text.length}/210`;
+      box.querySelectorAll('[data-cv-hook-card]').forEach(card => {
+        const active = Number(card.dataset.cvHookCard) === d.selectedHook;
+        card.className = `block p-2.5 rounded-lg border ${active ? 'border-[var(--primary)] bg-[var(--secondary)]' : 'border-[var(--border)]'} text-xs cursor-pointer`;
+      });
+      refreshQa();
+    });
+    if (hookInput) hookInput.addEventListener('input', () => {
+      const idx = d.selectedHook || 0;
+      const tech = d.hooks[idx] ? d.hooks[idx].technique : d.technique;
+      d.hooks[idx] = { technique: tech, text: hookInput.value, score: scoreHook(hookInput.value, tech) };
+      const cnt = $('cv-draft-hook-count'); if (cnt) cnt.textContent = `${hookInput.value.length}/210`;
+      const prev = box.querySelector(`[data-cv-hook-preview="${idx}"]`); if (prev) prev.textContent = hookInput.value;
+      const meta = box.querySelector(`[data-cv-hook-meta="${idx}"]`); if (meta) meta.textContent = `${d.hooks[idx].score.score}% · ${hookInput.value.length}/210`;
+      refreshQa();
+    });
+    if (bodyInput) bodyInput.addEventListener('input', () => { d.body = bodyInput.value; refreshQa(); });
+    if (commentInput) commentInput.addEventListener('input', () => { d.comment = commentInput.value; refreshQa(); });
     $('cv-load').onclick = () => { const p = toPost(d, d.selectedHook || 0); if (cfg.onDraft) cfg.onDraft(p, d.dayIdx); };
+    $('cv-rewrite-gemini').onclick = () => runDraft(true);
     $('cv-regen').onclick = () => { d.hooks = regenHooks(); d.selectedHook = 0; renderDraft(d); };
     $('cv-copy').onclick = async () => { const p = toPost(d, d.selectedHook || 0); try { await navigator.clipboard.writeText(`${p.hooks[p.selectedHook]}\n\n${p.body}`); cfg.toast('Copied the post.'); } catch { cfg.toast('Copy failed. Select the text and copy it.'); } };
     box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   function toPost(d, selectedHook) {
     const label = ({ teardown: 'Teardown', runbook: 'Runbook', thesis: 'Thesis', story: 'Story' })[d.format] || 'Post';
-    return { day: cfg.dayNames[d.dayIdx], archetype: d.format === 'story' ? 'thesis' : d.format, track: `${label}, inspired by ${selected.creator}`, isGrowth: true, credit: selected.creator, creditUrl: selected.url || '', title: `${extracted.topic} (inspired by ${selected.creator})`, selectedHook: selectedHook || 0, hooks: d.hooks.map(h => h.text), hookTechniques: d.hooks.map(h => h.technique), technique: d.hooks[selectedHook || 0] ? d.hooks[selectedHook || 0].technique : d.technique, body: d.body, comment: d.comment, sourceId: selected.id };
+    return { day: cfg.dayNames[d.dayIdx], archetype: d.format === 'story' ? 'thesis' : d.format, track: `${label}, inspired by ${selected.creator}`, isGrowth: true, credit: selected.creator, creditUrl: selected.url || '', title: `${extracted.topic} (inspired by ${selected.creator})`, selectedHook: selectedHook || 0, hooks: d.hooks.map(h => h.text), hookTechniques: d.hooks.map(h => h.technique), technique: d.hooks[selectedHook || 0] ? d.hooks[selectedHook || 0].technique : d.technique, body: d.body, comment: d.comment, sourceId: selected.id, myWords: d.myWords || '', voiceMode: d.myWords ? 'blend' : 'signal' };
   }
 
-  return { TECHNIQUES, detect, setCorpus, stats, exemplars, extract, suggestFormat, applicable, generateHooks, scoreHook, buildBody, buildComment, scrub, findJargon, findBanned, qaPost, geminiPrompt, init, renderCards, select, humanX };
+  return { TECHNIQUES, detect, setCorpus, stats, exemplars, extract, suggestFormat, applicable, generateHooks, scoreHook, buildBody, buildComment, scrub, findJargon, findBanned, qaPost, geminiPrompt, parseJsonLoose, init, renderCards, select, humanX };
 })();

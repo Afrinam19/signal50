@@ -48,8 +48,8 @@
         <button type="button" id="btn-toggle-guide" class="px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-bold">? How to Use</button>
         <a href="apps/deck-factory/" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold hover:bg-[var(--secondary)]" title="Thursday's live build">Thu · Deck Factory ↗</a>
         <a href="apps/release-to-demo/" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold hover:bg-[var(--secondary)]" title="Friday's live build">Fri · Release-to-Demo ↗</a>
-        <span class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--secondary-foreground)] font-semibold">4.5K → 50K (26w)</span>
-        <span id="header-voice-badge" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold">Your voice</span>
+        <button type="button" id="header-voice-badge" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold hover:bg-[var(--secondary)]" title="Choose how much is your own words vs source signal">Voice: My take + signal</button>
+        <span class="text-[var(--muted-foreground)] px-1 font-medium">Goal: 4.5K → 50K</span>
       </div>
     </div>
 
@@ -168,26 +168,26 @@
     <!-- =================================================================== -->
     <section id="panel-calendar" class="tab-panel space-y-4">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5">
-          <div class="text-xs text-[var(--muted-foreground)]">Mon–Wed Growth</div>
+        <button type="button" data-overview-jump="outliers" class="text-left bg-[var(--card)] border border-[var(--border)] hover:border-[var(--primary)] rounded-xl p-3.5 transition">
+          <div class="text-xs text-[var(--muted-foreground)] flex justify-between"><span>Mon–Wed Growth</span><span class="text-[var(--primary)] font-semibold">Pick post →</span></div>
           <div id="stat-outlier-range" class="text-sm md:text-base font-bold mt-0.5">Breakout posts, 3x or more</div>
           <div class="text-xs text-[var(--muted-foreground)] mt-0.5">Measured against each creator's usual reach</div>
-        </div>
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5">
-          <div class="text-xs text-[var(--muted-foreground)]">Thu–Fri Execution</div>
+        </button>
+        <button type="button" data-overview-jump="gif" class="text-left bg-[var(--card)] border border-[var(--border)] hover:border-[var(--primary)] rounded-xl p-3.5 transition">
+          <div class="text-xs text-[var(--muted-foreground)] flex justify-between"><span>Thu–Fri Execution</span><span class="text-[var(--primary)] font-semibold">GIF Lab →</span></div>
           <div class="text-sm md:text-base font-bold mt-0.5">1% Builder Workflows</div>
           <div class="text-xs text-[var(--muted-foreground)] mt-0.5">Gemini + Antigravity + GTM</div>
-        </div>
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5">
-          <div class="text-xs text-[var(--muted-foreground)]">Saturday Flagship</div>
+        </button>
+        <button type="button" data-overview-jump="newsletter" class="text-left bg-[var(--card)] border border-[var(--border)] hover:border-[var(--primary)] rounded-xl p-3.5 transition">
+          <div class="text-xs text-[var(--muted-foreground)] flex justify-between"><span>Saturday Flagship</span><span class="text-[var(--primary)] font-semibold">Open →</span></div>
           <div class="text-sm md:text-base font-bold mt-0.5">Saturday Dispatch</div>
           <div class="text-xs text-[var(--muted-foreground)] mt-0.5">Product leaders · founders · agencies</div>
-        </div>
-        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5">
-          <div class="text-xs text-[var(--muted-foreground)]">Public Proof Only</div>
+        </button>
+        <button type="button" data-overview-jump="ops" class="text-left bg-[var(--card)] border border-[var(--border)] hover:border-[var(--primary)] rounded-xl p-3.5 transition">
+          <div class="text-xs text-[var(--muted-foreground)] flex justify-between"><span>Public Proof Only</span><span class="text-[var(--primary)] font-semibold">Profile →</span></div>
           <div class="text-sm md:text-base font-bold mt-0.5">Gemini &amp; Agents @ Google</div>
           <div class="text-xs text-[var(--muted-foreground)] mt-0.5">15+ yrs product · 4× Cloud Next speaker</div>
-        </div>
+        </button>
       </div>
 
       <!-- Day Switcher Pills -->
@@ -207,11 +207,11 @@
             </div>
           </div>
 
-          <!-- Embedded AI draft and rewrite + gemini.google.com companion -->
-          <div id="ai-draft-box" class="min-w-0 max-w-full rounded-xl border border-[var(--primary)] bg-[var(--secondary)] p-3.5 space-y-2.5">
+          <!-- Embedded AI Co-Writer: Voice/Signal Mix + Your Own Words + Gemini -->
+          <div id="ai-draft-box" class="min-w-0 max-w-full rounded-xl border border-[var(--primary)] bg-[var(--secondary)] p-3.5 space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2 min-w-0">
               <div class="flex flex-wrap items-center gap-2 min-w-0 max-w-full">
-                <span class="text-xs font-bold px-2 py-0.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)]">✨ Draft &amp; Rewrite with Gemini</span>
+                <span class="text-xs font-bold px-2 py-0.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)]">Co-Write</span>
                 <select id="ai-archetype" aria-label="Post format" class="max-w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-2.5 py-1 text-xs font-semibold">
                   <option value="teardown">Format: System Teardown (1. → ↳)</option>
                   <option value="runbook">Format: Zero-Friction Runbook (1..6)</option>
@@ -227,27 +227,54 @@
 
             <div id="ai-key-bar" class="hidden rounded-lg border border-[var(--border)] bg-[var(--card)] p-2.5 space-y-1.5 text-xs">
               <div class="flex flex-wrap items-center gap-2">
-                <input id="ai-gemini-key" type="password" autocomplete="off" placeholder="Paste free Google AI Studio key (saved locally on this device only)..." class="flex-1 min-w-0 rounded border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-xs font-mono" />
+                <input id="ai-gemini-key" type="password" autocomplete="off" placeholder="Paste free Google AI Studio key (auto-saves as you paste)..." class="flex-1 min-w-0 rounded border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-xs font-mono" />
                 <button type="button" id="btn-save-gemini-key" class="px-3 py-1.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)] font-bold">Save Key</button>
                 <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" class="underline font-semibold">Get free key ↗</a>
               </div>
               <p class="text-[11px] text-[var(--muted-foreground)]">
-                Why two options? Google blocks <code>&lt;iframe&gt;</code> embeds on <code>gemini.google.com</code> for account security. Save a free AI Studio key here to rewrite <strong>directly inside this box</strong> (shared with Deck Factory &amp; Release-to-Demo), or click <strong>Open gemini.google.com ↗</strong> to pop out Gemini chat side-by-side with your prompt pre-copied.
+                Saved locally in this browser only (shared across Tabs 1 &amp; 3, Deck Factory &amp; Release-to-Demo). Paste and click any rewrite button right away.
               </p>
             </div>
 
+            <!-- 1. Choose Voice vs Signal Mix (interactive, never static) -->
+            <div class="space-y-1">
+              <div class="text-[11px] font-bold uppercase tracking-wide text-[var(--muted-foreground)]">1. Pick voice vs. signal mix</div>
+              <div id="ai-voice-mode" role="group" aria-label="Voice and signal mix" class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 text-xs">
+                <button type="button" data-voice-mode="my_words" aria-pressed="false" class="px-2.5 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-left font-semibold">
+                  <span class="block font-bold">My words first</span>
+                  <span class="block text-[11px] font-normal text-[var(--muted-foreground)]">Keep my phrasing; tighten &amp; fit hook</span>
+                </button>
+                <button type="button" data-voice-mode="blend" aria-pressed="true" class="px-2.5 py-2 rounded-lg border border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)] text-left font-semibold">
+                  <span class="block font-bold">My take + signal</span>
+                  <span class="block text-[11px] font-normal opacity-90">Lead with my take + source facts</span>
+                </button>
+                <button type="button" data-voice-mode="signal" aria-pressed="false" class="px-2.5 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-left font-semibold">
+                  <span class="block font-bold">Source breakdown</span>
+                  <span class="block text-[11px] font-normal text-[var(--muted-foreground)]">Distill the playbook; keep [brackets]</span>
+                </button>
+              </div>
+              <div id="ai-voice-mode-hint" class="text-[11px] text-[var(--muted-foreground)]">Leads with your own words below, then backs them up with the source post's concrete mechanics and credit.</div>
+            </div>
+
+            <!-- 2. Your Own Words & First-Hand Take -->
+            <label class="block text-xs space-y-1">
+              <span class="font-bold text-[var(--foreground)]">2. Your own words &amp; first-hand take <span class="font-normal text-[var(--muted-foreground)]">(woven directly into every rewrite — never invented)</span></span>
+              <textarea id="ai-my-words" rows="2" placeholder="Type what YOU saw, built, or disagree with in plain words (e.g. 'On our Gemini agent evals, one unguarded repo read burned 4x more tokens than the planner')..." class="w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-2 text-xs leading-relaxed"></textarea>
+            </label>
+
+            <!-- 3. Rewrite Actions -->
             <div class="flex flex-wrap items-center gap-1.5 text-xs">
-              <button type="button" data-ai-preset="outlier" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">✨ Rewrite like the best posts</button>
-              <button type="button" data-ai-preset="hooks" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">🪝 3 Stronger Hooks (≤210c)</button>
-              <button type="button" data-ai-preset="tighten" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">✂️ Tighten &amp; Cut Clichés</button>
-              <button type="button" data-ai-preset="exec" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">🎯 Sharpen PM / Exec Angle</button>
-              <button type="button" id="btn-toggle-paste-gemini" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold">📋 Paste Gemini Reply</button>
-              <button type="button" id="btn-undo-ai" class="hidden px-2.5 py-1 rounded-lg border border-[var(--primary)] text-[var(--primary)] bg-[var(--card)] font-bold">↩ Undo AI Edit</button>
+              <button type="button" data-ai-preset="outlier" class="px-2.5 py-1.5 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">Rewrite in chosen format</button>
+              <button type="button" data-ai-preset="hooks" class="px-2.5 py-1.5 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">3 stronger hooks (≤210c)</button>
+              <button type="button" data-ai-preset="tighten" class="px-2.5 py-1.5 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">Tighten &amp; cut filler</button>
+              <button type="button" data-ai-preset="exec" class="px-2.5 py-1.5 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">Sharpen PM / Exec lens</button>
+              <button type="button" id="btn-toggle-paste-gemini" class="px-2.5 py-1.5 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold">Paste Gemini reply</button>
+              <button type="button" id="btn-undo-ai" class="hidden px-2.5 py-1.5 rounded-lg border border-[var(--primary)] text-[var(--primary)] bg-[var(--card)] font-bold">↩ Undo AI edit</button>
             </div>
 
             <div class="flex flex-wrap items-center gap-2">
-              <input id="ai-custom-prompt" type="text" placeholder="Ask Gemini to draft or rewrite (e.g. 'Rewrite for VPs of Eng, sharper opening, under 160 words')..." class="flex-1 min-w-0 rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-1.5 text-xs" />
-              <button type="button" id="btn-run-ai" class="px-3.5 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Rewrite Draft ✨</button>
+              <input id="ai-custom-prompt" type="text" placeholder="Optional direction (e.g. 'Put my observation right after the hook, under 160 words, sharper question')..." class="flex-1 min-w-0 rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-1.5 text-xs" />
+              <button type="button" id="btn-run-ai" class="px-3.5 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Rewrite Draft</button>
             </div>
 
             <div id="gemini-paste-drawer" class="hidden rounded-lg border border-[var(--border)] bg-[var(--card)] p-2.5 space-y-2 text-xs">
@@ -258,7 +285,7 @@
               </div>
             </div>
 
-            <div id="ai-status" class="text-[11px] text-[var(--muted-foreground)] break-words">Pick a 1-click rewrite preset, type a custom instruction, or pop out <code>gemini.google.com</code> side-by-side.</div>
+            <div id="ai-status" role="status" aria-live="polite" class="rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-2 text-xs text-[var(--muted-foreground)] break-words">Add your own words above and click <strong>Rewrite Draft</strong> (uses Gemini when your key is connected, or instant local co-write anytime).</div>
           </div>
 
           <div>
@@ -272,6 +299,7 @@
           </div>
 
           <div>
+            <div id="bracket-slots" class="hidden rounded-lg border border-[var(--primary)] bg-[var(--secondary)] p-3 space-y-2 mb-2.5"></div>
             <label for="body-editor" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Post body (your voice, public facts only)</label>
             <textarea id="body-editor" rows="11" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] p-3 text-sm leading-relaxed"></textarea>
             <div id="post-safety" class="text-xs font-semibold text-[#1F5E46] mt-2">✓ Data-safety: checking…</div>
@@ -318,7 +346,7 @@
 
           <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4">
             <div class="flex justify-between items-center mb-2.5">
-              <span class="text-xs font-bold uppercase tracking-wider">6-Point Pre-Flight Quality Gate</span>
+              <span class="text-xs font-bold uppercase tracking-wider">Pre-Flight Quality Gate · Click to Fix</span>
               <span id="qa-badge" class="text-xs font-bold px-2.5 py-0.5 rounded bg-[var(--secondary)]">100% Ready</span>
             </div>
             <div id="qa-checks" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs"></div>
@@ -536,8 +564,18 @@
           </div>
           <div id="cv-step3" class="hidden bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5">
             <form id="cv-form" class="space-y-3">
-              <h3 class="text-base font-bold">3. Make it yours</h3>
-              <label class="block text-xs"><span class="block font-semibold mb-1">Your first-hand angle</span><textarea id="cv-angle" rows="3" placeholder="What you have seen building AI products that confirms or complicates this. Public facts only. Leave it empty and the draft keeps a [bracket] for you." class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm"></textarea></label>
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h3 class="text-base font-bold">3. Make it yours</h3>
+                <button type="button" id="cv-key-toggle" class="px-2.5 py-1 rounded-lg border border-[var(--border)] bg-[var(--background)] text-xs font-semibold">🔑 Connect Gemini Key</button>
+              </div>
+              <div id="cv-key-bar" class="hidden rounded-lg border border-[var(--border)] bg-[var(--secondary)] p-2.5 space-y-1.5 text-xs">
+                <div class="flex flex-wrap items-center gap-2">
+                  <input id="cv-gemini-key" type="password" autocomplete="off" placeholder="Paste free Google AI Studio key (auto-saves across Studio)..." class="flex-1 min-w-0 rounded border border-[var(--border)] bg-[var(--card)] px-2.5 py-1.5 text-xs font-mono" />
+                  <button type="button" id="cv-save-gemini-key" class="px-3 py-1.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)] font-bold">Save Key</button>
+                  <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" class="underline font-semibold">Get free key ↗</a>
+                </div>
+              </div>
+              <label class="block text-xs"><span class="block font-semibold mb-1">Your own words / first-hand angle</span><textarea id="cv-angle" rows="3" placeholder="What you have seen building AI products that confirms or complicates this. Public facts only. Leave it empty and the draft keeps a [bracket] for you." class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm"></textarea></label>
               <label class="block text-xs"><span class="block font-semibold mb-1">A number or example you can stand behind (optional)</span><input id="cv-proof" type="text" placeholder="A public number, a named example, a before and after" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" /></label>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                 <label class="block"><span class="block font-semibold mb-1">Hook technique</span><select id="cv-technique" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm"><option value="source">Same as the source</option></select></label>
@@ -547,7 +585,7 @@
               <p id="cv-format-hint" class="text-xs text-[var(--muted-foreground)]"></p>
               <div class="flex flex-wrap items-center gap-3">
                 <button type="submit" id="cv-write" class="px-4 py-2.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Write the draft</button>
-                <span id="cv-status" class="text-xs text-[var(--muted-foreground)]">You get three hooks, each built on a named technique and checked against it, plus a body grounded in the source post.</span>
+                <span id="cv-status" class="text-xs text-[var(--muted-foreground)]">You get three hooks checked against named techniques, plus an editable draft grounded in the source post.</span>
               </div>
             </form>
           </div>
@@ -1633,7 +1671,6 @@ Building AI products people actually adopt, or navigating your next move? Let's 
                 }
               }
               document.getElementById('sync-status-pill').textContent = 'Live Server Connected (Disk Sync ON)';
-              document.getElementById('header-voice-badge').textContent = 'Your voice';
               renderStudio();
               renderRetro();
               applyServerVaultHook(data);
@@ -1692,6 +1729,102 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         });
       }
 
+      const VOICE_MODE_META = {
+        my_words: { badge: 'Voice: My words first', hint: 'Keeps your own phrasing and story front and center; tightens filler and fits the 210-char hook.' },
+        blend: { badge: 'Voice: My take + signal', hint: 'Leads with your own words below, then backs them up with the source post\'s concrete mechanics and credit.' },
+        signal: { badge: 'Voice: Source breakdown', hint: 'Distills the source post\'s argument in plain English; keeps [brackets] anywhere first-hand experience belongs.' }
+      };
+
+      function syncVoiceModeUi(mode) {
+        const clean = VOICE_MODE_META[mode] ? mode : 'blend';
+        const meta = VOICE_MODE_META[clean];
+        const badge = document.getElementById('header-voice-badge');
+        if (badge) badge.textContent = meta.badge;
+        const hint = document.getElementById('ai-voice-mode-hint');
+        if (hint) hint.textContent = meta.hint;
+        document.querySelectorAll('[data-voice-mode]').forEach(btn => {
+          const on = btn.dataset.voiceMode === clean;
+          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+          btn.className = on
+            ? 'px-2.5 py-2 rounded-lg border border-[var(--primary)] bg-[var(--primary)] text-[var(--primary-foreground)] text-left font-semibold'
+            : 'px-2.5 py-2 rounded-lg border border-[var(--border)] bg-[var(--card)] text-[var(--foreground)] text-left font-semibold hover:border-[var(--primary)]';
+          const sub = btn.querySelector('span:last-child');
+          if (sub) sub.className = on ? 'block text-[11px] font-normal opacity-90' : 'block text-[11px] font-normal text-[var(--muted-foreground)]';
+        });
+      }
+
+      let lastBracketSig = '';
+      function renderBracketSlots(body, force = false) {
+        const box = document.getElementById('bracket-slots');
+        if (!box) return;
+        const matches = [...String(body || '').matchAll(/(?<!["'“])\[([^\]\n]{3,140})\](?!["'”])/g)].map(m => m[0]);
+        const uniq = [...new Set(matches)];
+        const sig = uniq.join('||');
+        if (!force && sig === lastBracketSig) return;
+        lastBracketSig = sig;
+        if (!uniq.length) {
+          box.classList.add('hidden');
+          box.innerHTML = '';
+          return;
+        }
+        const escHtml = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        box.classList.remove('hidden');
+        box.innerHTML = `
+          <div class="text-xs font-bold text-[var(--primary)]">Add your own words to ${uniq.length} placeholder${uniq.length > 1 ? 's' : ''} in this draft:</div>
+          ${uniq.map((tok, idx) => `
+            <div data-bracket-slot="${idx}" class="space-y-1 bg-[var(--card)] border border-[var(--border)] rounded-lg p-2.5 text-xs">
+              <div class="font-medium text-[var(--muted-foreground)]">${escHtml(tok.slice(1, -1))}</div>
+              <div class="flex flex-wrap gap-2">
+                <input type="text" data-bracket-input="${idx}" placeholder="Type your own sentence here and press Enter…" class="flex-1 min-w-0 rounded border border-[var(--border)] bg-[var(--background)] px-2.5 py-1.5 text-xs" />
+                <button type="button" data-bracket-apply="${idx}" class="px-3 py-1.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)] font-bold">Insert my words</button>
+              </div>
+            </div>
+          `).join('')}
+        `;
+        uniq.forEach((tok, idx) => {
+          const inp = box.querySelector(`[data-bracket-input="${idx}"]`);
+          const btn = box.querySelector(`[data-bracket-apply="${idx}"]`);
+          const apply = () => {
+            const val = (inp ? inp.value : '').trim();
+            if (!val) { showToast('Type your sentence first, then click Insert my words.'); if (inp) inp.focus(); return; }
+            const bodyEl = document.getElementById('body-editor');
+            bodyEl.value = bodyEl.value.split(tok).join(val);
+            const mw = document.getElementById('ai-my-words');
+            if (mw && !mw.value.includes(val)) mw.value = [mw.value.trim(), val].filter(Boolean).join(' ');
+            posts[activeDayIdx].myWords = mw ? mw.value.trim() : '';
+            updateSimulator(true);
+            showToast('Inserted your words into the post body.');
+          };
+          if (btn) btn.onclick = apply;
+          if (inp) inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); apply(); } });
+        });
+      }
+
+      function focusQaTarget(target) {
+        if (target === 'brackets') {
+          const slotInput = document.querySelector('#bracket-slots input[data-bracket-input]');
+          if (slotInput) { slotInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); slotInput.focus(); return; }
+          const bodyEl = document.getElementById('body-editor');
+          const m = /\[[^\]\n]{3,140}\]/.exec(bodyEl.value);
+          bodyEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          bodyEl.focus();
+          if (m) bodyEl.setSelectionRange(m.index, m.index + m[0].length);
+          return;
+        }
+        const map = {
+          safety: 'body-editor',
+          fold: 'hook-editor',
+          technique: 'hook-editor',
+          slop: 'body-editor',
+          credit: 'body-editor',
+          signal: 'ai-my-words',
+          jargon: 'body-editor',
+          comment: 'comment-editor'
+        };
+        const el = document.getElementById(map[target] || 'body-editor');
+        if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.focus(); }
+      }
+
       function renderStudio() {
         const pills = document.getElementById('day-pills');
         pills.innerHTML = posts.map((p, i) => `
@@ -1708,6 +1841,9 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         document.getElementById('post-title').textContent = p.title;
         const archSel = document.getElementById('ai-archetype');
         if (archSel && p.archetype) archSel.value = p.archetype;
+        const mw = document.getElementById('ai-my-words');
+        if (mw) mw.value = p.myWords || '';
+        syncVoiceModeUi(p.voiceMode || (p.isGrowth ? 'blend' : 'my_words'));
 
         const hList = document.getElementById('hook-list');
         hList.innerHTML = p.hooks.map((h, i) => `
@@ -1727,6 +1863,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         document.getElementById('body-editor').value = p.body;
         document.getElementById('comment-editor').value = p.comment || '';
         document.getElementById('sim-comment').textContent = p.comment || '';
+        renderBracketSlots(p.body, true);
         updateSimulator(false);
       }
 
@@ -1741,6 +1878,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           p.comment = comment;
           scheduleAutoSave(`✓ Auto-saved ${p.day} (${new Date().toLocaleTimeString()})`);
         }
+        renderBracketSlots(body, false);
         document.getElementById('sim-hook').textContent = hook;
         document.getElementById('sim-body').textContent = body;
         document.getElementById('sim-comment').textContent = comment;
@@ -1749,7 +1887,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         const combined = `${hook}\n${body}\n${comment}`;
         const full = (hook + '\n' + body).toLowerCase();
         const banned = ['delve', 'tapestry', 'testament', 'game-changer', 'thrilled to announce', 'unlock', 'leverage', 'seamless', 'cutting-edge'];
-        const hasBrackets = /(?<!["'“])\[[^\]\n]{3,65}\](?!["'”])/.test(combined);
+        const hasBrackets = /(?<!["'“])\[[^\]\n]{3,140}\](?!["'”])/.test(combined);
         const safetyHits = renderSafety('post-safety', combined);
         const CV = window.Signal50Converter;
         const jargonHit = CV ? CV.findJargon(combined) : null;
@@ -1757,23 +1895,28 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         const techName = CV ? ((p.technique && CV.TECHNIQUES[p.technique] && (!techTop || techTop.id !== p.technique) && CV.scoreHook(hook, p.technique).checks[2].ok) ? CV.TECHNIQUES[p.technique].name : (techTop ? techTop.name : '')) : 'not checked';
         const signalWords = ['agent', 'eval', 'enterprise', 'margin', 'production', 'slides', 'gtm', 'mcp', 'workflow', 'prototype', 'step', 'token', 'check', 'model', 'prompt', 'context', 'latency', 'trace', 'human'];
         const checks = [
-          { ok: safetyHits.length === 0, label: safetyHits.length ? `Data-safety: ${safetyHits.length} flagged` : 'No Revenue / Internal Google Data' },
-          { ok: !hasBrackets, label: hasBrackets ? 'Fill in [Bracket] Slots' : 'No Unfilled [Brackets]' },
-          { ok: hook.length > 20 && hook.length <= 210, label: `210-Char Fold (${hook.length}/210)` },
-          { ok: !p.isGrowth || full.includes((p.credit || '').split(' ')[0].toLowerCase()), label: p.isGrowth ? `Credit: ${p.credit}` : 'Original Ecosystem IP' },
-          { ok: !banned.some(w => full.includes(w)), label: 'Zero AI-Slop Scan' },
-          { ok: signalWords.filter(k => full.includes(k)).length >= 2, label: 'AI Product Signal' },
-          { ok: !jargonHit, label: jargonHit ? `Internal term in the post: "${jargonHit}"` : 'No internal terms' },
-          { ok: !!techName, label: techName ? `Hook technique: ${techName}` : 'Hook follows no clear technique' },
-          { ok: comment.trim().length > 15, label: 'Saturday NL Funnel CTA' }
+          { ok: safetyHits.length === 0, target: 'safety', label: safetyHits.length ? `Data-safety: ${safetyHits.length} flagged` : 'No Revenue / Internal Google Data' },
+          { ok: !hasBrackets, target: 'brackets', label: hasBrackets ? 'Fill in [Bracket] Slots' : 'No Unfilled [Brackets]' },
+          { ok: hook.length > 20 && hook.length <= 210, target: 'fold', label: `210-Char Fold (${hook.length}/210)` },
+          { ok: !p.isGrowth || full.includes((p.credit || '').split(' ')[0].toLowerCase()), target: 'credit', label: p.isGrowth ? `Credit: ${p.credit}` : 'Original Ecosystem IP' },
+          { ok: !banned.some(w => full.includes(w)), target: 'slop', label: 'Zero AI-Slop Scan' },
+          { ok: signalWords.filter(k => full.includes(k)).length >= 2, target: 'signal', label: 'AI Product Signal' },
+          { ok: !jargonHit, target: 'jargon', label: jargonHit ? `Internal term in the post: "${jargonHit}"` : 'No internal terms' },
+          { ok: !!techName, target: 'technique', label: techName ? `Hook technique: ${techName}` : 'Hook follows no clear technique' },
+          { ok: comment.trim().length > 15, target: 'comment', label: 'Saturday NL Funnel CTA' }
         ];
         const score = Math.round((checks.filter(c => c.ok).length / checks.length) * 100);
         document.getElementById('qa-badge').textContent = `${score}% Ready`;
-        document.getElementById('qa-checks').innerHTML = checks.map(c => `
-          <div class="p-2 rounded border border-[var(--border)] ${c.ok ? 'bg-[var(--secondary)]' : ''}">
-            ${c.ok ? '✓' : '!'} ${c.label}
-          </div>
+        const qaHost = document.getElementById('qa-checks');
+        qaHost.innerHTML = checks.map(c => `
+          <button type="button" data-qa-target="${c.target}" class="text-left p-2 rounded border flex items-center justify-between gap-1.5 transition hover:border-[var(--primary)] ${c.ok ? 'border-[var(--border)] bg-[var(--secondary)]' : 'border-[var(--primary)] bg-[var(--card)] font-semibold'}">
+            <span>${c.ok ? '✓' : '!'} ${c.label}</span>
+            <span class="text-[10px] ${c.ok ? 'text-[var(--muted-foreground)]' : 'text-[var(--primary)] font-bold'}">${c.ok ? 'Edit' : 'Fix →'}</span>
+          </button>
         `).join('');
+        qaHost.querySelectorAll('[data-qa-target]').forEach(btn => {
+          btn.onclick = () => focusQaTarget(btn.dataset.qaTarget);
+        });
       }
 
       // =======================================================================
@@ -2202,8 +2345,18 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         document.querySelectorAll('.tab-btn').forEach(btn => {
           btn.onclick = () => switchTab(btn.dataset.tab);
         });
+        document.querySelectorAll('[data-overview-jump]').forEach(btn => {
+          btn.onclick = () => switchTab(btn.dataset.overviewJump);
+        });
+        const voiceBadgeBtn = document.getElementById('header-voice-badge');
+        if (voiceBadgeBtn) {
+          voiceBadgeBtn.onclick = () => {
+            switchTab('calendar');
+            const box = document.getElementById('ai-voice-mode');
+            if (box) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          };
+        }
 
-        document.getElementById('header-voice-badge').textContent = `Voice DNA: ${voiceScore}%`;
         renderStudio();
 
         ['hook-editor', 'body-editor', 'comment-editor'].forEach(id => {
@@ -2583,14 +2736,21 @@ Building AI products people actually adopt, or navigating your next move? Let's 
 
         if (window.Signal50Converter) {
           Signal50Converter.init({
-            esc, toast: showToast, getKey: getSharedGeminiKey, resolveModel: resolveGeminiModel, dayNames: ['Monday', 'Tuesday', 'Wednesday'],
+            esc, toast: showToast, getKey: getSharedGeminiKey, resolveModel: resolveGeminiModel, callGemini: callGeminiJson,
+            openKeyBar: () => {
+              const bar = document.getElementById('cv-key-bar');
+              if (bar) bar.classList.remove('hidden');
+              const inp = document.getElementById('cv-gemini-key');
+              if (inp) inp.focus();
+            },
+            dayNames: ['Monday', 'Tuesday', 'Wednesday'],
             onDraft: async (post, dayIdx) => {
               posts[dayIdx] = post;
               activeDayIdx = dayIdx;
               await persistAll();
               renderStudio();
               switchTab('calendar');
-              showToast(`Loaded into ${post.day}. Fill any [brackets] before you post.`);
+              showToast(`Loaded into ${post.day}. Add or edit your own words in the Co-Write box.`);
             }
           });
         }
@@ -2599,7 +2759,6 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           const btn = document.getElementById('btn-rescan-outliers');
           const logBox = document.getElementById('rescan-log');
           if (!hasBackend) {
-            // Static deployment: the scout runs in GitHub Actions (every 12h, or on demand).
             window.open('https://github.com/Afrinam19/signal50/actions/workflows/scout.yml', '_blank', 'noopener');
             logBox.classList.remove('hidden');
             logBox.textContent = 'Opened the scan workflow on GitHub. Click "Run workflow" there; the data refreshes in about 3 minutes and this page picks it up on reload.\nIt also runs on its own at 06:17 and 18:17 UTC.';
@@ -2641,63 +2800,181 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         updateRarityCalc();
 
         // =====================================================================
-        // 5. EMBEDDED GEMINI CO-WRITER, gemini.google.com COMPANION & GUIDE
+        // 5. EMBEDDED GEMINI CO-WRITER, VOICE/SIGNAL MIX & RESILIENT API ENGINE
         // =====================================================================
         let aiUndoState = null;
-        let cachedGeminiModel = '';
+        let cachedGeminiModels = null;
 
-        function getSharedGeminiKey() {
+        function sanitizeGeminiKey(raw) {
+          return String(raw || '')
+            .trim()
+            .replace(/^(?:GEMINI_API_KEY|GOOGLE_API_KEY)\s*=\s*/i, '')
+            .replace(/^["'`]+|["'`]+$/g, '')
+            .trim();
+        }
+
+        function readSavedGeminiKey() {
           try {
-            return (
+            return sanitizeGeminiKey(
               localStorage.getItem('signal50.geminiKey') ||
               localStorage.getItem('deckfactory.key') ||
               localStorage.getItem('r2d.key') ||
               ''
-            ).trim();
+            );
           } catch (_) {
-            return String(MEM_STORE['signal50.geminiKey'] || '').trim();
+            return sanitizeGeminiKey(MEM_STORE['signal50.geminiKey'] || '');
           }
         }
 
+        function getSharedGeminiKey() {
+          // Always check live input boxes first so pasting a key + clicking Rewrite works immediately without clicking Save Key!
+          const liveAi = document.getElementById('ai-gemini-key');
+          const liveCv = document.getElementById('cv-gemini-key');
+          const liveVal = sanitizeGeminiKey((liveAi && liveAi.value) || (liveCv && liveCv.value) || '');
+          const saved = readSavedGeminiKey();
+          if (liveVal && liveVal !== saved) {
+            saveSharedGeminiKey(liveVal);
+            return liveVal;
+          }
+          return liveVal || saved;
+        }
+
         function saveSharedGeminiKey(k) {
-          const clean = String(k || '').trim();
+          const clean = sanitizeGeminiKey(k);
           MEM_STORE['signal50.geminiKey'] = clean;
           try {
             localStorage.setItem('signal50.geminiKey', clean);
             if (clean) {
               localStorage.setItem('deckfactory.key', clean);
               localStorage.setItem('r2d.key', clean);
+            } else {
+              localStorage.removeItem('deckfactory.key');
+              localStorage.removeItem('r2d.key');
             }
           } catch (_) {}
-          cachedGeminiModel = '';
+          cachedGeminiModels = null;
           refreshGeminiKeyBadge();
         }
 
         function refreshGeminiKeyBadge() {
-          const has = Boolean(getSharedGeminiKey());
-          const btn = document.getElementById('btn-ai-key-toggle');
-          if (btn) {
+          const saved = readSavedGeminiKey();
+          const liveAi = document.getElementById('ai-gemini-key');
+          const liveCv = document.getElementById('cv-gemini-key');
+          const key = sanitizeGeminiKey((liveAi && liveAi.value) || (liveCv && liveCv.value) || saved);
+          const has = Boolean(key);
+          ['btn-ai-key-toggle', 'cv-key-toggle'].forEach(id => {
+            const btn = document.getElementById(id);
+            if (!btn) return;
             btn.textContent = has ? '✓ Gemini Key Active' : '🔑 Connect Gemini Key';
             btn.className = has
-              ? 'px-2.5 py-1 rounded-lg border border-[#1F5E46] bg-[var(--card)] text-[#1F5E46] font-bold'
-              : 'px-2.5 py-1 rounded-lg border border-[var(--border)] bg-[var(--card)] font-semibold';
+              ? 'px-2.5 py-1 rounded-lg border border-[#1F5E46] bg-[var(--card)] text-[#1F5E46] text-xs font-bold'
+              : 'px-2.5 py-1 rounded-lg border border-[var(--border)] bg-[var(--card)] text-xs font-semibold';
+          });
+          if (liveAi && has && !liveAi.value) liveAi.value = key;
+          if (liveCv && has && !liveCv.value) liveCv.value = key;
+        }
+
+        const NON_TEXT_MODEL_RE = /(?:^|[-/])(image|imagen|veo|tts|audio|live|whisper|embedding|embed|aqa|medlm|learnlm|robotics|computer-use|gemma-3n)(?:$|[-/0-9])/i;
+        function scoreTextGeminiModel(n) {
+          if (NON_TEXT_MODEL_RE.test(n) || !/^gemini-/i.test(n)) return -999;
+          if (/^gemini-2\.5-flash$/i.test(n)) return 60;
+          if (/^gemini-2\.5-pro$/i.test(n)) return 52;
+          if (/^gemini-2\.0-flash$/i.test(n)) return 46;
+          if (/^gemini-2\.5-flash-lite$/i.test(n)) return 42;
+          const ver = parseFloat((n.match(/gemini-(\d+(?:\.\d+)?)/i) || [])[1] || 0);
+          return (/flash/i.test(n) ? 15 : 6) + (ver * 4) + (/-lite|8b/i.test(n) ? -3 : 0) + (/preview|exp/i.test(n) ? -4 : 0);
+        }
+
+        async function resolveGeminiModels(key) {
+          if (cachedGeminiModels && cachedGeminiModels.length) return cachedGeminiModels;
+          const fallbacks = ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.0-flash'];
+          try {
+            const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}&pageSize=200`);
+            if (!r.ok) {
+              if (r.status === 400 || r.status === 401 || r.status === 403) {
+                const errTxt = await r.text();
+                throw new Error(`Invalid Gemini API key (HTTP ${r.status}): ${errTxt.slice(0, 120)}`);
+              }
+              return fallbacks;
+            }
+            const j = await r.json();
+            const ranked = (j.models || [])
+              .filter(m => (m.supportedGenerationMethods || []).includes('generateContent'))
+              .map(m => String(m.name || '').replace(/^models\//, ''))
+              .filter(n => scoreTextGeminiModel(n) > 0)
+              .sort((a, b) => scoreTextGeminiModel(b) - scoreTextGeminiModel(a));
+            const merged = [...new Set([...ranked, ...fallbacks])];
+            cachedGeminiModels = merged;
+            return merged;
+          } catch (e) {
+            if (/Invalid Gemini API key/i.test(e.message)) throw e;
+            return fallbacks;
           }
-          const inp = document.getElementById('ai-gemini-key');
-          if (inp && has && !inp.value) inp.value = getSharedGeminiKey();
         }
 
         async function resolveGeminiModel(key) {
-          if (cachedGeminiModel) return cachedGeminiModel;
-          const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}&pageSize=200`);
-          if (!r.ok) throw new Error(`Gemini key check failed (HTTP ${r.status})`);
-          const j = await r.json();
-          const candidates = (j.models || [])
-            .filter(m => (m.supportedGenerationMethods || []).includes('generateContent'))
-            .map(m => m.name.replace(/^models\//, ''));
-          if (!candidates.length) throw new Error('No generateContent models available for this key');
-          const score = n => (/flash/i.test(n) ? 10 : 0) + (/-lite|8b/i.test(n) ? -3 : 0) + (/preview|exp/i.test(n) ? -1 : 0) + (parseFloat((n.match(/gemini-(\d+(?:\.\d+)?)/) || [])[1] || 0) * 2);
-          cachedGeminiModel = candidates.sort((a, b) => score(b) - score(a))[0];
-          return cachedGeminiModel;
+          const list = await resolveGeminiModels(key);
+          return list[0] || 'gemini-2.5-flash';
+        }
+
+        function parseGeminiJsonLoose(raw) {
+          const cleaned = String(raw || '').replace(/```json\s*|```/gi, '').trim();
+          if (!cleaned) throw new Error('Empty response from Gemini');
+          try { return JSON.parse(cleaned); } catch (_) {}
+          const start = cleaned.indexOf('{'), end = cleaned.lastIndexOf('}');
+          if (start >= 0 && end > start) return JSON.parse(cleaned.slice(start, end + 1));
+          throw new Error('Gemini returned non-JSON output');
+        }
+
+        async function callGeminiJson({ key, prompt, temperature = 0.45 }) {
+          const models = (await resolveGeminiModels(key)).slice(0, 3);
+          let lastErr = null;
+          for (const model of models) {
+            for (const useJsonMime of [true, false]) {
+              try {
+                const genCfg = useJsonMime ? { temperature, responseMimeType: 'application/json' } : { temperature };
+                const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: genCfg })
+                });
+                if (!r.ok) {
+                  const errBody = await r.text();
+                  if ((r.status === 400 || r.status === 401 || r.status === 403) && /API_KEY_INVALID|key not valid|permission_denied/i.test(errBody)) {
+                    throw new Error(`Invalid Gemini API key — paste a valid key from aistudio.google.com/apikey`);
+                  }
+                  if (useJsonMime && r.status === 400 && /mime|response_mime_type|responseMimeType/i.test(errBody) && !/not support text|modality|image|audio|tts/i.test(errBody)) {
+                    continue; // retry same model without responseMimeType
+                  }
+                  lastErr = new Error(`Gemini ${model} HTTP ${r.status}: ${errBody.slice(0, 140)}`);
+                  break; // move to next candidate model (handles 429 quota, 404, 503, modality 400)
+                }
+                const j = await r.json();
+                const allParts = j.candidates?.[0]?.content?.parts || [];
+                const textParts = allParts.filter(pt => !pt.thought && typeof pt.text === 'string');
+                const rawText = (textParts.length ? textParts : allParts).map(pt => pt.text || '').join('\n');
+                const parsed = parseGeminiJsonLoose(rawText);
+                return { parsed, model };
+              } catch (err) {
+                if (/Invalid Gemini API key/i.test(err.message)) throw err;
+                lastErr = err;
+                break;
+              }
+            }
+          }
+          throw lastErr || new Error('Gemini request failed');
+        }
+
+        function setAiStatus(html, tone = 'neutral') {
+          const el = document.getElementById('ai-status');
+          if (!el) return;
+          const styles = {
+            ok: 'rounded-lg border border-[#1F5E46] bg-[var(--card)] px-3 py-2 text-xs text-[#1F5E46] font-medium break-words',
+            err: 'rounded-lg border border-red-600 bg-[var(--card)] px-3 py-2 text-xs text-red-700 font-semibold break-words',
+            neutral: 'rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 py-2 text-xs text-[var(--foreground)] break-words'
+          };
+          el.className = styles[tone] || styles.neutral;
+          el.innerHTML = html;
         }
 
         const ARCHETYPE_SPECS = {
@@ -2710,6 +2987,8 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         function buildGeminiPromptText(mode, customInstruction) {
           const p = posts[activeDayIdx];
           const arch = (document.getElementById('ai-archetype') || {}).value || p.archetype || 'teardown';
+          const voiceMode = p.voiceMode || 'blend';
+          const myWords = ((document.getElementById('ai-my-words') || {}).value || p.myWords || '').trim();
           const curHook = document.getElementById('hook-editor').value.trim();
           const curBody = document.getElementById('body-editor').value.trim();
           const CV = window.Signal50Converter;
@@ -2719,19 +2998,28 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             const T = techId ? CV.TECHNIQUES[techId] : null;
             if (T) techBrief = `. Hook 1 must use the "${T.name}" technique (${T.what}); hooks 2 and 3 may each use a different named technique: ${Object.values(CV.TECHNIQUES).map(t => t.name).join(', ')}`;
           }
+          const voiceDirective = {
+            my_words: 'VOICE MIX = MY WORDS FIRST: Keep Afrina\'s own sentences, phrasing, and story front and center (at least 70% her phrasing). Only sharpen the 2-line hook, cut filler, and keep brief supporting context.',
+            blend: 'VOICE MIX = MY TAKE + SOURCE SIGNAL: Open right after the hook with Afrina\'s first-hand words verbatim, then support them with the source post\'s concrete mechanics and plain creator credit.',
+            signal: 'VOICE MIX = SOURCE BREAKDOWN: Distill the source post\'s concrete mechanics cleanly in Afrina\'s plain-English voice; leave [bracketed prompts] anywhere first-hand experience would go.'
+          }[voiceMode] || '';
           const modeDirective = {
-            outlier: `Rewrite this post from scratch so it reads like the best-performing posts in this space, using the "${arch}" format.`,
+            outlier: `Rewrite this post so it reads like the sharpest operator posts in this space, using the "${arch}" format.`,
             hooks: `Write 3 sharper hooks (each exactly 2 lines, strictly <= 200 characters)${techBrief} and tighten the opening of the body so it flows from hook 1.`,
-            tighten: 'Cut 20-25% of the words. Remove any throat-clearing, passive voice, corporate clichés, or repetitive lines while keeping every concrete detail sharp.',
-            exec: 'Sharpen the Senior/Director AI PM perspective for VPs of Product, VPs of Engineering, and Founders — emphasize production trade-offs, evals, cost/latency, and adoption.',
-            custom: customInstruction || 'Enhance clarity, rhythm and punch while keeping plain English.'
+            tighten: 'Cut 20-25% of the words. Remove any throat-clearing, scaffolding headers, passive voice, corporate clichés, or repetitive lines while keeping every concrete detail sharp.',
+            exec: 'Sharpen the Senior/Director AI PM perspective for VPs of Product, VPs of Engineering, and Founders — emphasize production trade-offs, evals, cost/latency ceilings, and who owns the human check.',
+            custom: customInstruction || 'Weave Afrina\'s own words cleanly into the draft and sharpen clarity, rhythm, and punch.'
           }[mode] || customInstruction || 'Rewrite in crisp plain English.';
 
           return `You are co-writing a high-performing LinkedIn post for Afrina M (Senior PM working on Gemini & AI agents at Google, 15+ years building product, 4x Google Cloud Next speaker).
 
 TASK:
 ${modeDirective}
+${voiceDirective}
 ${customInstruction && mode !== 'custom' ? `Additional user instruction: ${customInstruction}` : ''}
+
+MY OWN WORDS (USE THESE FIRST-HAND POINTS IN MY VOICE, DO NOT IGNORE OR INVENT BEYOND THEM):
+${myWords || '(None entered — preserve any existing [bracketed prompt] in the draft so Afrina can fill first-hand lines herself.)'}
 
 FORMAT:
 ${ARCHETYPE_SPECS[arch] || ARCHETYPE_SPECS.teardown}
@@ -2740,10 +3028,10 @@ HARD VOICE & DATA-SAFETY RULES (NON-NEGOTIABLE):
 1. Hook MUST be 2 crisp lines totaling <= 200 characters (fits above LinkedIn mobile "...see more").
 2. NEVER use Scrum/Agile ceremony clichés ("sprint review", "sprint planning", "scrum") unless the topic is explicitly about Agile.
 3. NEVER use AI-slop buzzwords: delve, tapestry, testament, game-changer, unlock, seamless, cutting-edge, thrilled to announce, leverage.
-4. NEVER append a robotic 3-emoji footer wall (no "💬 / ♻️ Repost this / 👋 New here?" stack). End naturally with a 2-line takeaway${p.isGrowth && p.credit ? `, a natural peer credit ("H/T to ${p.credit}" or "Credit to ${p.credit}")` : ''}, and ONE specific question.
+4. NEVER append a robotic 3-emoji footer wall (no "💬 / ♻️ Repost this / 👋 New here?" stack). End naturally with a 2-line takeaway${p.isGrowth && p.credit ? `, a natural peer credit ("Credit to ${p.credit} for the original post. Link in the first comment.")` : ''}, and ONE specific question.
 5. STRICT DATA-SAFETY: ZERO dollar revenue/ARR figures, ZERO internal usage metrics (MAU/DAU), ZERO quota/target percentages, ZERO CSAT scores, ZERO customer/stakeholder headcounts, and ZERO internal Google links. Use only public facts or numbers already present in the draft below.
 6. NEVER mention how the source post was found or how it performed: no "outlier", "multiplier", "baseline", "z-score", "rarity", "HarvestAPI", and no "Nx" engagement figures. Credit the creator plainly.
-7. Never invent Afrina's first-hand experiences, customers or numbers. Keep any [bracketed prompt] from the draft as is, so she can fill it herself.
+7. Never invent Afrina's first-hand experiences, customers or numbers. If MY OWN WORDS is provided above, replace generic [Write 1-2 sentences...] brackets with her actual words.
 
 CURRENT HOOK:
 ${curHook}
@@ -2759,162 +3047,299 @@ ${curBody}`;
             hooks: p.hooks.slice(),
             selectedHook: p.selectedHook,
             body: document.getElementById('body-editor').value,
-            archetype: p.archetype
+            archetype: p.archetype,
+            myWords: p.myWords || '',
+            voiceMode: p.voiceMode || 'blend'
           };
           const undoBtn = document.getElementById('btn-undo-ai');
           if (undoBtn) undoBtn.classList.remove('hidden');
         }
 
-        function applyLocalOutlierPolish(mode) {
+        function applyLocalOutlierPolish(mode, customInstruction = '') {
           pushAiUndo();
           const p = posts[activeDayIdx];
-          const arch = (document.getElementById('ai-archetype') || {}).value || 'teardown';
+          let arch = (document.getElementById('ai-archetype') || {}).value || 'teardown';
+          const ask = String(customInstruction || '').toLowerCase();
+          if (/\bthesis\b|\bno list\b|\bprose\b/.test(ask)) arch = 'thesis';
+          else if (/\brunbook\b|\bchecklist\b/.test(ask)) arch = 'runbook';
           p.archetype = arch;
+          const archSel = document.getElementById('ai-archetype');
+          if (archSel) archSel.value = arch;
+
+          const voiceMode = p.voiceMode || 'blend';
+          const myWordsEl = document.getElementById('ai-my-words');
+          const myWords = (myWordsEl ? myWordsEl.value : (p.myWords || '')).trim();
+          p.myWords = myWords;
+
           let hook = document.getElementById('hook-editor').value.trim();
           let body = document.getElementById('body-editor').value;
 
-          // Strip legacy boilerplate, Scrum ceremony leaks & AI-slop words
+          // 1. Clean boilerplate, robotic converter headers, Scrum leaks & AI-slop
           body = body
             .replace(/before your next sprint review\s*🚀?/gi, 'before your next production agent run:')
             .replace(/Save this for your next sprint planning\s*🩵?/gi, 'Save this before your next production rollout:')
+            .replace(/^(?:what the post argues, in (?:\d+|one) lines?|what changes on monday|the runbook, as .+ lays it out|what i took from .+)\s*:\s*$/gim, '')
             .replace(/^[💬♻️👋].*$/gm, '')
             .replace(/\b(delve|tapestry|testament|game-changer|seamless|cutting-edge)\b/gi, '')
             .replace(/\n{3,}/g, '\n\n')
             .trim();
 
-          if (arch === 'teardown' || arch === 'runbook') {
+          // 2. Weave in the user's own words (replaces [bracket] slots first, or places right up front)
+          const useMyWords = Boolean(myWords) && (voiceMode !== 'signal' || !p.voiceModePinned || /\bmy (?:own|words|take|observation|story)\b/i.test(ask));
+          if (useMyWords) {
+            if (voiceMode === 'signal' && !p.voiceModePinned) {
+              p.voiceMode = 'blend';
+              syncVoiceModeUi('blend');
+            }
+            const bracketMatch = /(?<!["'“])\[[^\]\n]{3,140}\](?!["'”])/.exec(body);
+            if (bracketMatch) {
+              body = body.slice(0, bracketMatch.index) + myWords + body.slice(bracketMatch.index + bracketMatch[0].length);
+              if (voiceMode === 'my_words') {
+                body = body.replace(/(?<!["'“])\[[^\]\n]{3,140}\](?!["'”])/g, '').replace(/\n{3,}/g, '\n\n').trim();
+              }
+            } else if (!body.toLowerCase().includes(myWords.slice(0, 28).toLowerCase())) {
+              const paras = body.split(/\n\s*\n/).filter(Boolean);
+              if (voiceMode === 'my_words' || !paras.length) {
+                body = [myWords, ...paras].join('\n\n');
+              } else {
+                body = [paras[0], myWords, ...paras.slice(1)].join('\n\n');
+              }
+            }
+          }
+
+          // 3. Restructure to match chosen Format (teardown / runbook / thesis / build)
+          if (arch === 'thesis') {
+            body = body
+              .replace(/^(?:Step\s+)?\d+[.:]\s*(.+)\n\s*(?:↳|👉)\s*(.+)$/gim, '• $1 — $2')
+              .replace(/^(?:Step\s+)?\d+[.:]\s*(.+)$/gim, '• $1');
+          } else {
             body = body
               .replace(/^Step\s+(\d+)[.:]\s*/gim, '$1. ')
               .replace(/^\s*👉\s*/gm, '↳ ');
-          } else if (arch === 'thesis') {
-            body = body
-              .replace(/^(?:Step\s+)?\d+[.:]\s*(.+)\n\s*(?:↳|👉)\s*(.+)$/gim, '• $1 — $2');
+            // Convert bullet rules back into numbered steps if switching from Thesis to Teardown/Runbook/Build
+            let stepN = 0;
+            body = body.replace(/^\s*[•\-]\s+([^—:\n]+?)\s*(?:—|:)\s*(.+)$/gm, (_, a, b) => {
+              stepN += 1;
+              return `${stepN}. ${a.trim()}\n↳ ${b.trim()}`;
+            });
           }
 
-          if (mode === 'hooks') {
+          // 4. Mode-specific transformations so every button visibly improves the draft even offline
+          const wantsTight = mode === 'tighten' || /\bshort|tight|cut|concise|under \d+\s*words\b/.test(ask);
+          const wantsExec = mode === 'exec' || /\bvp|exec|director|leader|trade-?off\b/.test(ask);
+          const wantsHooks = mode === 'hooks' || /\bhook\b/.test(ask);
+
+          if (wantsTight) {
+            body = body
+              .replace(/\bin order to\b/gi, 'to')
+              .replace(/\bdue to the fact that\b/gi, 'because')
+              .replace(/\bat the end of the day,?\s*/gi, '')
+              .replace(/\bmost teams try to\s+/gi, 'teams ')
+              .replace(/\bfor the original post\.\s*Link in the first comment\./gi, 'for the original post (link in comments).')
+              .replace(/^(?:Save|Bookmark) this [^\n]+:\s*$/gim, '')
+              .split('\n\n')
+              .map(block => block.trim())
+              .filter(Boolean)
+              .filter((block, idx, arr) => idx === 0 || block.toLowerCase() !== arr[idx - 1].toLowerCase())
+              .join('\n\n');
+            // Also trim wordy second line on hook if possible
+            const hLines = hook.split('\n').map(s => s.trim()).filter(Boolean);
+            if (hLines.length >= 2) {
+              hook = `${hLines[0]}\n${hLines[1].replace(/^Most teams try to /i, 'Teams ').replace(/^What separates /i, '')}`;
+            }
+          }
+
+          if (wantsExec) {
+            const execLens = 'Production PM lens: set an explicit cost/latency ceiling and a pass/fail eval gate before scaling traffic.';
+            if (!/production pm lens|cost\/latency ceiling/i.test(body)) {
+              const paras = body.split(/\n\s*\n/).filter(Boolean);
+              const insertAt = Math.max(1, paras.length - 2);
+              paras.splice(insertAt, 0, execLens);
+              body = paras.join('\n\n');
+            }
+            body = body.replace(/[^?\n]+\?\s*$/, 'Which gate owns quality in your stack right now: prompt rules, code hooks, or evals?');
+          }
+
+          if (voiceMode === 'my_words' && myWords) {
+            // Ensure her words open the post directly
+            const paras = body.split(/\n\s*\n/).filter(Boolean).filter(pr => pr.trim() !== myWords.trim());
+            body = [myWords, ...paras].join('\n\n');
+          }
+
+          if (wantsHooks || mode === 'outlier') {
             const CV = window.Signal50Converter;
             let fresh = [];
             if (CV) {
-              // Feed the converter the post minus its own scaffolding (headings, prompts, credit, closers)
-              const srcLines = body.split('\n').filter(l => !/^(what the post|what changes|what i took|credit to|the runbook, as|↳|\[|•\s*\[)/i.test(l.trim()) && !/argument, in (one|\d) lines?:$/i.test(l.trim()));
+              const srcLines = body.split('\n').filter(l => !/^(what the post|what changes|what i took|credit to|the runbook, as|↳|\[|•\s*\[)/i.test(l.trim()) && !/argument, in (one|\d+) lines?:$/i.test(l.trim()));
               const ex = CV.extract({ text: `${hook}\n${srcLines.join('\n')}`, hook, topic: (p.title || '').replace(/\s*\((credit|inspired).*\)/i, '') });
               const first = (p.technique && CV.TECHNIQUES[p.technique]) ? p.technique : ((ex.detection.top || {}).id || 'scale_vs_gap');
-              const techs = [first].concat(['scale_vs_gap', 'specific_surprise', 'stakes_first', 'contrarian_reveal', 'shift_observation', 'news_take'].filter(t => t !== first)).filter(t => CV.applicable(t, ex, ''));
-              const made = CV.generateHooks({ techniques: techs, ex, angle: '', proof: '', creator: p.credit || '' });
+              const techs = [first].concat(['scale_vs_gap', 'specific_surprise', 'stakes_first', 'contrarian_reveal', 'shift_observation', 'news_take'].filter(t => t !== first)).filter(t => CV.applicable(t, ex, myWords));
+              const made = CV.generateHooks({ techniques: techs, ex, angle: myWords, proof: '', creator: p.credit || '' });
               fresh = made.map(h => h.text);
-              p.hookTechniques = made.map(h => h.technique);
+              if (made.length) p.hookTechniques = made.map(h => h.technique);
             }
-            if (!fresh.length) {
-              const topicCore = (p.title || hook.split('\n')[0]).replace(/\s*\((credit|inspired).*\)/i, '').trim().slice(0, 88);
-              fresh = [
-                `${topicCore}.\nMost teams try to fix this in the prompt. The real fix lives in the workflow:`.slice(0, 205),
-                `What separates a flashy AI demo from a production workflow?\n${topicCore}, in plain English:`.slice(0, 205),
-                `${p.credit ? p.credit + ' pointed at a pattern' : 'A pattern'} every AI builder should steal this week:\n${topicCore}.`.slice(0, 205)
-              ];
+            if (wantsHooks && fresh.length) {
+              p.hooks = fresh;
+              p.selectedHook = 0;
+              hook = p.hooks[0];
+            } else if (mode === 'outlier' && fresh.length && fresh[0] !== hook) {
+              p.hooks = [fresh[0], ...p.hooks.filter(x => x !== fresh[0])].slice(0, 3);
+              p.selectedHook = 0;
+              hook = p.hooks[0];
             }
-            p.hooks = fresh;
-            p.selectedHook = 0;
-            hook = p.hooks[0];
-          } else if (hook.length > 210) {
-            hook = hook.slice(0, 206).replace(/\s+\S*$/, '') + '…';
-            p.hooks[p.selectedHook] = hook;
-          } else {
-            p.hooks[p.selectedHook] = hook;
           }
 
+          if (hook.length > 210) {
+            hook = hook.slice(0, 206).replace(/\s+\S*$/, '') + '…';
+          }
+          p.hooks[p.selectedHook] = hook;
+
           if (p.isGrowth && p.credit && !body.toLowerCase().includes(p.credit.split(' ')[0].toLowerCase())) {
-            body += `\n\nH/T to ${p.credit} for the original insight that sparked this.`;
+            body += `\n\nCredit to ${p.credit} for the original post. Link in the first comment.`;
           }
           if (!/\?\s*$/.test(body)) {
             body += '\n\nWhere is this showing up in your AI workflow right now?';
           }
 
-          p.body = body;
+          p.body = body.replace(/\n{3,}/g, '\n\n').trim();
           renderStudio();
-          scheduleAutoSave(`✓ Polished ${p.day}`);
+          scheduleAutoSave(`✓ Co-wrote ${p.day}`);
         }
 
-        async function runAiRewrite(mode) {
-          const statusEl = document.getElementById('ai-status');
-          const runBtn = document.getElementById('btn-run-ai');
+        async function runAiRewrite(mode, triggerBtn = null) {
+          const runBtn = triggerBtn || document.getElementById('btn-run-ai');
           const customInstruction = document.getElementById('ai-custom-prompt').value.trim();
+          const p = posts[activeDayIdx];
+          const mw = document.getElementById('ai-my-words');
+          if (mw) p.myWords = mw.value.trim();
           const key = getSharedGeminiKey();
 
           if (!key) {
-            applyLocalOutlierPolish(mode);
-            statusEl.innerHTML = '✓ Applied the instant local polish. Connect a free <strong>Gemini key</strong> above for a full rewrite, or click <strong>Open gemini.google.com ↗</strong> (copies prompt + draft).';
-            showToast('Applied the local polish. Add a free Gemini key or click Open gemini.google.com ↗ for a full rewrite.');
+            applyLocalOutlierPolish(mode, customInstruction);
+            setAiStatus('✓ Updated your draft locally (wove in your words + format rules). Paste a free <strong>Gemini key</strong> above for full AI generation, or click <strong>↩ Undo AI edit</strong>.', 'ok');
+            showToast('Updated draft locally! Connect a Gemini key anytime for full AI generation.');
             return;
           }
 
-          runBtn.disabled = true;
-          const origLabel = runBtn.textContent;
-          runBtn.textContent = 'Writing…';
-          statusEl.textContent = 'Calling Gemini with the voice and data-safety rules…';
+          const allBtns = [document.getElementById('btn-run-ai'), ...document.querySelectorAll('[data-ai-preset]')].filter(Boolean);
+          const origLabel = runBtn ? runBtn.textContent : '';
+          allBtns.forEach(b => { b.disabled = true; });
+          if (runBtn) runBtn.textContent = 'Writing…';
+          setAiStatus('Calling Gemini with your own words, selected voice mix, and data-safety rules…', 'neutral');
+
           try {
-            const model = await resolveGeminiModel(key);
-            const prompt = buildGeminiPromptText(mode, customInstruction) + `\n\nReturn JSON ONLY matching this exact schema:\n{"hooks":["hook 1 (<=200 chars, 2 lines)","hook 2 (<=200 chars)","hook 3 (<=200 chars)"],"body":"full rewritten post body"}`;
-            const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: { temperature: 0.45, responseMimeType: 'application/json' }
-              })
-            });
-            if (!r.ok) throw new Error(`Gemini HTTP ${r.status}: ${(await r.text()).slice(0, 160)}`);
-            const j = await r.json();
-            const rawText = (j.candidates?.[0]?.content?.parts || []).map(pt => pt.text || '').join('');
-            const parsed = JSON.parse(rawText.replace(/^```json\s*|```\s*$/g, '').trim());
+            const prompt = buildGeminiPromptText(mode, customInstruction) + `\n\nReturn JSON ONLY matching this exact schema:\n{"hooks":["hook 1 (<=200 chars, 2 lines)","hook 2 (<=200 chars, 2 lines)","hook 3 (<=200 chars, 2 lines)"],"body":"full rewritten post body"}`;
+            const { parsed, model } = await callGeminiJson({ key, prompt, temperature: 0.45 });
 
             pushAiUndo();
-            const p = posts[activeDayIdx];
             p.archetype = (document.getElementById('ai-archetype') || {}).value || p.archetype || 'teardown';
             const scrub = window.Signal50Converter ? Signal50Converter.scrub : (s => s);
             if (Array.isArray(parsed.hooks) && parsed.hooks.length) {
-              p.hooks = parsed.hooks.slice(0, 3).map(h => scrub(String(h || '').trim()).slice(0, 208));
-              p.selectedHook = 0;
+              p.hooks = parsed.hooks.slice(0, 3).map(h => scrub(String(typeof h === 'string' ? h : (h && h.text) || '').trim()).slice(0, 208)).filter(Boolean);
+              if (p.hooks.length) p.selectedHook = 0;
             }
             if (typeof parsed.body === 'string' && parsed.body.trim()) {
               p.body = scrub(parsed.body.trim());
             }
             renderStudio();
             await persistAll();
-            statusEl.textContent = `✓ Rewritten with ${model} (${p.archetype} format) · Data-safety & 210-char fold verified.`;
-            showToast(`✓ Gemini rewrote ${p.day}. Click "↩ Undo AI Edit" anytime.`);
+            setAiStatus(`✓ Rewritten with <strong>${model}</strong> (${p.archetype} · ${VOICE_MODE_META[p.voiceMode || 'blend'].badge}). Click <strong>↩ Undo AI edit</strong> anytime.`, 'ok');
+            showToast(`✓ Gemini (${model}) rewrote ${p.day}.`);
           } catch (err) {
-            statusEl.textContent = `✕ ${err.message} — try checking your key or click "Open gemini.google.com ↗".`;
+            setAiStatus(`✕ ${err.message} — verify your key via <strong>🔑 Gemini Key</strong> above, or click <strong>Open gemini.google.com ↗</strong>.`, 'err');
             showToast(`Gemini error: ${err.message}`);
           } finally {
-            runBtn.disabled = false;
-            runBtn.textContent = origLabel;
+            allBtns.forEach(b => { b.disabled = false; });
+            if (runBtn) runBtn.textContent = origLabel;
           }
         }
 
-        // Wire AI Draft & Rewrite UI controls
+        // Wire AI Draft & Rewrite UI controls (Tabs 1 & 3 synced)
         refreshGeminiKeyBadge();
         document.getElementById('btn-ai-key-toggle').onclick = () => {
-          document.getElementById('ai-key-bar').classList.toggle('hidden');
+          const bar = document.getElementById('ai-key-bar');
+          bar.classList.toggle('hidden');
+          if (!bar.classList.contains('hidden')) document.getElementById('ai-gemini-key').focus();
         };
+        const cvKeyToggle = document.getElementById('cv-key-toggle');
+        if (cvKeyToggle) {
+          cvKeyToggle.onclick = () => {
+            const bar = document.getElementById('cv-key-bar');
+            bar.classList.toggle('hidden');
+            if (!bar.classList.contains('hidden')) document.getElementById('cv-gemini-key').focus();
+          };
+        }
+        ['ai-gemini-key', 'cv-gemini-key'].forEach(id => {
+          const inp = document.getElementById(id);
+          if (!inp) return;
+          inp.addEventListener('input', () => {
+            const otherId = id === 'ai-gemini-key' ? 'cv-gemini-key' : 'ai-gemini-key';
+            const other = document.getElementById(otherId);
+            if (other && other.value !== inp.value) other.value = inp.value;
+            const clean = sanitizeGeminiKey(inp.value);
+            if (clean.length >= 16 || clean.length === 0) saveSharedGeminiKey(clean);
+            else refreshGeminiKeyBadge();
+          });
+          inp.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              saveSharedGeminiKey(inp.value);
+              document.getElementById(id === 'ai-gemini-key' ? 'ai-key-bar' : 'cv-key-bar').classList.add('hidden');
+              showToast('✓ Gemini key saved across Signal50!');
+            }
+          });
+        });
         document.getElementById('btn-save-gemini-key').onclick = () => {
-          const val = document.getElementById('ai-gemini-key').value.trim();
+          const val = sanitizeGeminiKey(document.getElementById('ai-gemini-key').value);
           saveSharedGeminiKey(val);
           document.getElementById('ai-key-bar').classList.add('hidden');
-          document.getElementById('ai-status').textContent = val
-            ? '✓ Gemini key saved locally on this browser (shared with Deck Factory & Release-to-Demo). Click any rewrite button!'
-            : 'Cleared saved Gemini key.';
-          showToast(val ? '✓ Gemini key connected across Signal50 apps!' : 'Cleared Gemini key');
+          setAiStatus(val
+            ? '✓ Gemini key saved locally (shared across Tabs 1 & 3, Deck Factory & Release-to-Demo). Click any rewrite button!'
+            : 'Cleared saved Gemini key.', val ? 'ok' : 'neutral');
+          showToast(val ? '✓ Gemini key connected across Signal50!' : 'Cleared Gemini key');
         };
+        const cvSaveKey = document.getElementById('cv-save-gemini-key');
+        if (cvSaveKey) {
+          cvSaveKey.onclick = () => {
+            const val = sanitizeGeminiKey(document.getElementById('cv-gemini-key').value);
+            saveSharedGeminiKey(val);
+            document.getElementById('cv-key-bar').classList.add('hidden');
+            const st = document.getElementById('cv-status');
+            if (st) st.textContent = val ? '✓ Gemini key saved! Click "Write the draft" or "Rewrite with Gemini".' : 'Cleared saved Gemini key.';
+            showToast(val ? '✓ Gemini key connected across Signal50!' : 'Cleared Gemini key');
+          };
+        }
+        document.querySelectorAll('[data-voice-mode]').forEach(btn => {
+          btn.onclick = () => {
+            const mode = btn.dataset.voiceMode;
+            posts[activeDayIdx].voiceMode = mode;
+            posts[activeDayIdx].voiceModePinned = true;
+            syncVoiceModeUi(mode);
+            scheduleAutoSave(`✓ Voice mix: ${VOICE_MODE_META[mode].badge}`);
+          };
+        });
+        const myWordsInput = document.getElementById('ai-my-words');
+        if (myWordsInput) {
+          myWordsInput.addEventListener('input', () => {
+            const p = posts[activeDayIdx];
+            p.myWords = myWordsInput.value.trim();
+            if (p.myWords && p.voiceMode === 'signal' && !p.voiceModePinned) {
+              p.voiceMode = 'blend';
+              syncVoiceModeUi('blend');
+            }
+            scheduleAutoSave(`✓ Saved your notes for ${p.day}`);
+          });
+        }
         document.getElementById('ai-archetype').onchange = e => {
           posts[activeDayIdx].archetype = e.target.value;
           scheduleAutoSave();
         };
         document.querySelectorAll('[data-ai-preset]').forEach(btn => {
-          btn.onclick = () => runAiRewrite(btn.dataset.aiPreset);
+          btn.onclick = () => runAiRewrite(btn.dataset.aiPreset, btn);
         });
-        document.getElementById('btn-run-ai').onclick = () => runAiRewrite('custom');
+        document.getElementById('btn-run-ai').onclick = e => runAiRewrite('custom', e.currentTarget);
         document.getElementById('ai-custom-prompt').addEventListener('keydown', e => {
-          if (e.key === 'Enter') { e.preventDefault(); runAiRewrite('custom'); }
+          if (e.key === 'Enter') { e.preventDefault(); runAiRewrite('custom', document.getElementById('btn-run-ai')); }
         });
         document.getElementById('btn-undo-ai').onclick = async () => {
           if (!aiUndoState) return;
@@ -2924,11 +3349,13 @@ ${curBody}`;
           p.selectedHook = aiUndoState.selectedHook;
           p.body = aiUndoState.body;
           p.archetype = aiUndoState.archetype;
+          p.myWords = aiUndoState.myWords || '';
+          p.voiceMode = aiUndoState.voiceMode || 'blend';
           aiUndoState = null;
           document.getElementById('btn-undo-ai').classList.add('hidden');
           renderStudio();
           await persistAll();
-          document.getElementById('ai-status').textContent = '↩ Restored previous draft.';
+          setAiStatus('↩ Restored previous draft.', 'neutral');
           showToast('Restored draft before last AI edit.');
         };
 
