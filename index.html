@@ -3190,6 +3190,14 @@ ${curBody}`;
 
         refreshUploadedFiles();
         tryServerLoad();
+
+        // Deep links: /#gif, /#outliers, /#newsletter, /#retro, /#ops open that tab directly (shareable).
+        const openFromHash = () => {
+          const tab = (location.hash || '').replace('#', '');
+          if (tab && document.getElementById(`panel-${tab}`)) { switchTab(tab); window.scrollTo(0, 0); }
+        };
+        openFromHash();
+        window.addEventListener('hashchange', openFromHash);
       }
 
       if (document.readyState === 'loading') {
