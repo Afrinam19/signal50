@@ -366,7 +366,7 @@
             </select>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label for="gif-layout" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Visual Density</label>
               <select id="gif-layout" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm">
@@ -376,7 +376,16 @@
               </select>
             </div>
             <div>
-              <label for="gif-speed" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Animation Speed <span class="font-normal">(Classic &amp; Matrix — Factory loops 32 frames at 10fps)</span></label>
+              <label for="gif-theme" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Look <span class="font-normal">(Factory)</span></label>
+              <select id="gif-theme" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm">
+                <option value="auto" selected>Auto: alternate Royal blue and Black neon</option>
+                <option value="royal">Royal blue + yellow</option>
+                <option value="neon">Black + neon</option>
+                <option value="classic">Classic cream + terracotta</option>
+              </select>
+            </div>
+            <div>
+              <label for="gif-speed" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Animation Speed <span class="font-normal">(Classic &amp; Matrix)</span></label>
               <select id="gif-speed" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm">
                 <option value="95">Snappy (0.95s / step)</option>
                 <option value="125" selected>Executive Pace (1.25s / step)</option>
@@ -384,6 +393,7 @@
               </select>
             </div>
           </div>
+          <div id="gif-theme-hint" class="text-[11px] text-[var(--muted-foreground)] -mt-1" aria-live="polite"></div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
@@ -397,7 +407,7 @@
           </div>
 
           <div>
-            <label for="gif-headline" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Visual Headline <span class="font-normal">(wrap ONE phrase in <code>{braces}</code> for the terracotta accent)</span></label>
+            <label for="gif-headline" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Visual Headline <span class="font-normal">(wrap ONE phrase in <code>{braces}</code> for the accent color)</span></label>
             <input id="gif-headline" type="text" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm font-semibold" />
           </div>
 
@@ -1794,8 +1804,33 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           cta: v('gif-cta') || 'Comment "SETUP" to get the full setup',
           author: 'Afrina M', initials: 'AM',
           authorLine: '15+ yrs building product · Gemini & AI agents @ Google',
-          hub: parsed.hub, stations: parsed.stations
+          hub: parsed.hub, stations: parsed.stations,
+          theme: resolvedLook().theme
         };
+      }
+
+      // ---- Looks (Factory palettes). Auto alternates Royal blue and Black neon on every new headline. ----
+      const LOOK_CHOICE_KEY = 's50_gif_look', LOOK_LAST_KEY = 's50_gif_last_look';
+      const lookSig = () => ((document.getElementById('gif-headline') || {}).value || '').trim().toLowerCase();
+      function lastLook() { try { return JSON.parse(localStorage.getItem(LOOK_LAST_KEY) || 'null'); } catch (e) { return null; } }
+      function resolvedLook() {
+        if (!FACTORY) return { theme: 'classic', reason: '' };
+        const sel = document.getElementById('gif-theme');
+        const want = sel ? sel.value : 'auto';
+        if (want !== 'auto') return { theme: want, reason: '' };
+        return FACTORY.autoTheme(lastLook(), lookSig());
+      }
+      // Called after a download so the next headline flips to the other look.
+      function rememberLook(theme) {
+        try { localStorage.setItem(LOOK_LAST_KEY, JSON.stringify({ theme, sig: lookSig(), at: Date.now() })); } catch (e) {}
+        updateLookHint();
+      }
+      function updateLookHint() {
+        const el = document.getElementById('gif-theme-hint');
+        if (!el || !FACTORY) return;
+        if (gifLayout() !== 'factory') { el.textContent = 'Looks apply to the Factory layout.'; return; }
+        const r = resolvedLook();
+        el.textContent = r.reason ? `Auto look: ${FACTORY.themeName(r.theme)}. ${r.reason}` : `Look: ${FACTORY.themeName(r.theme)}.`;
       }
 
       // Builds the Matrix spec (products × decisions) from the same panel fields + the COLS/rows text.
@@ -2340,6 +2375,16 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           loadGifPreset(e.target.value);
         };
         document.getElementById('gif-speed').onchange = () => startGifLoop();
+        const lookSel = document.getElementById('gif-theme');
+        if (lookSel) {
+          try { const saved = localStorage.getItem(LOOK_CHOICE_KEY); if (saved && [...lookSel.options].some(o => o.value === saved)) lookSel.value = saved; } catch (e) {}
+          lookSel.onchange = () => {
+            try { localStorage.setItem(LOOK_CHOICE_KEY, lookSel.value); } catch (e) {}
+            renderPreviewTick();
+            updateLookHint();
+          };
+        }
+        updateLookHint();
         document.getElementById('gif-layout').onchange = () => {
           const presetSel = document.getElementById('gif-preset');
           // Switching into Matrix from a step-list preset: jump to the matrix preset so the first thing seen is a real matrix.
@@ -2352,7 +2397,9 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             : layout === 'matrix'
               ? 'Matrix mode: one frame per decision row + a final "all rows" frame. Add product images below, then Generate PNG for the 1080×1350 cheat sheet.'
               : 'Classic mode: one frame per step + a final "all steps" frame.';
+          updateLookHint();
         };
+        document.getElementById('gif-headline').addEventListener('input', updateLookHint);
         ['gif-kicker', 'gif-headline', 'gif-subtitle', 'gif-cta', 'gif-steps'].forEach(id => {
           document.getElementById(id).addEventListener('input', renderPreviewTick);
         });
@@ -2401,12 +2448,13 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             try {
               const a = document.createElement('a');
               a.href = dataUri;
-              a.download = `afrina-signal50-${document.getElementById('gif-preset').value}.gif`;
+              a.download = `afrina-signal50-${document.getElementById('gif-preset').value}${gifLayout() === 'factory' ? '-' + resolvedLook().theme : ''}.gif`;
               document.body.appendChild(a);
               a.click();
               document.body.removeChild(a);
             } catch (e) {}
 
+            if (gifLayout() === 'factory') rememberLook(resolvedLook().theme);
             statusEl.textContent = `✓ Encoded ${(gifBytes.length / 1024).toFixed(0)} KB animated .GIF!`;
             showToast('Animated 4:5 .GIF generated! Saved & displayed below for mobile long-press.');
           }, 30);
@@ -2430,11 +2478,12 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           try {
             const a = document.createElement('a');
             a.href = dataUri;
-            a.download = 'afrina-signal50-1080x1350.png';
+            a.download = `afrina-signal50-1080x1350${gifLayout() === 'factory' ? '-' + resolvedLook().theme : ''}.png`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
           } catch (e) {}
+          if (gifLayout() === 'factory') rememberLook(resolvedLook().theme);
           showToast('1080×1350 .PNG cheat sheet generated!');
         };
 
