@@ -49,7 +49,7 @@
         <a href="apps/deck-factory/" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold hover:bg-[var(--secondary)]" title="Thursday's live build">Thu · Deck Factory ↗</a>
         <a href="apps/release-to-demo/" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold hover:bg-[var(--secondary)]" title="Friday's live build">Fri · Release-to-Demo ↗</a>
         <span class="px-3 py-1.5 rounded-lg bg-[var(--secondary)] text-[var(--secondary-foreground)] font-semibold">4.5K → 50K (26w)</span>
-        <span id="header-voice-badge" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold">Outlier Voice v2</span>
+        <span id="header-voice-badge" class="px-3 py-1.5 rounded-lg border border-[var(--border)] font-semibold">Your voice</span>
       </div>
     </div>
 
@@ -57,7 +57,7 @@
     <nav class="max-w-7xl mx-auto flex items-center gap-1.5 mt-3 pt-2.5 border-t border-[var(--border)] overflow-x-auto hide-scrollbar" aria-label="Primary Studio Views">
       <button type="button" data-tab="calendar" class="tab-btn whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[var(--primary)] text-[var(--primary-foreground)]">1 · Mon–Sat Studio</button>
       <button type="button" data-tab="gif" class="tab-btn whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)]">2 · Deck/GTM Builder &amp; GIF Lab</button>
-      <button type="button" data-tab="outliers" class="tab-btn whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)]">3 · HarvestAPI Outlier Alchemist</button>
+      <button type="button" data-tab="outliers" class="tab-btn whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)]">3 · Breakout posts</button>
       <button type="button" data-tab="newsletter" class="tab-btn whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)]">4 · Saturday Newsletter</button>
       <button type="button" data-tab="retro" class="tab-btn whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)]">5 · Self-Healing Retro</button>
       <button type="button" data-tab="ops" class="tab-btn whitespace-nowrap px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--muted-foreground)]">6 · Profile Rewrite &amp; Ops</button>
@@ -86,9 +86,9 @@
         <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-1.5 flex flex-col justify-between">
           <div>
             <div class="font-bold text-[var(--primary)]">1 · Pick Signal (Mon–Wed)</div>
-            <p class="text-[var(--muted-foreground)] mt-1">GitHub Actions scans 10 top creators every 12h. In <strong>Tab 3</strong>, pick a <code>≥3x</code> outlier card, choose an Outlier Format, and load it into Studio with full creator credit.</p>
+            <p class="text-[var(--muted-foreground)] mt-1">GitHub Actions scans your watchlist every 12 hours. In <strong>Tab 3</strong>, pick a breakout post, see the hook technique that carried it, add your angle, and load the draft into the studio with full creator credit.</p>
           </div>
-          <button type="button" data-guide-jump="outliers" class="text-left font-bold underline pt-1">Open Outlier Vault →</button>
+          <button type="button" data-guide-jump="outliers" class="text-left font-bold underline pt-1">Open breakout posts</button>
         </div>
 
         <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-1.5 flex flex-col justify-between">
@@ -118,7 +118,7 @@
         <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-1.5 flex flex-col justify-between">
           <div>
             <div class="font-bold text-[var(--primary)]">5 · Sat Dispatch &amp; Retro</div>
-            <p class="text-[var(--muted-foreground)] mt-1">Ship your deep-dive in <strong>Tab 4 · Saturday Newsletter</strong>. On Sunday, log post impressions &amp; saves in <strong>Tab 5 · Retro</strong> to see which Outlier Format won the week.</p>
+            <p class="text-[var(--muted-foreground)] mt-1">Ship your deep-dive in <strong>Tab 4 · Saturday Newsletter</strong>. On Sunday, log post impressions &amp; saves in <strong>Tab 5 · Retro</strong> to see which post format and hook technique won the week.</p>
           </div>
           <button type="button" data-guide-jump="retro" class="text-left font-bold underline pt-1">Open Sunday Retro →</button>
         </div>
@@ -126,7 +126,7 @@
 
       <div class="p-3 rounded-lg border border-[var(--border)] bg-[var(--background)] text-xs flex flex-wrap items-center justify-between gap-2">
         <div>
-          <strong>Outlier Voice v2 (Zero Cookie-Cutter Templates):</strong> Rotates 4 proven outlier structures — <em>System Teardown (<code>1. → ↳</code>)</em>, <em>Zero-Friction Runbook</em>, <em>Sharp Product Thesis</em>, and <em>Live Build Walkthrough</em> — with audience-native save cues and zero Agile/emoji boilerplate.
+          <strong>Your voice (no cookie-cutter templates):</strong> Rotates 4 proven post structures — <em>System Teardown (<code>1. → ↳</code>)</em>, <em>Zero-Friction Runbook</em>, <em>Sharp Product Thesis</em>, and <em>Live Build Walkthrough</em> — with audience-native save cues and zero Agile/emoji boilerplate.
         </div>
         <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-[var(--secondary)]">Install on Phone: Share → Add to Home Screen</span>
       </div>
@@ -136,14 +136,14 @@
     <section class="bg-[var(--card)] border border-[var(--border)] rounded-xl px-4 py-2.5 space-y-2.5">
       <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
         <div class="flex flex-wrap items-center gap-2">
-          <span class="font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[var(--secondary)] text-[var(--secondary-foreground)]">HarvestAPI Scout</span>
-          <span id="harvest-key-status" class="text-[var(--muted-foreground)] font-medium">✓ HarvestAPI key stored in GitHub Secrets · Auto-scouts every 12h · Public facts only</span>
+          <span class="font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[var(--secondary)] text-[var(--secondary-foreground)]">Watchlist scan</span>
+          <span id="harvest-key-status" class="text-[var(--muted-foreground)] font-medium">✓ Scan key stored in GitHub Secrets. Runs every 12 hours. Public facts only</span>
         </div>
         <button type="button" id="btn-toggle-bridge" class="text-xs font-semibold px-2.5 py-1 rounded border border-[var(--border)]">Show Tools</button>
       </div>
       <div id="bridge-body" class="hidden grid grid-cols-1 md:grid-cols-2 gap-3 text-xs pt-1 border-t border-[var(--border)]">
         <div class="p-3 rounded-lg bg-[var(--secondary)] space-y-1.5">
-          <div class="font-bold">12h Automated Outlier Scout (GitHub Actions)</div>
+          <div class="font-bold">Automated watchlist scan every 12 hours (GitHub Actions)</div>
           <p class="text-[var(--muted-foreground)]">Runs <code class="font-mono">scout/scout.mjs</code> at 06:17 &amp; 18:17 UTC using your encrypted <code class="font-mono">HARVEST_API_KEY</code> repository secret—never exposed in client HTML.</p>
           <a href="https://github.com/Afrinam19/signal50/actions/workflows/scout.yml" target="_blank" rel="noopener" class="inline-block px-3 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] font-bold">Open GitHub Scout Workflow ↗</a>
         </div>
@@ -170,8 +170,8 @@
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5">
           <div class="text-xs text-[var(--muted-foreground)]">Mon–Wed Growth</div>
-          <div id="stat-outlier-range" class="text-sm md:text-base font-bold mt-0.5">≥3x Verified Outliers</div>
-          <div class="text-xs text-[var(--muted-foreground)] mt-0.5">HarvestAPI Rarity + Credit</div>
+          <div id="stat-outlier-range" class="text-sm md:text-base font-bold mt-0.5">Breakout posts, 3x or more</div>
+          <div class="text-xs text-[var(--muted-foreground)] mt-0.5">Measured against each creator's usual reach</div>
         </div>
         <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5">
           <div class="text-xs text-[var(--muted-foreground)]">Thu–Fri Execution</div>
@@ -198,7 +198,7 @@
         <div class="lg:col-span-7 min-w-0 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-4">
           <div class="flex flex-wrap items-start justify-between gap-2">
             <div class="min-w-0">
-              <span id="post-track-badge" class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded bg-[var(--secondary)] text-[var(--secondary-foreground)]">Outlier Growth</span>
+              <span id="post-track-badge" class="inline-block text-xs font-semibold px-2.5 py-0.5 rounded bg-[var(--secondary)] text-[var(--secondary-foreground)]">Growth</span>
               <h2 id="post-title" class="text-base md:text-lg font-bold mt-1.5 break-words">Loading Week 1 Queue...</h2>
             </div>
             <div class="flex flex-wrap gap-2">
@@ -207,12 +207,12 @@
             </div>
           </div>
 
-          <!-- Embedded AI Draft & Outlier Rewriter + gemini.google.com Companion -->
+          <!-- Embedded AI draft and rewrite + gemini.google.com companion -->
           <div id="ai-draft-box" class="min-w-0 max-w-full rounded-xl border border-[var(--primary)] bg-[var(--secondary)] p-3.5 space-y-2.5">
             <div class="flex flex-wrap items-center justify-between gap-2 min-w-0">
               <div class="flex flex-wrap items-center gap-2 min-w-0 max-w-full">
                 <span class="text-xs font-bold px-2 py-0.5 rounded bg-[var(--primary)] text-[var(--primary-foreground)]">✨ Draft &amp; Rewrite with Gemini</span>
-                <select id="ai-archetype" aria-label="Outlier Post Format" class="max-w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-2.5 py-1 text-xs font-semibold">
+                <select id="ai-archetype" aria-label="Post format" class="max-w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-2.5 py-1 text-xs font-semibold">
                   <option value="teardown">Format: System Teardown (1. → ↳)</option>
                   <option value="runbook">Format: Zero-Friction Runbook (1..6)</option>
                   <option value="thesis">Format: Sharp Product Thesis (Prose + Rules)</option>
@@ -221,7 +221,7 @@
               </div>
               <div class="flex flex-wrap items-center gap-1.5 text-xs">
                 <button type="button" id="btn-ai-key-toggle" class="px-2.5 py-1 rounded-lg border border-[var(--border)] bg-[var(--card)] font-semibold">🔑 Connect Gemini Key</button>
-                <button type="button" id="btn-open-gemini-web" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--primary)] text-[var(--primary)] font-bold" title="Copies Outlier Prompt + Draft and opens gemini.google.com in a side-by-side window">Open gemini.google.com ↗</button>
+                <button type="button" id="btn-open-gemini-web" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--primary)] text-[var(--primary)] font-bold" title="Copies the prompt + draft and opens gemini.google.com in a side-by-side window">Open gemini.google.com ↗</button>
               </div>
             </div>
 
@@ -237,7 +237,7 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-1.5 text-xs">
-              <button type="button" data-ai-preset="outlier" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">✨ Rewrite Like Outlier</button>
+              <button type="button" data-ai-preset="outlier" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">✨ Rewrite like the best posts</button>
               <button type="button" data-ai-preset="hooks" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">🪝 3 Stronger Hooks (≤210c)</button>
               <button type="button" data-ai-preset="tighten" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">✂️ Tighten &amp; Cut Clichés</button>
               <button type="button" data-ai-preset="exec" class="px-2.5 py-1 rounded-lg bg-[var(--card)] border border-[var(--border)] font-semibold hover:border-[var(--primary)]">🎯 Sharpen PM / Exec Angle</button>
@@ -272,7 +272,7 @@
           </div>
 
           <div>
-            <label for="body-editor" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Post Body (Outlier Voice v2 · Audience-Native · Public Facts Only)</label>
+            <label for="body-editor" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Post body (your voice, public facts only)</label>
             <textarea id="body-editor" rows="11" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] p-3 text-sm leading-relaxed"></textarea>
             <div id="post-safety" class="text-xs font-semibold text-[#1F5E46] mt-2">✓ Data-safety: checking…</div>
           </div>
@@ -359,9 +359,9 @@
               <option value="deck">Thu Build #1 · Rough Notes → Enterprise Google Slides Deck (6 Mins)</option>
               <option value="gtm">Fri Build #2 · GitHub Release Notes → Live GTM Customer Demo Agent</option>
               <option value="agency">Agency Painkiller · 15-Hr Marketing Campaign → 12-Min Pipeline</option>
-              <option value="spotify">Mon Outlier · Cut Your AI Agent Bill 90% in 5 Steps (Credit: Aakash Gupta)</option>
-              <option value="evals">Tue Outlier · Evals for PMs in 6 Steps, No Code (Credit: Hamel Husain)</option>
-              <option value="humancheck">Wed Outlier · Where the Human Check Goes — 5 Steps (Credit: Ethan Mollick)</option>
+              <option value="spotify">Mon · Cut Your AI Agent Bill 90% in 5 Steps (Credit: Aakash Gupta)</option>
+              <option value="evals">Tue · Evals for PMs in 6 Steps, No Code (Credit: Hamel Husain)</option>
+              <option value="humancheck">Wed · Where the Human Check Goes — 5 Steps (Credit: Ethan Mollick)</option>
               <option value="agents">Tue Growth · Personal Agents: Same 5 Decisions, Five Answers (Matrix cheat sheet)</option>
             </select>
           </div>
@@ -449,114 +449,99 @@
     </section>
 
     <!-- =================================================================== -->
-    <!-- TAB 3: HARVESTAPI RARITY CALCULATOR & LIVE OUTLIER-TO-VOICE ENGINE  -->
+    <!-- TAB 3: BREAKOUT POSTS: TECHNIQUE DETECTOR + DRAFT CONVERTER            -->
     <!-- =================================================================== -->
     <section id="panel-outliers" class="tab-panel hidden space-y-5">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <!-- Live Outlier -> Afrina Verbatim Voice Generator -->
-        <div class="lg:col-span-6 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3.5">
-          <div>
-            <span class="text-xs font-bold uppercase px-2 py-0.5 rounded bg-[var(--secondary)]">Subagent #1 + #2 Live Pipeline</span>
-            <h2 class="text-base md:text-lg font-bold mt-1">Verify Rarity &amp; Rebuild Any Outlier in Outlier Voice v2</h2>
-            <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Checks <code>Multiplier ≥ 3.0x</code> &amp; <code>MAD Z-Score ≥ 2.5</code>, credits the creator, and structures the post around how top LinkedIn outliers actually read (zero Agile/emoji boilerplate).</p>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-            <div>
-              <label class="block font-semibold mb-1" for="new-out-creator">Original Creator (Credit)</label>
-              <input id="new-out-creator" type="text" value="Logan Kilpatrick" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" />
-            </div>
-            <div>
-              <label class="block font-semibold mb-1" for="new-out-day">Target Studio Day</label>
-              <select id="new-out-day" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm">
-                <option value="0">Monday Slot</option>
-                <option value="1">Tuesday Slot</option>
-                <option value="2">Wednesday Slot</option>
-              </select>
-            </div>
-            <div>
-              <label class="block font-semibold mb-1" for="new-out-archetype">Outlier Format</label>
-              <select id="new-out-archetype" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm">
-                <option value="auto">Auto-Match Signal</option>
-                <option value="teardown">System Teardown (1. → ↳)</option>
-                <option value="runbook">Builder Runbook (1..5)</option>
-                <option value="thesis">Sharp Product Thesis</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="text-xs">
-            <label class="block font-semibold mb-1" for="new-out-topic">Viral Post Core Idea / Topic</label>
-            <input id="new-out-topic" type="text" value="Why Developer DX & Zero-Friction APIs Beat Raw Model Benchmarks" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" />
-          </div>
-
-          <div class="grid grid-cols-3 gap-2 text-xs">
-            <div>
-              <label class="block text-[var(--muted-foreground)] mb-1" for="calc-likes">Reactions</label>
-              <input id="calc-likes" type="number" value="2850" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" />
-            </div>
-            <div>
-              <label class="block text-[var(--muted-foreground)] mb-1" for="calc-comments">Comments (3x)</label>
-              <input id="calc-comments" type="number" value="310" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" />
-            </div>
-            <div>
-              <label class="block text-[var(--muted-foreground)] mb-1" for="calc-reposts">Reposts (5x)</label>
-              <input id="calc-reposts" type="number" value="220" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2 text-xs">
-            <div>
-              <label class="block text-[var(--muted-foreground)] mb-1" for="calc-median">Creator Median Weighted</label>
-              <input id="calc-median" type="number" value="940" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" />
-            </div>
-            <div>
-              <label class="block text-[var(--muted-foreground)] mb-1" for="calc-mad">Creator MAD Spread</label>
-              <input id="calc-mad" type="number" value="210" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" />
-            </div>
-          </div>
-
-          <div id="rarity-result" class="p-3 rounded-lg bg-[var(--secondary)] text-xs space-y-1"></div>
-
-          <button type="button" id="btn-alchemize-outlier" class="w-full py-2.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">
-            Rebuild in Outlier Voice &amp; Load in Studio →
-          </button>
-        </div>
-
-        <!-- Verified Outlier Vault (live HarvestAPI data) -->
-        <div class="lg:col-span-6 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5">
+        <h2 class="text-base md:text-lg font-bold">Rebuild a breakout post in your voice</h2>
+        <p class="text-xs text-[var(--muted-foreground)] mt-1 max-w-3xl">Each card is a real post from your watchlist that beat its creator's usual reach by 3x or more. Pick one, see which hook technique carried it, add what only you know, and the studio writes a Monday to Wednesday draft that credits the creator. The draft borrows the argument, never the sentences.</p>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        <!-- 1. Pick a post -->
+        <div class="lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3">
           <div class="flex flex-wrap items-start justify-between gap-2">
             <div>
-              <h3 class="text-base font-bold">Verified Outlier Vault (HarvestAPI Rarity ≥ 3.0x)</h3>
-              <p id="vault-status" class="text-xs text-[var(--muted-foreground)] mt-0.5">Loading vault…</p>
+              <h3 class="text-base font-bold">1. Pick a post</h3>
+              <p id="vault-status" class="text-xs text-[var(--muted-foreground)] mt-0.5">Loading the latest scan…</p>
             </div>
             <div class="flex items-center gap-2">
               <label class="flex items-center gap-1.5 text-xs text-[var(--muted-foreground)]">
                 <input id="vault-replicable-only" type="checkbox" checked class="accent-[var(--primary)]" />
                 Reusable only
               </label>
-              <button type="button" id="btn-rescan-outliers" class="px-3 py-1.5 rounded-lg border border-[var(--border)] text-xs font-semibold hover:bg-[var(--secondary)]">
-                Rescan now
-              </button>
+              <button type="button" id="btn-rescan-outliers" class="px-3 py-1.5 rounded-lg border border-[var(--border)] text-xs font-semibold hover:bg-[var(--secondary)]">Scan again</button>
             </div>
           </div>
-          <p class="text-xs text-[var(--muted-foreground)]">
-            Each card is a real post that beat its creator's own median by ≥3x (reactions + 3×comments + 5×reposts, MAD z ≥ 2.5).
-            <strong>Reusable</strong> = a format you can credit and rebuild in your voice. <strong>Announcement</strong> = job/book/launch spikes kept only as market signal.
-          </p>
+          <label class="block">
+            <span class="sr-only">Search posts</span>
+            <input id="cv-search" type="search" placeholder="Search by creator, topic or technique" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" />
+          </label>
           <div id="rescan-log" class="hidden p-2.5 rounded-lg bg-[var(--secondary)] text-[11px] font-mono whitespace-pre-wrap max-h-40 overflow-auto"></div>
-          <div id="outlier-cards" class="space-y-2.5"></div>
+          <div id="outlier-cards" class="space-y-2.5 max-h-[72vh] overflow-y-auto pr-1"></div>
           <details class="text-xs">
-            <summary class="cursor-pointer font-semibold text-[var(--muted-foreground)]">Watchlist scan report (per creator)</summary>
+            <summary class="cursor-pointer font-semibold text-[var(--muted-foreground)] py-1">Or paste a post you found yourself</summary>
+            <div class="mt-2 space-y-2">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <label class="block"><span class="block font-semibold mb-1">Creator</span><input id="new-out-creator" type="text" placeholder="Who wrote it" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" /></label>
+                <label class="block"><span class="block font-semibold mb-1">Link (optional)</span><input id="new-out-url" type="url" placeholder="https://www.linkedin.com/posts/…" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" /></label>
+              </div>
+              <label class="block"><span class="block font-semibold mb-1">The post, pasted as is</span><textarea id="new-out-topic" rows="6" placeholder="Paste the whole post. The first line is read as the hook." class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm"></textarea></label>
+              <button type="button" id="btn-alchemize-outlier" class="px-3.5 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Use this post</button>
+            </div>
+          </details>
+          <details class="text-xs">
+            <summary class="cursor-pointer font-semibold text-[var(--muted-foreground)] py-1">Check a post's numbers yourself</summary>
+            <div class="mt-2 space-y-2">
+              <p class="text-[var(--muted-foreground)]">Reach score = reactions + 3 × comments + 5 × reposts. A post counts as a breakout when its score is at least 3x the creator's usual score and clearly outside their normal spread.</p>
+              <div class="grid grid-cols-3 gap-2">
+                <label class="block"><span class="block text-[var(--muted-foreground)] mb-1">Reactions</span><input id="calc-likes" type="number" value="2850" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" /></label>
+                <label class="block"><span class="block text-[var(--muted-foreground)] mb-1">Comments</span><input id="calc-comments" type="number" value="310" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" /></label>
+                <label class="block"><span class="block text-[var(--muted-foreground)] mb-1">Reposts</span><input id="calc-reposts" type="number" value="220" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" /></label>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <label class="block"><span class="block text-[var(--muted-foreground)] mb-1">Creator's usual score</span><input id="calc-median" type="number" value="940" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" /></label>
+                <label class="block"><span class="block text-[var(--muted-foreground)] mb-1">Creator's usual spread</span><input id="calc-mad" type="number" value="210" class="w-full rounded border border-[var(--border)] bg-[var(--background)] p-2 text-xs" /></label>
+              </div>
+              <div id="rarity-result" class="p-3 rounded-lg bg-[var(--secondary)] space-y-1"></div>
+            </div>
+          </details>
+          <details class="text-xs">
+            <summary class="cursor-pointer font-semibold text-[var(--muted-foreground)] py-1">Scan report, per creator</summary>
             <div class="overflow-x-auto mt-2">
               <table class="w-full text-[11px]">
                 <thead class="text-left text-[var(--muted-foreground)]">
-                  <tr><th class="py-1 pr-2">Creator</th><th class="py-1 pr-2">Status</th><th class="py-1 pr-2">Posts</th><th class="py-1 pr-2">Median</th><th class="py-1 pr-2">Top ×</th><th class="py-1 pr-2">Reusable</th></tr>
+                  <tr><th class="py-1 pr-2">Creator</th><th class="py-1 pr-2">Status</th><th class="py-1 pr-2">Posts</th><th class="py-1 pr-2">Usual score</th><th class="py-1 pr-2">Best post</th><th class="py-1 pr-2">Reusable</th></tr>
                 </thead>
                 <tbody id="scan-report-rows"></tbody>
               </table>
             </div>
           </details>
+        </div>
+
+        <!-- 2. Why it worked, 3. Make it yours, 4. Your draft -->
+        <div class="lg:col-span-7 space-y-5">
+          <div id="cv-why" class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3">
+            <h3 class="text-base font-bold">2. Why it worked</h3>
+            <p class="text-xs text-[var(--muted-foreground)]">Pick a post to see the hook technique that carried it, how that technique performs across your whole watchlist, and what the post actually argues.</p>
+          </div>
+          <div id="cv-step3" class="hidden bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5">
+            <form id="cv-form" class="space-y-3">
+              <h3 class="text-base font-bold">3. Make it yours</h3>
+              <label class="block text-xs"><span class="block font-semibold mb-1">Your first-hand angle</span><textarea id="cv-angle" rows="3" placeholder="What you have seen building AI products that confirms or complicates this. Public facts only. Leave it empty and the draft keeps a [bracket] for you." class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm"></textarea></label>
+              <label class="block text-xs"><span class="block font-semibold mb-1">A number or example you can stand behind (optional)</span><input id="cv-proof" type="text" placeholder="A public number, a named example, a before and after" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" /></label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                <label class="block"><span class="block font-semibold mb-1">Hook technique</span><select id="cv-technique" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm"><option value="source">Same as the source</option></select></label>
+                <label class="block"><span class="block font-semibold mb-1">Format</span><select id="cv-format" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm"><option value="auto">Auto</option><option value="teardown">Teardown</option><option value="runbook">Runbook</option><option value="thesis">Thesis</option><option value="story">Story</option></select></label>
+                <label class="block"><span class="block font-semibold mb-1">Publish on</span><select id="cv-day" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm"><option value="0">Monday</option><option value="1">Tuesday</option><option value="2">Wednesday</option></select></label>
+              </div>
+              <p id="cv-format-hint" class="text-xs text-[var(--muted-foreground)]"></p>
+              <div class="flex flex-wrap items-center gap-3">
+                <button type="submit" id="cv-write" class="px-4 py-2.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Write the draft</button>
+                <span id="cv-status" class="text-xs text-[var(--muted-foreground)]">You get three hooks, each built on a named technique and checked against it, plus a body grounded in the source post.</span>
+              </div>
+            </form>
+          </div>
+          <div id="cv-draft" class="hidden bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 space-y-3"></div>
         </div>
       </div>
     </section>
@@ -622,7 +607,7 @@
               <button type="button" id="btn-copy-newsletter" class="px-3.5 py-1.5 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] text-xs font-bold">Copy Issue #01</button>
             </div>
           </div>
-          <p class="text-xs text-[var(--muted-foreground)]">Spec: 1,400+ words · opening story → 3 measured signals (from the Outlier Vault) → one build with unit economics + failure modes → stealable artifact → Monday skill-transfer → 💬 ♻️ 👋 sign-off. Numbers in section 1 come from <code>data/outliers.json</code>; swap the assumptions in section 2 for your own.</p>
+          <p class="text-xs text-[var(--muted-foreground)]">Spec: 1,400+ words · opening story → 3 measured signals (from the breakout posts tab) → one build with unit economics + failure modes → stealable artifact → Monday skill-transfer → 💬 ♻️ 👋 sign-off. Numbers in section 1 come from <code>data/outliers.json</code>; swap the assumptions in section 2 for your own.</p>
           <textarea id="newsletter-editor" rows="44" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-3.5 text-sm leading-relaxed"></textarea>
           <div id="newsletter-safety" class="text-xs font-semibold text-[#1F5E46]">✓ Data-safety: checking…</div>
         </div>
@@ -743,6 +728,7 @@
 
   <script src="assets/factory.js"></script>
   <script src="assets/matrix.js"></script>
+  <script src="assets/converter.js"></script>
   <script>
     (function () {
       // =======================================================================
@@ -1050,13 +1036,13 @@
       }
 
       // =======================================================================
-      // 2. OUTLIER-VOICE v2 DATA STORE (4 PROVEN OUTLIER ARCHETYPES · ZERO CLICHÉS)
+      // 2. VOICE DATA STORE (4 PROVEN POST STRUCTURES, ZERO CLICHÉS)
       // =======================================================================
       const DEFAULT_POSTS = [
         {
           day: 'Monday',
           archetype: 'teardown',
-          track: 'Outlier Teardown · Credit: Aakash Gupta (23.5x · HarvestAPI verified)',
+          track: 'Teardown, inspired by Aakash Gupta',
           isGrowth: true,
           credit: 'Aakash Gupta',
           creditUrl: 'https://www.linkedin.com/posts/aagupta_spotify-cut-their-claude-code-token-bill-activity-7522511755588067328-VNMq',
@@ -1099,7 +1085,7 @@ Where are your production agents burning the most tokens right now: reading cont
         {
           day: 'Tuesday',
           archetype: 'runbook',
-          track: 'Builder Runbook · Credit: Hamel Husain (15.2x · HarvestAPI verified)',
+          track: 'Runbook, inspired by Hamel Husain',
           isGrowth: true,
           credit: 'Hamel Husain',
           creditUrl: 'https://www.linkedin.com/posts/hamelhusain_evals-for-ai-engineers-table-of-contents-activity-7524184541930946560-Y1RK',
@@ -1143,7 +1129,7 @@ Which of these 6 steps does your team skip most often when a deadline gets tight
         {
           day: 'Wednesday',
           archetype: 'thesis',
-          track: 'Product Thesis · Credit: Ethan Mollick (5.2x · HarvestAPI verified)',
+          track: 'Thesis, inspired by Ethan Mollick',
           isGrowth: true,
           credit: 'Ethan Mollick',
           creditUrl: 'https://www.linkedin.com/posts/emollick_i-think-there-is-too-much-concern-expressed-activity-7524907880840380416-ZSMP',
@@ -1320,7 +1306,7 @@ Read Issue #01 via the first comment — and reply with the #1 production AI bot
           ]
         },
         spotify: {
-          kicker: 'OUTLIER PLAYBOOK · CREDIT: AAKASH GUPTA / SPOTIFY',
+          kicker: 'PLAYBOOK · CREDIT: AAKASH GUPTA / SPOTIFY',
           headline: 'Cut Your AI Agent Bill 90% in 5 Steps',
           steps: [
             '01 · Find the spend | Split last week\'s traces into "reading" vs "reasoning"',
@@ -1331,7 +1317,7 @@ Read Issue #01 via the first comment — and reply with the #1 production AI bot
           ]
         },
         evals: {
-          kicker: 'OUTLIER PLAYBOOK · CREDIT: HAMEL HUSAIN',
+          kicker: 'PLAYBOOK · CREDIT: HAMEL HUSAIN',
           headline: 'Evals for PMs in 6 Steps (No Code)',
           steps: [
             '01 · Collect 30 real asks | Real user prompts, including the messy ones',
@@ -1343,7 +1329,7 @@ Read Issue #01 via the first comment — and reply with the #1 production AI bot
           ]
         },
         humancheck: {
-          kicker: 'OUTLIER PLAYBOOK · CREDIT: ETHAN MOLLICK',
+          kicker: 'PLAYBOOK · CREDIT: ETHAN MOLLICK',
           headline: 'Where the Human Check Actually Goes',
           steps: [
             '01 · Errors vs judgment | Evals catch facts & formats; people own trade-offs',
@@ -1490,7 +1476,7 @@ Next Saturday, Issue #02: GitHub release notes → a live customer demo in 10 mi
 — Afrina M
 Senior PM, Google (Gemini & AI Agents) · 4x Google Cloud Next speaker
 
-Credits this week: Aakash Gupta, Hamel Husain, Ethan Mollick. Links to the original posts are in the studio's Outlier Vault.`;
+Credits this week: Aakash Gupta, Hamel Husain, Ethan Mollick. Links to the original posts are in the first comment of each post.`;
 
       const UPGRADED_ABOUT = `I was about 12 when I got my first unofficial product management job.
 
@@ -1519,14 +1505,14 @@ Every week here—and every Saturday in my newsletter, The Prototype-to-Producti
 Building AI products people actually adopt, or navigating your next move? Let's connect.`;
 
       const DEMO_RETRO_ROWS = [
-        { day: 'Mon · Outlier Sheet', imp: 68400, likes: 1120, reposts: 94, nl: 310 },
+        { day: 'Mon · Breakout rebuild', imp: 68400, likes: 1120, reposts: 94, nl: 310 },
         { day: 'Tue · Eval Matrix', imp: 44200, likes: 740, reposts: 68, nl: 205 },
         { day: 'Wed · Trace Carousel', imp: 39100, likes: 615, reposts: 52, nl: 160 },
         { day: 'Thu · Deck Agent GIF', imp: 92500, likes: 1640, reposts: 185, nl: 540 },
         { day: 'Fri · GTM Agent GIF', imp: 78300, likes: 1390, reposts: 142, nl: 465 }
       ];
       let RETRO_ROWS = [
-        { day: 'Mon · Outlier Sheet', imp: 0, likes: 0, reposts: 0, nl: 0 },
+        { day: 'Mon · Breakout rebuild', imp: 0, likes: 0, reposts: 0, nl: 0 },
         { day: 'Tue · Eval Matrix', imp: 0, likes: 0, reposts: 0, nl: 0 },
         { day: 'Wed · Trace Carousel', imp: 0, likes: 0, reposts: 0, nl: 0 },
         { day: 'Thu · Deck Agent GIF', imp: 0, likes: 0, reposts: 0, nl: 0 },
@@ -1610,7 +1596,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
                 }
               }
               document.getElementById('sync-status-pill').textContent = 'Live Server Connected (Disk Sync ON)';
-              document.getElementById('header-voice-badge').textContent = 'Outlier Voice v2';
+              document.getElementById('header-voice-badge').textContent = 'Your voice';
               renderStudio();
               renderRetro();
               applyServerVaultHook(data);
@@ -1690,7 +1676,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
         hList.innerHTML = p.hooks.map((h, i) => `
           <div data-hidx="${i}" class="p-2.5 rounded-lg border cursor-pointer text-xs ${i === p.selectedHook ? 'border-[var(--primary)] bg-[var(--secondary)] font-medium' : 'border-[var(--border)]'}">
             <div class="flex justify-between text-[var(--muted-foreground)] mb-0.5">
-              <span>Hook Option #${i + 1}</span>
+              <span>Hook ${i + 1}${(p.hookTechniques && p.hookTechniques[i] && window.Signal50Converter && Signal50Converter.TECHNIQUES[p.hookTechniques[i]]) ? ': ' + Signal50Converter.TECHNIQUES[p.hookTechniques[i]].name : ''}</span>
               <span class="font-mono">${h.length}/210 chars</span>
             </div>
             <div>${h.replace(/</g, '&lt;')}</div>
@@ -1725,9 +1711,13 @@ Building AI products people actually adopt, or navigating your next move? Let's 
 
         const combined = `${hook}\n${body}\n${comment}`;
         const full = (hook + '\n' + body).toLowerCase();
-        const banned = ['delve', 'tapestry', 'testament', 'game-changer', 'thrilled to announce'];
+        const banned = ['delve', 'tapestry', 'testament', 'game-changer', 'thrilled to announce', 'unlock', 'leverage', 'seamless', 'cutting-edge'];
         const hasBrackets = /(?<!["'“])\[[^\]\n]{3,65}\](?!["'”])/.test(combined);
         const safetyHits = renderSafety('post-safety', combined);
+        const CV = window.Signal50Converter;
+        const jargonHit = CV ? CV.findJargon(combined) : null;
+        const techTop = CV ? CV.detect(hook).top : null;
+        const techName = CV ? ((p.technique && CV.TECHNIQUES[p.technique] && (!techTop || techTop.id !== p.technique) && CV.scoreHook(hook, p.technique).checks[2].ok) ? CV.TECHNIQUES[p.technique].name : (techTop ? techTop.name : '')) : 'not checked';
         const signalWords = ['agent', 'eval', 'enterprise', 'margin', 'production', 'slides', 'gtm', 'mcp', 'workflow', 'prototype', 'step', 'token', 'check', 'model', 'prompt', 'context', 'latency', 'trace', 'human'];
         const checks = [
           { ok: safetyHits.length === 0, label: safetyHits.length ? `Data-safety: ${safetyHits.length} flagged` : 'No Revenue / Internal Google Data' },
@@ -1736,7 +1726,8 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           { ok: !p.isGrowth || full.includes((p.credit || '').split(' ')[0].toLowerCase()), label: p.isGrowth ? `Credit: ${p.credit}` : 'Original Ecosystem IP' },
           { ok: !banned.some(w => full.includes(w)), label: 'Zero AI-Slop Scan' },
           { ok: signalWords.filter(k => full.includes(k)).length >= 2, label: 'AI Product Signal' },
-          { ok: true, label: '4:5 GIF / PNG Ready' },
+          { ok: !jargonHit, label: jargonHit ? `Internal term in the post: "${jargonHit}"` : 'No internal terms' },
+          { ok: !!techName, label: techName ? `Hook technique: ${techName}` : 'Hook follows no clear technique' },
           { ok: comment.trim().length > 15, label: 'Saturday NL Funnel CTA' }
         ];
         const score = Math.round((checks.filter(c => c.ok).length / checks.length) * 100);
@@ -2053,7 +2044,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
       }
 
       // =======================================================================
-      // 5. HARVESTAPI RARITY, $3M ARR SIMULATOR & INTERACTIVE RETRO
+      // 5. REACH CHECK, $3M ARR SIMULATOR & INTERACTIVE RETRO
       // =======================================================================
       function computeRarity() {
         const r = Number(document.getElementById('calc-likes').value || 0);
@@ -2070,8 +2061,8 @@ Building AI products people actually adopt, or navigating your next move? Let's 
       function updateRarityCalc() {
         const { weighted, mult, z, isOutlier } = computeRarity();
         document.getElementById('rarity-result').innerHTML = `
-          <div class="font-bold text-sm">${isOutlier ? '✓ VERIFIED OUTLIER (Top <4% Rarity — Approved for Mon–Wed)' : '✕ Below 3.0x Rarity Gate (Keep Scouting)'}</div>
-          <div>Weighted Score: <strong>${weighted.toLocaleString()}</strong> | Multiplier: <strong>${mult}x</strong> (min 3.0x) | Robust Z: <strong>${z}</strong> (min 2.5)</div>
+          <div class="font-bold text-sm">${isOutlier ? `Breakout: ${mult}x this creator's usual reach` : `Not a breakout: ${mult}x this creator's usual reach (needs 3x)`}</div>
+          <div>Reach score <strong>${weighted.toLocaleString()}</strong>. ${z >= 2.5 ? 'Clearly outside their normal spread.' : 'Within their normal spread, so it could be noise.'}</div>
         `;
       }
 
@@ -2420,7 +2411,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           showToast('1080×1350 .PNG cheat sheet generated!');
         };
 
-        // Outlier Vault (real HarvestAPI data) + Live Outlier -> Afrina Verbatim Voice Alchemist
+        // Breakout posts: scanned cards, technique detector and the draft converter (assets/converter.js)
         let vaultItems = OUTLIER_VAULT_SNAPSHOT.slice();
         let vaultMeta = { ...VAULT_SNAPSHOT_META, live: false };
         const fmtN = n => Number(n || 0).toLocaleString('en-US');
@@ -2432,7 +2423,8 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             id: o.id, creator: o.creatorName, role: o.creatorRole, mult: o.multiplier, z: o.robustZ,
             likes: o.reactions, comments: o.comments, reposts: o.reposts, median: o.creatorMedian, mad: o.creatorMad,
             date: o.publishedAge, age: o.ageDays, type: o.outlierType || 'playbook', media: o.mediaType || 'text',
-            topic: o.topic, url: o.sourceUrl, insight: o.coreInsight
+            topic: o.topic, url: o.sourceUrl, insight: o.coreInsight,
+            text: o.text || o.coreInsight || '', hook: o.hook || o.topic || ''
           };
         }
 
@@ -2443,63 +2435,38 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             .sort((a, b) => (a.age ?? 9999) - (b.age ?? 9999) || b.mult - a.mult);
           const status = document.getElementById('vault-status');
           const when = vaultMeta.scannedAt ? fmtDate(vaultMeta.scannedAt) : 'not yet';
-          const verified = (vaultMeta.creators || []).filter(c => c.status === 'ok').length;
+          const creators = vaultMeta.creators || [];
+          const verified = creators.filter(c => c.status === 'ok').length;
+          const reusableCount = vaultItems.filter(o => o.type !== 'announcement').length;
           status.textContent = vaultMeta.live
-            ? `Live via HarvestAPI · last scan ${when} · ${verified}/${(vaultMeta.creators || []).length} creators verified · ${vaultItems.length} outliers (${vaultItems.filter(o => o.type !== 'announcement').length} reusable)`
-            : `Snapshot from the ${when} scan (open the Live Studio App to rescan) · ${vaultItems.length} outliers`;
+            ? `Latest scan ${when}: ${vaultItems.length} breakout posts, ${reusableCount} reusable, ${verified} of ${creators.length} creators checked.`
+            : `Snapshot from ${when}: ${vaultItems.length} breakout posts. Open the live studio for a fresh scan.`;
 
-          document.getElementById('outlier-cards').innerHTML = items.length ? items.map(o => `
-            <div class="p-3 rounded-xl border border-[var(--border)] space-y-1.5 text-xs">
-              <div class="flex flex-wrap justify-between gap-2">
-                <span class="font-bold">${esc(o.creator)} · <span class="text-[var(--muted-foreground)] font-normal">${esc((o.role || '').split('(')[0].trim())}</span></span>
-                <span class="flex items-center gap-1.5">
-                  <span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${o.type === 'announcement' ? 'bg-[var(--secondary)] text-[var(--muted-foreground)]' : 'bg-[var(--primary)] text-[var(--primary-foreground)]'}">${o.type === 'announcement' ? 'Announcement' : 'Reusable'}</span>
-                  <span class="px-2 py-0.5 rounded bg-[var(--secondary)] font-mono font-bold">${o.mult}x · Z=${o.z}</span>
-                </span>
-              </div>
-              <div class="font-bold text-sm">${esc(o.topic)}</div>
-              <div class="text-[var(--muted-foreground)]">${fmtN(o.likes)} reactions · ${fmtN(o.comments)} comments · ${fmtN(o.reposts)} reposts vs ${fmtN(o.median)} median · ${o.media} · ${o.age != null ? o.age + 'd ago' : esc(o.date)}</div>
-              <div class="text-[var(--muted-foreground)] line-clamp-2">${esc(o.insight)}</div>
-              <div class="flex flex-wrap gap-2 pt-0.5">
-                <button type="button" data-vault-id="${esc(o.id)}" class="px-2.5 py-1 rounded border border-[var(--border)] font-semibold">Load Into Converter ←</button>
-                ${o.url ? `<a href="${esc(o.url)}" target="_blank" rel="noopener" class="px-2.5 py-1 rounded border border-[var(--border)] font-semibold">Open original ↗</a>` : ''}
-              </div>
-            </div>
-          `).join('') : `<div class="p-3 rounded-xl border border-dashed border-[var(--border)] text-xs text-[var(--muted-foreground)]">No outliers yet. Click <strong>Rescan now</strong> (needs the live server + HarvestAPI key in <code>.env</code>).</div>`;
+          if (window.Signal50Converter) {
+            Signal50Converter.renderCards(items);
+          } else {
+            document.getElementById('outlier-cards').innerHTML = items.map(o => `
+              <div class="p-3 rounded-xl border border-[var(--border)] space-y-1 text-xs">
+                <div class="font-bold">${esc(o.creator)}</div>
+                <div class="font-semibold text-sm">${esc(o.topic)}</div>
+                ${o.url ? `<a href="${esc(o.url)}" target="_blank" rel="noopener" class="underline">Read the original</a>` : ''}
+              </div>`).join('') || '<div class="p-3 rounded-xl border border-dashed border-[var(--border)] text-xs text-[var(--muted-foreground)]">No posts yet. Click Scan again.</div>';
+          }
 
-          document.querySelectorAll('[data-vault-id]').forEach(btn => {
-            btn.onclick = () => {
-              const o = vaultItems.find(v => v.id === btn.dataset.vaultId);
-              if (!o) return;
-              const crEl = document.getElementById('new-out-creator');
-              crEl.value = o.creator;
-              crEl.dataset.sourceUrl = o.url || '';
-              crEl.dataset.insight = o.insight || '';
-              document.getElementById('new-out-topic').value = o.topic;
-              document.getElementById('calc-likes').value = o.likes || 0;
-              document.getElementById('calc-comments').value = o.comments || 0;
-              document.getElementById('calc-reposts').value = o.reposts || 0;
-              document.getElementById('calc-median').value = o.median || 30;
-              document.getElementById('calc-mad').value = o.mad || 12;
-              updateRarityCalc();
-              showToast(`Loaded ${o.creator}'s real outlier (${o.mult}x) into the converter.`);
-            };
-          });
-
-          document.getElementById('scan-report-rows').innerHTML = (vaultMeta.creators || []).map(c => `
+          document.getElementById('scan-report-rows').innerHTML = creators.map(c => `
             <tr class="border-t border-[var(--border)]">
               <td class="py-1 pr-2 font-semibold">${esc(c.name)}</td>
-              <td class="py-1 pr-2 ${c.status === 'ok' ? '' : 'text-[var(--primary)] font-semibold'}">${esc(c.status)}</td>
+              <td class="py-1 pr-2 ${c.status === 'ok' ? '' : 'text-[var(--primary)] font-semibold'}">${esc(c.status === 'ok' ? 'checked' : c.status)}</td>
               <td class="py-1 pr-2">${c.posts ?? ''}</td>
               <td class="py-1 pr-2">${fmtN(c.median)}</td>
               <td class="py-1 pr-2">${c.top}x</td>
               <td class="py-1 pr-2">${c.playbook ?? 0}</td>
             </tr>`).join('') || '<tr><td class="py-1 text-[var(--muted-foreground)]" colspan="6">No scan report yet.</td></tr>';
 
-          // Header stat: real multiplier range of reusable outliers
+          // Header stat: how far the reusable breakout posts sit above their creators' usual reach
           const reusable = vaultItems.filter(o => o.type !== 'announcement').map(o => Number(o.mult)).filter(Boolean);
           const stat = document.getElementById('stat-outlier-range');
-          if (stat && reusable.length) stat.textContent = `${Math.min(...reusable).toFixed(1)}x–${Math.max(...reusable).toFixed(1)}x Verified Outliers`;
+          if (stat && reusable.length) stat.textContent = `${reusable.length} breakout posts, ${Math.min(...reusable).toFixed(1)}x to ${Math.max(...reusable).toFixed(1)}x usual reach`;
         }
 
         function applyServerVault(data) {
@@ -2522,8 +2489,10 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             likes: o.reactions, comments: o.comments, reposts: o.reposts || 0, median: o.baselineMedian, mad: o.baselineMad,
             date: o.postedAt ? String(o.postedAt).slice(0, 10) : '', age: o.ageHours != null ? Math.round(o.ageHours / 24) : null,
             type: o.type || 'playbook', media: o.media || 'text', topic: o.hook || (o.text || '').split('\n')[0], url: o.url,
-            insight: (o.text || '').split('\n').slice(1).join(' ').slice(0, 220) || `${o.source === 'public' ? 'Public-page' : 'HarvestAPI'} baseline: n=${o.baselineN}, median ${o.baselineMedian}, MAD ${o.baselineMad}${o.ctaGated ? ' · comment-gated CTA (comments discounted to 1×)' : ''}`
+            text: o.text || '', hook: o.hook || '', postedAt: o.postedAt || '',
+            insight: (o.text || '').split('\n').slice(1).join(' ').slice(0, 220) || `Usual reach score ${o.baselineMedian} across ${o.baselineN} posts${o.ctaGated ? '. Comment-gated call to action, so comments count once' : ''}`
           }));
+          if (window.Signal50Converter) Signal50Converter.setCorpus(d.outliers);
           vaultMeta = {
             live: true, scannedAt: d.generatedAt, model: d.model,
             creators: (d.creators || []).map(c => ({ name: c.name, status: c.status, posts: c.postsFetched ?? c.n, median: c.median, top: Math.max(0, ...(c.posts || []).map(p => Number(p.mult) || 0)).toFixed(2), playbook: (c.posts || []).filter(p => String(p.tier || '').startsWith('OUTLIER') && p.type !== 'announcement').length }))
@@ -2531,10 +2500,24 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           renderVault();
           return true;
         }
-        fetch('data/outliers.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => { if (applyScoutFile(d)) showToast(`Outlier vault loaded · ${vaultItems.length} verified outliers · scanned ${fmtDate(vaultMeta.scannedAt)}`); }).catch(() => {});
+        fetch('data/outliers.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => { if (applyScoutFile(d)) showToast(`Latest scan loaded: ${vaultItems.length} breakout posts (${fmtDate(vaultMeta.scannedAt)}).`); }).catch(() => {});
 
         document.getElementById('vault-replicable-only').onchange = renderVault;
         applyServerVaultHook = applyServerVault;
+
+        if (window.Signal50Converter) {
+          Signal50Converter.init({
+            esc, toast: showToast, getKey: getSharedGeminiKey, resolveModel: resolveGeminiModel, dayNames: ['Monday', 'Tuesday', 'Wednesday'],
+            onDraft: async (post, dayIdx) => {
+              posts[dayIdx] = post;
+              activeDayIdx = dayIdx;
+              await persistAll();
+              renderStudio();
+              switchTab('calendar');
+              showToast(`Loaded into ${post.day}. Fill any [brackets] before you post.`);
+            }
+          });
+        }
 
         document.getElementById('btn-rescan-outliers').onclick = async () => {
           const btn = document.getElementById('btn-rescan-outliers');
@@ -2543,13 +2526,13 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             // Static deployment: the scout runs in GitHub Actions (every 12h, or on demand).
             window.open('https://github.com/Afrinam19/signal50/actions/workflows/scout.yml', '_blank', 'noopener');
             logBox.classList.remove('hidden');
-            logBox.textContent = 'Opened the Outlier Scout workflow on GitHub. Click "Run workflow" there; data/outliers.json refreshes in ~3 minutes (using your encrypted HARVEST_API_KEY secret) and this page picks it up on reload.\nAuto-schedule: 06:17 & 18:17 UTC daily.';
+            logBox.textContent = 'Opened the scan workflow on GitHub. Click "Run workflow" there; the data refreshes in about 3 minutes and this page picks it up on reload.\nIt also runs on its own at 06:17 and 18:17 UTC.';
             return;
           }
           btn.disabled = true;
           btn.textContent = 'Scanning… (~30s)';
           logBox.classList.remove('hidden');
-          logBox.textContent = 'Starting HarvestAPI scan of the 10-creator watchlist…';
+          logBox.textContent = 'Scanning the watchlist…';
           const poll = setInterval(async () => {
             try {
               const r = await fetch('/api/v3/outliers/scan');
@@ -2563,7 +2546,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             if (!resp.ok) throw new Error(out.error || `HTTP ${resp.status}`);
             logBox.textContent = (out.log || []).join('\n');
             applyServerVault(out);
-            showToast(`✓ Scan complete: ${out.added} new outlier(s), ${out.total} in vault.`);
+            showToast(`Scan complete: ${out.added} new breakout posts, ${out.total} in total.`);
           } catch (err) {
             logBox.textContent += `\n✕ ${err.message}`;
             showToast(`Scan failed: ${err.message}`);
@@ -2653,13 +2636,20 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           const arch = (document.getElementById('ai-archetype') || {}).value || p.archetype || 'teardown';
           const curHook = document.getElementById('hook-editor').value.trim();
           const curBody = document.getElementById('body-editor').value.trim();
+          const CV = window.Signal50Converter;
+          let techBrief = '';
+          if (CV) {
+            const techId = (p.technique && CV.TECHNIQUES[p.technique]) ? p.technique : (CV.detect(curHook).top || {}).id;
+            const T = techId ? CV.TECHNIQUES[techId] : null;
+            if (T) techBrief = `. Hook 1 must use the "${T.name}" technique (${T.what}); hooks 2 and 3 may each use a different named technique: ${Object.values(CV.TECHNIQUES).map(t => t.name).join(', ')}`;
+          }
           const modeDirective = {
-            outlier: `Rewrite this post from scratch to read like a genuine 10x+ LinkedIn outlier using the "${arch}" format.`,
-            hooks: 'Write 3 sharper, high-curiosity pre-fold hooks (each 2 lines, strictly <= 200 characters) and tighten the opening of the body to flow seamlessly from Hook #1.',
+            outlier: `Rewrite this post from scratch so it reads like the best-performing posts in this space, using the "${arch}" format.`,
+            hooks: `Write 3 sharper hooks (each exactly 2 lines, strictly <= 200 characters)${techBrief} and tighten the opening of the body so it flows from hook 1.`,
             tighten: 'Cut 20-25% of the words. Remove any throat-clearing, passive voice, corporate clichés, or repetitive lines while keeping every concrete detail sharp.',
             exec: 'Sharpen the Senior/Director AI PM perspective for VPs of Product, VPs of Engineering, and Founders — emphasize production trade-offs, evals, cost/latency, and adoption.',
-            custom: customInstruction || 'Enhance clarity, rhythm, and outlier punch while keeping plain English.'
-          }[mode] || customInstruction || 'Rewrite in crisp Outlier Voice.';
+            custom: customInstruction || 'Enhance clarity, rhythm and punch while keeping plain English.'
+          }[mode] || customInstruction || 'Rewrite in crisp plain English.';
 
           return `You are co-writing a high-performing LinkedIn post for Afrina M (Senior PM working on Gemini & AI agents at Google, 15+ years building product, 4x Google Cloud Next speaker).
 
@@ -2667,7 +2657,7 @@ TASK:
 ${modeDirective}
 ${customInstruction && mode !== 'custom' ? `Additional user instruction: ${customInstruction}` : ''}
 
-SELECTED OUTLIER FORMAT:
+FORMAT:
 ${ARCHETYPE_SPECS[arch] || ARCHETYPE_SPECS.teardown}
 
 HARD VOICE & DATA-SAFETY RULES (NON-NEGOTIABLE):
@@ -2676,6 +2666,8 @@ HARD VOICE & DATA-SAFETY RULES (NON-NEGOTIABLE):
 3. NEVER use AI-slop buzzwords: delve, tapestry, testament, game-changer, unlock, seamless, cutting-edge, thrilled to announce, leverage.
 4. NEVER append a robotic 3-emoji footer wall (no "💬 / ♻️ Repost this / 👋 New here?" stack). End naturally with a 2-line takeaway${p.isGrowth && p.credit ? `, a natural peer credit ("H/T to ${p.credit}" or "Credit to ${p.credit}")` : ''}, and ONE specific question.
 5. STRICT DATA-SAFETY: ZERO dollar revenue/ARR figures, ZERO internal usage metrics (MAU/DAU), ZERO quota/target percentages, ZERO CSAT scores, ZERO customer/stakeholder headcounts, and ZERO internal Google links. Use only public facts or numbers already present in the draft below.
+6. NEVER mention how the source post was found or how it performed: no "outlier", "multiplier", "baseline", "z-score", "rarity", "HarvestAPI", and no "Nx" engagement figures. Credit the creator plainly.
+7. Never invent Afrina's first-hand experiences, customers or numbers. Keep any [bracketed prompt] from the draft as is, so she can fill it herself.
 
 CURRENT HOOK:
 ${curHook}
@@ -2724,12 +2716,27 @@ ${curBody}`;
           }
 
           if (mode === 'hooks') {
-            const topicCore = (p.title || hook.split('\n')[0]).replace(/\s*\(credit:.*\)/i, '').trim().slice(0, 88);
-            p.hooks = [
-              `${topicCore}.\nMost teams try to fix this in the prompt. The real fix lives in the workflow:`.slice(0, 205),
-              `What separates a flashy AI demo from a production workflow?\n${topicCore} — broken down in plain English:`.slice(0, 205),
-              `${p.credit ? p.credit + ' highlighted a pattern' : 'A pattern'} every AI builder should steal this week:\n${topicCore}.`.slice(0, 205)
-            ];
+            const CV = window.Signal50Converter;
+            let fresh = [];
+            if (CV) {
+              // Feed the converter the post minus its own scaffolding (headings, prompts, credit, closers)
+              const srcLines = body.split('\n').filter(l => !/^(what the post|what changes|what i took|credit to|the runbook, as|↳|\[|•\s*\[)/i.test(l.trim()) && !/argument, in (one|\d) lines?:$/i.test(l.trim()));
+              const ex = CV.extract({ text: `${hook}\n${srcLines.join('\n')}`, hook, topic: (p.title || '').replace(/\s*\((credit|inspired).*\)/i, '') });
+              const first = (p.technique && CV.TECHNIQUES[p.technique]) ? p.technique : ((ex.detection.top || {}).id || 'scale_vs_gap');
+              const techs = [first].concat(['scale_vs_gap', 'specific_surprise', 'stakes_first', 'contrarian_reveal', 'shift_observation', 'news_take'].filter(t => t !== first)).filter(t => CV.applicable(t, ex, ''));
+              const made = CV.generateHooks({ techniques: techs, ex, angle: '', proof: '', creator: p.credit || '' });
+              fresh = made.map(h => h.text);
+              p.hookTechniques = made.map(h => h.technique);
+            }
+            if (!fresh.length) {
+              const topicCore = (p.title || hook.split('\n')[0]).replace(/\s*\((credit|inspired).*\)/i, '').trim().slice(0, 88);
+              fresh = [
+                `${topicCore}.\nMost teams try to fix this in the prompt. The real fix lives in the workflow:`.slice(0, 205),
+                `What separates a flashy AI demo from a production workflow?\n${topicCore}, in plain English:`.slice(0, 205),
+                `${p.credit ? p.credit + ' pointed at a pattern' : 'A pattern'} every AI builder should steal this week:\n${topicCore}.`.slice(0, 205)
+              ];
+            }
+            p.hooks = fresh;
             p.selectedHook = 0;
             hook = p.hooks[0];
           } else if (hook.length > 210) {
@@ -2748,7 +2755,7 @@ ${curBody}`;
 
           p.body = body;
           renderStudio();
-          scheduleAutoSave(`✓ Polished ${p.day} in Outlier Voice`);
+          scheduleAutoSave(`✓ Polished ${p.day}`);
         }
 
         async function runAiRewrite(mode) {
@@ -2759,15 +2766,15 @@ ${curBody}`;
 
           if (!key) {
             applyLocalOutlierPolish(mode);
-            statusEl.innerHTML = '✓ Applied instant local Outlier-Voice polish! Connect a free <strong>Gemini Key</strong> above for full generative AI rewrites, or click <strong>Open gemini.google.com ↗</strong> (copies prompt + draft).';
-            showToast('Applied local Outlier-Voice polish! Add a free Gemini key or click Open gemini.google.com ↗ for full AI rewriting.');
+            statusEl.innerHTML = '✓ Applied the instant local polish. Connect a free <strong>Gemini key</strong> above for a full rewrite, or click <strong>Open gemini.google.com ↗</strong> (copies prompt + draft).';
+            showToast('Applied the local polish. Add a free Gemini key or click Open gemini.google.com ↗ for a full rewrite.');
             return;
           }
 
           runBtn.disabled = true;
           const origLabel = runBtn.textContent;
           runBtn.textContent = 'Writing…';
-          statusEl.textContent = 'Calling Gemini with Outlier Voice v2 + Data-Safety guardrails…';
+          statusEl.textContent = 'Calling Gemini with the voice and data-safety rules…';
           try {
             const model = await resolveGeminiModel(key);
             const prompt = buildGeminiPromptText(mode, customInstruction) + `\n\nReturn JSON ONLY matching this exact schema:\n{"hooks":["hook 1 (<=200 chars, 2 lines)","hook 2 (<=200 chars)","hook 3 (<=200 chars)"],"body":"full rewritten post body"}`;
@@ -2787,17 +2794,18 @@ ${curBody}`;
             pushAiUndo();
             const p = posts[activeDayIdx];
             p.archetype = (document.getElementById('ai-archetype') || {}).value || p.archetype || 'teardown';
+            const scrub = window.Signal50Converter ? Signal50Converter.scrub : (s => s);
             if (Array.isArray(parsed.hooks) && parsed.hooks.length) {
-              p.hooks = parsed.hooks.slice(0, 3).map(h => String(h || '').trim().slice(0, 208));
+              p.hooks = parsed.hooks.slice(0, 3).map(h => scrub(String(h || '').trim()).slice(0, 208));
               p.selectedHook = 0;
             }
             if (typeof parsed.body === 'string' && parsed.body.trim()) {
-              p.body = parsed.body.trim();
+              p.body = scrub(parsed.body.trim());
             }
             renderStudio();
             await persistAll();
             statusEl.textContent = `✓ Rewritten with ${model} (${p.archetype} format) · Data-safety & 210-char fold verified.`;
-            showToast(`✓ Gemini rewrote ${p.day} in Outlier Voice! Click "↩ Undo AI Edit" anytime.`);
+            showToast(`✓ Gemini rewrote ${p.day}. Click "↩ Undo AI Edit" anytime.`);
           } catch (err) {
             statusEl.textContent = `✕ ${err.message} — try checking your key or click "Open gemini.google.com ↗".`;
             showToast(`Gemini error: ${err.message}`);
@@ -2851,11 +2859,11 @@ ${curBody}`;
         // Side-by-side gemini.google.com launcher + 1-click Paste-Back parser
         document.getElementById('btn-open-gemini-web').onclick = () => {
           const customInstruction = document.getElementById('ai-custom-prompt').value.trim();
-          const prompt = buildGeminiPromptText('custom', customInstruction || 'Rewrite this post to read like a top 1% LinkedIn outlier in plain English.') +
+          const prompt = buildGeminiPromptText('custom', customInstruction || 'Rewrite this post to read like the top 1% of LinkedIn posts in this space, in plain English.') +
             `\n\nReply in plain text using these exact two headings so I can paste it straight back into Signal50:\nHOOK:\n<2 punchy lines, <= 200 chars total>\n\nBODY:\n<full post body>`;
           try { navigator.clipboard.writeText(prompt); } catch (_) {}
           document.getElementById('gemini-paste-drawer').classList.remove('hidden');
-          document.getElementById('ai-status').textContent = '✓ Copied Outlier Prompt + current draft! Paste (Cmd+V / Ctrl+V) into the gemini.google.com window, then paste Gemini\'s reply below.';
+          document.getElementById('ai-status').textContent = '✓ Copied the prompt + current draft. Paste (Cmd+V / Ctrl+V) into the gemini.google.com window, then paste Gemini\'s reply below.';
           window.open('https://gemini.google.com/app', 'signal50_gemini_companion', 'popup=yes,width=560,height=860,left=860,top=60');
           showToast('✓ Prompt copied! Press Cmd+V / Ctrl+V inside gemini.google.com.');
         };
@@ -2924,152 +2932,15 @@ ${curBody}`;
           };
         });
 
-        // Outlier Converter -> Outlier Voice v2 (supports Teardown, Runbook, Thesis + live Gemini when connected)
-        function buildOutlierDraftByArchetype({ arch, shortTopic, summaryLine, creator, mult, dayName, sourceUrl }) {
-          const lowerTopic = shortTopic.charAt(0).toLowerCase() + shortTopic.slice(1);
-          const chosen = arch === 'auto'
-            ? (/eval|test|prompt|setup|how to/i.test(shortTopic) ? 'runbook' : /human|why|shift|team|interview|culture/i.test(shortTopic) ? 'thesis' : 'teardown')
-            : arch;
-
-          const hooks = [
-            `${shortTopic}.\n${creator} surfaced the signal — here is how to turn it into a production system:`.slice(0, 208),
-            `Most AI teams misdiagnose ${lowerTopic} as a model problem.\nIn production, it is an architecture and workflow decision:`.slice(0, 208),
-            `A high-signal lesson from ${creator} (${mult}x outlier):\n${shortTopic} — broken down for PMs and engineers:`.slice(0, 208)
-          ];
-
-          let body = '';
-          let label = 'Outlier Teardown';
-          if (chosen === 'thesis') {
-            label = 'Product Thesis';
-            body = `${summaryLine}
-
-When teams hit friction around ${lowerTopic}, their first instinct is almost always to swap models or rewrite a 2,000-word system prompt. In practice, that hides a product design gap.
-
-Four design rules that separate durable AI products from fragile demos:
-
-• Instrument the real bottleneck first — trace where latency, cost, or user drop-off actually spikes before touching prompts.
-• Separate deterministic checks from judgment — let code and evals verify schema, citations, and numbers; save humans for high-stakes trade-offs.
-• Scope context ruthlessly — pass each step only the slice of state and tools it needs to finish the job.
-• Make failures visible — show sources and tool receipts next to the output so trust compounds over time.
-
-Models commoditize fast.
-Clear workflow boundaries and verification are what build a real moat.
-
-H/T to ${creator} (${mult}x outlier) for the post that sparked this note.
-
-How is your team handling ${lowerTopic} in production right now?`;
-          } else if (chosen === 'runbook') {
-            label = 'Builder Runbook';
-            body = `${summaryLine}
-
-Bookmark this 5-step runbook before your next model, prompt, or agent rollout:
-
-1. Pull 30 real production traces
-↳ Skip clean synthetic examples. Export real user inputs where ${lowerTopic} actually shows up.
-
-2. Name the failure modes in plain English
-↳ Read the outputs yourself and group misses into 3–5 concrete buckets your whole team understands.
-
-3. Scope context and tools to the minimum required
-↳ Strip unused tools and raw file dumps so cost, latency, and error rates drop together.
-
-4. Turn each failure bucket into a binary pass/fail check
-↳ Run those checks automatically on every prompt or model change before merge.
-
-5. Gate only the irreversible boundary
-↳ Let the agent prepare and verify the draft; put a fast human sign-off on external actions.
-
-Shipping an AI demo takes an afternoon.
-Making it reliable is a product discipline.
-
-Credit to ${creator} (${mult}x outlier) for the original post that sparked this runbook.
-
-Which of these 5 steps is the tightest bottleneck on your roadmap today?`;
-          } else {
-            label = 'Outlier Teardown';
-            body = `The takeaway underneath ${creator}'s post is deceptively simple: ${summaryLine}
-
-Most teams try to brute-force this with a bigger model or longer prompt. Production teams fix the system around the model instead.
-
-Here is the 5-part teardown. Save it before your next agent build:
-
-1. Measure where tokens and latency actually go
-↳ Split real traces into context reading, tool retries, and actual reasoning before changing anything.
-
-2. Route cheap work away from the frontier model
-↳ Use lightweight readers and deterministic filters first; save frontier reasoning for synthesis and judgment.
-
-3. Turn vague quality complaints into binary evals
-↳ Replace subjective vibe checks with 3–5 pass/fail assertions grounded in real logs.
-
-4. Enforce boundaries in code, not polite prompt notes
-↳ Hard hooks, token ceilings, and schema checks hold up under load when prompt reminders fail.
-
-5. Show provenance at the human review step
-↳ Surface exact source lines and tool calls so sign-off takes seconds instead of manual re-work.
-
-Keep the frontier model for judgment.
-Let clean architecture handle the rest.
-
-H/T to ${creator} — their ${mult}x outlier post sparked this teardown.
-
-Where is your AI workflow leaking the most time or tokens right now?`;
-          }
-
-          return {
-            day: dayName,
-            archetype: chosen,
-            track: `${label} · Credit: ${creator} (${mult}x · HarvestAPI verified)`,
-            isGrowth: true,
-            credit: creator,
-            creditUrl: sourceUrl,
-            title: `${shortTopic} — ${label.toLowerCase()} (credit: ${creator})`,
-            selectedHook: 0,
-            hooks,
-            body,
-            comment: `Credit to ${creator} for the original post${sourceUrl ? `: ${sourceUrl}` : ''} (${mult}x their baseline engagement — verified via HarvestAPI). Every Saturday I break down how real AI products are built in my newsletter: https://www.linkedin.com/in/afrina-m`
-          };
-        }
-
-        document.getElementById('btn-alchemize-outlier').onclick = async () => {
-          const creatorEl = document.getElementById('new-out-creator');
-          const creator = creatorEl.value.trim() || 'Industry Creator';
-          const sourceUrl = creatorEl.dataset.sourceUrl || '';
-          const rawInsight = (creatorEl.dataset.insight || '').replace(/\s+/g, ' ').trim();
-          const topic = document.getElementById('new-out-topic').value.trim() || 'Scaling AI Products';
-          const dayIdx = Number(document.getElementById('new-out-day').value || 0);
-          const arch = (document.getElementById('new-out-archetype') || {}).value || 'auto';
-          const { mult, isOutlier } = computeRarity();
-          const dayNames = ['Monday', 'Tuesday', 'Wednesday'];
-          if (!isOutlier) {
-            showToast(`Below the 3.0x gate (${mult}x). Mon–Wed slots are reserved for verified outliers — pick a card from the vault.`);
-            return;
-          }
-
-          const shortTopic = topic.replace(/[.!?]+$/, '').slice(0, 90);
-          const summaryLine = rawInsight ? rawInsight.slice(0, 200) : `${creator} showed why ${shortTopic.toLowerCase()} separates durable AI products from fragile demos.`;
-          posts[dayIdx] = buildOutlierDraftByArchetype({
-            arch,
-            shortTopic,
-            summaryLine,
-            creator,
-            mult,
-            dayName: dayNames[dayIdx],
-            sourceUrl
-          });
-
-          activeDayIdx = dayIdx;
-          await persistAll();
-          renderStudio();
-          switchTab('calendar');
-
-          // If user connected a Gemini key, enhance the converted draft live with Gemini!
-          if (getSharedGeminiKey()) {
-            showToast(`✓ Loaded ${creator}'s outlier into ${dayNames[dayIdx]} — refining with Gemini…`);
-            await runAiRewrite('outlier');
-          } else {
-            showToast(`✓ Rebuilt in Outlier Voice v2 (${posts[dayIdx].archetype}) crediting ${creator}! Click "Reset Day" anytime.`);
-          }
+        // Paste any post you found yourself: it goes through the same technique detector and drafting flow as the scanned cards.
+        document.getElementById('btn-alchemize-outlier').onclick = () => {
+          const creator = (document.getElementById('new-out-creator').value || '').trim() || 'the original author';
+          const url = ((document.getElementById('new-out-url') || {}).value || '').trim();
+          const text = (document.getElementById('new-out-topic').value || '').trim();
+          if (!text) { showToast('Paste the post text first.'); return; }
+          if (!window.Signal50Converter) { showToast('The converter did not load. Refresh the page.'); return; }
+          const firstLine = text.split('\n').map(s => s.trim()).find(Boolean) || '';
+          Signal50Converter.select({ id: 'manual-' + Date.now(), creator, role: '', url, topic: firstLine.slice(0, 200), hook: firstLine, text, insight: '', mult: 0, type: 'playbook', likes: 0, comments: 0, reposts: 0 });
         };
 
         // Saturday Newsletter + revenue-mix simulator (her own newsletter business, not Google data)
@@ -3131,11 +3002,11 @@ Where is your AI workflow leaking the most time or tokens right now?`;
           }
           const count = val.split(/\n\s*---\s*\n/).filter(Boolean).length;
           voiceScore = Math.min(100, voiceScore + count * 2);
-          document.getElementById('header-voice-badge').textContent = 'Outlier Voice v2';
-          document.getElementById('voice-feedback').textContent = `✓ Ingested ${count} reference post(s) into Outlier Voice v2!`;
+          document.getElementById('header-voice-badge').textContent = 'Your voice';
+          document.getElementById('voice-feedback').textContent = `✓ Added ${count} reference post(s) to your voice profile.`;
           document.getElementById('voice-paste-box').value = '';
           await persistAll();
-          showToast('Reference posts added to Outlier Voice v2!');
+          showToast('Reference posts added to your voice profile.');
         };
 
         // Optional Local VM Bridge (collapsed by default; zero API key prompts)
@@ -3212,11 +3083,11 @@ Where is your AI workflow leaking the most time or tokens right now?`;
         document.getElementById('btn-harvest-pull').onclick = async () => {
           bridgeStatus.classList.remove('hidden');
           if (!hasBackend) {
-            bridgeStatus.textContent = 'Static GitHub Pages mode: outlier scouting runs automatically in GitHub Actions using your encrypted HARVEST_API_KEY secret.';
-            showToast('Outlier scouting runs automatically via GitHub Actions Secrets!');
+            bridgeStatus.textContent = 'Static GitHub Pages mode: the watchlist scan runs automatically in GitHub Actions using your encrypted repository secret.';
+            showToast('The watchlist scan runs automatically in GitHub Actions.');
             return;
           }
-          bridgeStatus.textContent = 'Refreshing https://www.linkedin.com/in/afrina-m via your saved HarvestAPI key...';
+          bridgeStatus.textContent = 'Refreshing https://www.linkedin.com/in/afrina-m with your saved scan key...';
           try {
             const resp = await authedFetch('/api/v3/harvest-sync', {
               method: 'POST',
@@ -3230,7 +3101,7 @@ Where is your AI workflow leaking the most time or tokens right now?`;
             showToast('✓ Refreshed your live LinkedIn profile, banner & posts!');
             await refreshUploadedFiles();
           } catch (err) {
-            bridgeStatus.textContent = `✕ HarvestAPI error: ${err.message}`;
+            bridgeStatus.textContent = `✕ Scan error: ${err.message}`;
           }
         };
 
