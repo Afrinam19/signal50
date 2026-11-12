@@ -88,6 +88,7 @@ window.Signal50Converter = (() => {
     else if (F.news) add('news_take', 1.5, 'time-sensitive wording');
     if (F.story) add('story_open', F.line.startsWith('"') || F.line.startsWith('“') ? 3 : 2, F.line.startsWith('"') || F.line.startsWith('“') ? 'opens on dialogue' : 'opens inside a moment in time');
     if (F.contrarian) add('contrarian_reveal', F.absolute ? 3 : 2, 'pushes against a common belief');
+    else if (F.absolute && /\b(only|never|no one|nobody|without)\b/i.test(F.line)) add('contrarian_reveal', 1.5, 'an absolute claim about what most people do');
     if (F.shift) add('shift_observation', 2.5, 'names a change over time');
     if (F.lines >= 2 && F.number && F.gapWords) add('scale_vs_gap', 3, 'scale fact, then a gap line');
     else if (F.number && F.lines >= 2) add('scale_vs_gap', 1, 'two lines with a number first');
@@ -241,24 +242,34 @@ window.Signal50Converter = (() => {
     if (sb >= max * 0.4) return head.slice(0, sb + 1);
     return stripEnd(head.replace(/\s+\S*$/, '')) + '.';
   }
-  function twoLines(a, b) { a = stripEnd(cap(a)); b = cap(clean(b)); if (!/[.!?:"”]$/.test(a)) a += '.'; if (!/[.!?:"”\]]$/.test(b)) b += '.'; let out = `${a}\n${b}`; if (out.length > 210) { b = fit(b, 210 - a.length - 1); out = `${a}\n${b}`; } if (out.length > 210) { a = fit(a, 120); b = fit(b, 210 - a.length - 1); out = `${a}\n${b}`; } return out; }
+  function twoLines(a, b, alt) {
+    const dot = x => /[.!?:"”\]]$/.test(x) ? x : x + '.';
+    a = dot(stripEnd(cap(a))); b = dot(cap(clean(b)));
+    let out = `${a}\n${b}`;
+    if (out.length > 210 && alt) { const b2 = dot(cap(clean(alt))); if (a.length + 1 + b2.length <= 210) return `${a}\n${b2}`; }
+    if (out.length > 210) { b = fit(b, 210 - a.length - 1); out = `${a}\n${b}`; }
+    if (out.length > 210) { a = fit(a, 120); b = fit(b, 210 - a.length - 1); out = `${a}\n${b}`; }
+    return out;
+  }
   function firstSentence(s, max = 120) { const x = sentences(s)[0] || clean(s); return x ? fit(x, max) : ''; }
   function bestFact(ex, needEntity) { const f = ex.factLines.find(f => (!needEntity || f.entity) && !/^(i|we|my|our|before you|if you|read this)\b/i.test(f.text)); return f ? f.text : ''; }
 
   function generateHooks({ techniques, ex, angle, proof, creator, max = 3 }) {
-    const th = ex.theme; const take = angle ? firstSentence(angle, 118) : ''; const proofLine = proof ? firstSentence(proof, 118) : '';
+    const th = ex.theme;
+    const whole = (txt, lim) => { const x = sentences(clean(txt))[0] || clean(txt); return x && x.length <= lim ? x : ''; };
+    const take = angle ? whole(angle, 150) : ''; const proofLine = proof ? whole(proof, 150) : '';
     const claimFor = (lim) => { if (ex.ideaFirstPerson) return th.gap; const c = clean(ex.idea || th.gap); if (c.length <= lim) return c; const f = sentences(c)[0] || c; return f.length <= lim ? f : th.gap; };
     const claimTail = (lim) => { if (ex.ideaFirstPerson) return th.gap; const ss = sentences(clean(ex.idea || '')); const last = ss[ss.length - 1] || ''; return (!last || PRONOUN_START.test(last) || last.length > lim) ? th.gap : last; };
     const gapLine = th.gap;
     const build = {
-      specific_surprise: () => { const f = bestFact(ex, true) || bestFact(ex, false); return f ? twoLines(f, take || gapLine) : null; },
+      specific_surprise: () => { const f = bestFact(ex, true) || bestFact(ex, false); return f ? twoLines(f, take || gapLine, gapLine) : null; },
       scale_vs_gap: () => { const f = bestFact(ex, false); if (!f) return null; const g = /^(and yet|yet|but|still|most|nobody|no one)\b/i.test(take) ? take : gapLine; return twoLines(f, /^(and yet|yet|but|still)\b/i.test(g) ? g : 'And yet ' + lower1(g)); },
-      stakes_first: () => twoLines(`Before you ${th.decision}, read this`, proofLine || claimFor(150)),
-      contrarian_reveal: () => twoLines(`Most ${th.audience} still think ${th.belief}`, take || `${creator ? creator + ' makes the opposite case' : 'The evidence points the other way'}: ${lower1(claimTail(110))}`),
-      shift_observation: () => twoLines(`Something changed in ${th.shift} this year`, take || claimFor(140)),
-      news_take: () => { if (!applicable('news_take', ex, angle)) return null; return twoLines(ex.hookLines[0], take || `What most people will miss: ${lower1(claimFor(120))}`); },
-      insider_access: () => twoLines(take || '[Your first-hand moment: where you saw this while building AI products]', claimFor(120)),
-      story_open: () => { const q = (angle || '').match(/["“]([^"”]{8,140})["”]/); return twoLines(q ? `"${stripEnd(q[1])}"` : (take ? take : '"[One line someone actually said to you about this]"'), claimFor(120)); }
+      stakes_first: () => twoLines(`Before you ${th.decision}, read this`, proofLine || claimFor(150), gapLine),
+      contrarian_reveal: () => twoLines(`Most ${th.audience} still think ${th.belief}`, take || `${creator ? creator + ' makes the opposite case' : 'The evidence points the other way'}: ${lower1(claimTail(110))}`, `${creator ? creator + ' makes the opposite case' : 'The evidence points the other way'}: ${lower1(gapLine)}`),
+      shift_observation: () => twoLines(`Something changed in ${th.shift} this year`, take || claimFor(140), gapLine),
+      news_take: () => { if (!applicable('news_take', ex, angle)) return null; return twoLines(ex.hookLines[0], take || `What most people will miss: ${lower1(claimFor(120))}`, `What most people will miss: ${lower1(gapLine)}`); },
+      insider_access: () => twoLines(take || '[Your first-hand moment: where you saw this while building AI products]', claimFor(120), gapLine),
+      story_open: () => { const q = (angle || '').match(/["“]([^"”]{8,140})["”]/); return twoLines(q ? `"${stripEnd(q[1])}"` : (take ? take : '"[One line someone actually said to you about this]"'), claimFor(120), gapLine); }
     };
     const out = []; const seen = new Set();
     for (const id of techniques) { if (!build[id] || out.length >= max) continue; const text = build[id](); if (!text || seen.has(text)) continue; seen.add(text); out.push({ technique: id, text, score: scoreHook(text, id) }); }
@@ -423,7 +434,7 @@ Return JSON only: {"hooks":[{"technique":"<technique id>","text":"line 1\\nline 
           <div class="font-semibold">What the post argues</div>
           <div>${esc(ex.idea)}</div>
           ${ex.points.length ? `<ol class="list-decimal pl-4 text-[var(--muted-foreground)]">${ex.points.map(p => `<li>${esc(p)}</li>`).join('')}</ol>` : ''}
-          ${ex.factLines.length ? `<div class="text-[var(--muted-foreground)]">Facts it leans on: ${ex.factLines.slice(0, 3).map(f => `<strong>${esc(f.text)}</strong>`).join(' ')}</div>` : '<div class="text-[var(--muted-foreground)]">No concrete numbers in the text we have, so the number-led hooks are skipped.</div>'}
+          ${ex.factLines.length ? `<div class="text-[var(--muted-foreground)]">Facts it leans on:</div><ul class="list-disc pl-4 text-[var(--muted-foreground)]">${ex.factLines.slice(0, 3).map(f => `<li>${esc(f.text)}</li>`).join('')}</ul>` : '<div class="text-[var(--muted-foreground)]">No concrete numbers in the text we have, so the number-led hooks are skipped.</div>'}
           ${ex.truncated ? '<div class="text-[var(--muted-foreground)]">We only hold the first 700 characters. Read the original before you publish.</div>' : ''}
         </div>
       </div>
