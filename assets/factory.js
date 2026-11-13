@@ -261,22 +261,56 @@ window.Signal50Factory = (() => {
   }
 
   function drawFooter(ctx, w, h, spec) {
-    ctx.beginPath(); ctx.arc(52, h - 36, 19, 0, Math.PI * 2); ctx.fillStyle = P.avatar; ctx.fill();
-    font(ctx, 13, 800); txt(ctx, spec.initials || 'AM', 52, h - 31, P.onAvatar, 'center');
-    font(ctx, 15, 800); txt(ctx, spec.author || 'Afrina M', 80, h - 38, P.ink);
-    font(ctx, 10, 500); txt(ctx, clip(ctx, spec.authorLine || '15+ yrs building product · Gemini & AI agents @ Google', 290), 80, h - 24, P.mute);
-    // CTA pill: "Comment  [KEY]  to get the full setup"
-    const m = /["“]([^"”]+)["”]/.exec(spec.cta || ''); const key = m ? m[1] : 'SETUP';
-    const pre = (spec.cta || 'Comment "SETUP" to get the full setup').split(/["“][^"”]+["”]/)[0].trim() || 'Comment';
-    const post = (spec.cta || '').split(/["“][^"”]+["”]/)[1]?.trim() || 'to get the full setup';
-    font(ctx, 14, 700); const preW = ctx.measureText(pre).width, postW = ctx.measureText(post).width;
-    font(ctx, 14, 900); const keyW = ctx.measureText(key).width + 22;
-    const pillW = preW + keyW + postW + 50, px = w - 30 - pillW, py = h - 56, ph = 40;
-    shadowRR(ctx, px, py, pillW, ph, 20, P.primary, P.glow ? 20 : 10, 4, P.glow);
-    font(ctx, 14, 700); txt(ctx, pre, px + 18, py + 25, P.onPrimary);
-    fillRR(ctx, px + 18 + preW + 8, py + 8, keyW, 24, 12, P.keyBg);
-    font(ctx, 14, 900); txt(ctx, key, px + 18 + preW + 8 + keyW / 2, py + 25, P.keyFg, 'center');
-    font(ctx, 14, 700); txt(ctx, post, px + 18 + preW + 8 + keyW + 8, py + 25, P.onPrimary);
+    const ctaRaw = String(spec.cta != null ? spec.cta : 'https://www.linkedin.com/in/afrina-m/').trim();
+    const py = h - 55, ph = 38;
+    let pillRightLeftEdge = w - 24;
+
+    if (ctaRaw) {
+      const m = /^([^"“]*?)["“]([^"”]+)["”](.*)$/.exec(ctaRaw);
+      if (m) {
+        const pre = m[1].trim(), key = m[2].trim(), post = m[3].trim();
+        font(ctx, 13, 700); const preW = pre ? ctx.measureText(pre).width : 0, postW = post ? ctx.measureText(post).width : 0;
+        font(ctx, 13, 900); const keyW = ctx.measureText(key).width + 20;
+        const pillW = preW + keyW + postW + (pre ? 8 : 0) + (post ? 8 : 0) + 32;
+        const px = w - 24 - pillW;
+        pillRightLeftEdge = px;
+        shadowRR(ctx, px, py, pillW, ph, 19, P.primary, P.glow ? 18 : 10, 4, P.glow);
+        let cx = px + 16;
+        if (pre) { font(ctx, 13, 700); txt(ctx, pre, cx, py + 24, P.onPrimary); cx += preW + 8; }
+        fillRR(ctx, cx, py + 7, keyW, 24, 12, P.keyBg);
+        font(ctx, 13, 900); txt(ctx, key, cx + keyW / 2, py + 24, P.keyFg, 'center');
+        cx += keyW + (post ? 8 : 0);
+        if (post) { font(ctx, 13, 700); txt(ctx, post, cx, py + 24, P.onPrimary); }
+      } else {
+        const isLinkedIn = /linkedin\.com/i.test(ctaRaw);
+        const badgeW = isLinkedIn ? 22 : 0;
+        let fs = 12;
+        font(ctx, fs, 700);
+        while (fs > 10 && ctx.measureText(ctaRaw).width + badgeW + (badgeW ? 8 : 0) + 28 > 320) {
+          fs -= 0.5;
+          font(ctx, fs, 700);
+        }
+        const textW = ctx.measureText(ctaRaw).width;
+        const pillW = badgeW + (badgeW ? 8 : 0) + textW + (badgeW ? 26 : 30);
+        const px = w - 24 - pillW;
+        pillRightLeftEdge = px;
+        shadowRR(ctx, px, py, pillW, ph, 19, P.primary, P.glow ? 18 : 10, 4, P.glow);
+        let cx = px + (badgeW ? 9 : 15);
+        if (badgeW) {
+          fillRR(ctx, cx, py + 8, badgeW, 22, 6, P.keyBg);
+          font(ctx, 12, 900); txt(ctx, 'in', cx + badgeW / 2, py + 23, P.keyFg, 'center');
+          cx += badgeW + 8;
+        }
+        font(ctx, fs, 700); txt(ctx, ctaRaw, cx, py + 23.5, P.onPrimary);
+      }
+    }
+
+    const avatarX = 41, avatarY = h - 36, textX = 67;
+    const maxLeftW = Math.max(180, pillRightLeftEdge - textX - 14);
+    ctx.beginPath(); ctx.arc(avatarX, avatarY, 18, 0, Math.PI * 2); ctx.fillStyle = P.avatar; ctx.fill();
+    font(ctx, 12.5, 800); txt(ctx, spec.initials || 'AM', avatarX, avatarY + 4.5, P.onAvatar, 'center');
+    font(ctx, 13.5, 800); txt(ctx, clip(ctx, spec.author || 'Afrina M - AI PM @ Google', maxLeftW), textX, h - 39, P.ink);
+    font(ctx, 11, 600); txt(ctx, clip(ctx, spec.authorLine || 'Follow along for Build with Antigravity Series', maxLeftW), textX, h - 23, P.mute);
   }
 
   const LAYOUT = {
@@ -331,7 +365,7 @@ window.Signal50Factory = (() => {
 
   const PRESETS = {
     deck: {
-      brand: 'BUILT WITH ANTIGRAVITY', title: 'The {Enterprise Deck} Factory', subtitle: '1 orchestrator for 14 AI workers. Rough notes → board-ready Google Slides in 6 minutes.', cta: 'Comment "DECK" to get the full setup',
+      brand: 'BUILT WITH ANTIGRAVITY', title: 'The {Enterprise Deck} Factory', subtitle: '1 orchestrator for 14 AI workers. Rough notes → board-ready Google Slides in 6 minutes.', cta: 'https://www.linkedin.com/in/afrina-m/',
       spec: `HUB: Deck Orchestrator | routes every brief to the right worker, keeps brand + facts locked | Antigravity, Gemini, MCP, Drive, Slides, Calendar, GitHub
 Intake | one worker per source, each with its own context | Drive, Gmail, Meet, NotebookLM, Sheets, Slack, Figma, Jira | Transcript, CSV, Notes, Figma, Jira, Slack, Docs, Email
 Fact Check | every number traced to a source, or flagged | BigQuery, Sheets, Gemini | Auditor, Pricing
@@ -340,7 +374,7 @@ Design System | brand tokens, grid and typography enforced | Figma, Imagen, SVG 
 Ship + QA | native editable Slides, speaker notes, human review | Slides, Docs, Playwright, GitHub | Builder, QA, Export`
     },
     gtm: {
-      brand: 'BUILT WITH ANTIGRAVITY', title: 'The {Release-to-Demo} Factory', subtitle: '1 orchestrator for 12 AI workers. GitHub release notes → live customer demo in 10 minutes.', cta: 'Comment "DEMO" to get the full setup',
+      brand: 'BUILT WITH ANTIGRAVITY', title: 'The {Release-to-Demo} Factory', subtitle: '1 orchestrator for 12 AI workers. GitHub release notes → live customer demo in 10 minutes.', cta: 'https://www.linkedin.com/in/afrina-m/',
       spec: `HUB: GTM Orchestrator | reads every merged PR, decides what customers should see | Antigravity, Gemini, MCP, GitHub, Calendar, Slack
 Release Intake | one worker per repo and product area | GitHub, Jira, Linear, Slack, Docs | Core, API, Console, Mobile, Billing, Infra, SDK, Docs
 Value Lens | rewrites each change for buyer, user and partner | Gemini, Docs, Sheets | CFO, User, Partner
@@ -349,7 +383,7 @@ Enablement | 1-page brief, FAQ, objection handling | Docs, Slides, Gmail | Brief
 Distribution | sales Slack, CRM notes, customer email | Slack, Salesforce, Gmail, LinkedIn | AE Feed, CRM, Email`
     },
     agency: {
-      brand: 'BUILT WITH ANTIGRAVITY', title: 'The {Agency Margin} Factory', subtitle: '1 orchestrator for 15 AI workers. A 15-hour client deliverable in 12 minutes, with human QA.', cta: 'Comment "MARGIN" to get the full setup',
+      brand: 'BUILT WITH ANTIGRAVITY', title: 'The {Agency Margin} Factory', subtitle: '1 orchestrator for 15 AI workers. A 15-hour client deliverable in 12 minutes, with human QA.', cta: 'https://www.linkedin.com/in/afrina-m/',
       spec: `HUB: Account Orchestrator | one brain per client: brand, history, approvals | Antigravity, Gemini, MCP, Drive, Slack, HubSpot
 Client Ops | one worker per client, with its own context | Slack, Gmail, Drive, Notion, HubSpot, Calendar, Meet, Docs | Acme, Northwind, Globex, Initech, Umbrella, Hooli, Vandelay, Private
 Research | positioning audit, competitor gaps, search demand | Google Search, NotebookLM, Perplexity | Audit, Competitors
@@ -358,7 +392,7 @@ Reporting | daily recap: sent, replies, pipeline | Sheets, Looker, Slack | Recap
 QA Gate | human approval before anything ships | Slack, Docs, Gmail | Reviewer, Legal, Client`
     },
     spotify: {
-      brand: 'PLAYBOOK · CREDIT: AAKASH GUPTA / SPOTIFY', title: 'The {Token Budget} Factory', subtitle: '1 cost gate for 13 AI workers. The 5 moves behind a 90% cut in the agent bill.', cta: 'Comment "TOKENS" to get the checklist',
+      brand: 'PLAYBOOK · CREDIT: AAKASH GUPTA / SPOTIFY', title: 'The {Token Budget} Factory', subtitle: '1 cost gate for 13 AI workers. The 5 moves behind a 90% cut in the agent bill.', cta: 'https://www.linkedin.com/in/afrina-m/',
       spec: `HUB: Cost Gate | every agent run passes one budget check before it reads anything | Antigravity, Gemini, MCP, BigQuery, Sheets
 Trace Intake | split last week's traces: reading vs reasoning | Cloud Logging, BigQuery, Sheets, Looker | Reads, Reasoning, Tool Calls, Retries, Caching, Errors, Latency, Cost
 Cheap Readers | files over ~350 lines go to a small model | Gemini Flash, Flash-Lite | Reader A, Reader B
@@ -367,7 +401,7 @@ Budget | a cost ceiling and an alert for every workflow | Sheets, Looker, Slack 
 Enforce in Code | a hook that blocks the read, not a prompt note | GitHub, Hooks, CI, MCP | Pre-read Hook, Linter, CI`
     },
     evals: {
-      brand: 'PLAYBOOK · CREDIT: HAMEL HUSAIN', title: 'The {Evals for PMs} Factory', subtitle: '1 eval owner (you) and 14 AI workers. No code. 6 steps from real asks to pass/fail.', cta: 'Comment "EVALS" to get the template',
+      brand: 'PLAYBOOK · CREDIT: HAMEL HUSAIN', title: 'The {Evals for PMs} Factory', subtitle: '1 eval owner (you) and 14 AI workers. No code. 6 steps from real asks to pass/fail.', cta: 'https://www.linkedin.com/in/afrina-m/',
       spec: `HUB: Eval Owner (you) | reads outputs, writes pass/fail, decides what ships | Sheets, Docs, Gemini, MCP, GitHub
 Real Asks | 30 real prompts, including the messy ones | Gmail, Slack, Support, Forms, Docs | Sales, Support, Ops, Legal, Finance, HR, Eng, Exec
 Read Outputs | note what went wrong, in plain words | Sheets, Docs | Reader, Notes
@@ -376,7 +410,7 @@ Pass / Fail | "Did it cite the source?" yes or no | Sheets, GitHub, CI | Asserti
 Human Check | where a wrong answer costs the most | Slack, Docs, Gmail | Reviewer, Escalation, Sign-off`
     },
     humancheck: {
-      brand: 'PLAYBOOK · CREDIT: ETHAN MOLLICK', title: 'The {Human Check} Factory', subtitle: '1 queue owner for 13 AI workers. "A human checks everything" is a queue, not a quality plan.', cta: 'Comment "CHECK" to get the playbook',
+      brand: 'PLAYBOOK · CREDIT: ETHAN MOLLICK', title: 'The {Human Check} Factory', subtitle: '1 queue owner for 13 AI workers. "A human checks everything" is a queue, not a quality plan.', cta: 'https://www.linkedin.com/in/afrina-m/',
       spec: `HUB: Queue Owner | routes each output to sample, review or auto-ship by risk | Antigravity, Gemini, MCP, Sheets, Slack
 Output Intake | one worker per workflow feeding the queue | Gmail, Docs, Slides, Sheets, GitHub, Slack, Support, Forms | Email, Memo, Deck, Report, Code, Reply, Ticket, Form
 Risk Score | cost of a wrong answer, per output type | Gemini, Sheets | Scorer, Policy

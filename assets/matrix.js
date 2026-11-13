@@ -279,15 +279,16 @@ window.Signal50Matrix = (() => {
       by2 += bannerH + 12;
     }
 
-    // footer — CTA pill (right) first, so the sources line can use whatever width is left
+    // footer — link pill (right) first, so the author + sources lines can use whatever width is left
     const fy = H - bottomPad;
-    const cta = spec.cta || 'Save this 🩵 · Full breakdown in the post';
+    const cta = spec.cta || 'https://www.linkedin.com/in/afrina-m/';
     const [pillText, rest] = cta.includes('·') ? cta.split('·').map(s => s.trim()) : [cta, ''];
-    font(ctx, 15, 500); const restW = rest ? ctx.measureText(rest).width : 0;
-    font(ctx, 15, 800); const pw = ctx.measureText(pillText).width + 26; const px = W - M - restW - (rest ? 10 : 0) - pw;
+    font(ctx, 14, 500); const restW = rest ? ctx.measureText(rest).width : 0;
+    font(ctx, 14, 800); const pw = ctx.measureText(pillText).width + 26; const px = W - M - restW - (rest ? 10 : 0) - pw;
     fillRR(ctx, px, fy - 34, pw, 32, 16, '#DCEEFF'); txt(ctx, pillText, px + pw / 2, fy - 17.5, INK, 'center', 'middle');
-    if (rest) { font(ctx, 15, 500); txt(ctx, rest, W - M, fy - 17.5, INK, 'right', 'middle'); }
-    font(ctx, 17, 800); txt(ctx, clip1(ctx, spec.authorLine || 'Afrina M · How AI products really get made', px - M - 16), M, fy - 26, INK);
+    if (rest) { font(ctx, 14, 500); txt(ctx, rest, W - M, fy - 17.5, INK, 'right', 'middle'); }
+    const authFit = fitLine(ctx, spec.authorLine || 'Afrina M - AI PM @ Google | Follow along for Build with Antigravity Series', px - M - 16, 16, 11.5, 800);
+    txt(ctx, authFit.text, M, fy - 26, INK);
     font(ctx, 11.5, 500); txt(ctx, clip1(ctx, spec.sources || 'Sources: company help centers, launch posts, press coverage. Product images: official brand assets, © their owners.', px - M - 16), M, fy - 7, '#7A889E');
     ctx.restore();
   }
@@ -297,7 +298,7 @@ window.Signal50Matrix = (() => {
       brand: 'AI PM CHEAT SHEET · PERSONAL AGENTS',
       title: 'Same 5 decisions.||{Five different answers.}',
       subtitle: 'How Meta, Anthropic, OpenAI, a startup, and open source each built a personal agent.',
-      cta: 'Save this 🩵 · Full breakdown in the post',
+      cta: 'https://www.linkedin.com/in/afrina-m/',
       spec: `COLS: Muse (Meta) #0866FF | Claude Duet (Anthropic) #D97757 | dots (OpenAI) #6D5DF6 | Instinct (Startup · Spear Street) #E08A00 | OpenClaw · Hermes (Open source) #E5484D
 CORNER: What each team chose
 CHIP: Snapshot · Nov 10, 2026

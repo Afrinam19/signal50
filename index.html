@@ -429,8 +429,8 @@
               <input id="gif-kicker" type="text" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" />
             </div>
             <div>
-              <label for="gif-cta" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Footer CTA Pill (<code>Comment "KEY" to …</code>)</label>
-              <input id="gif-cta" type="text" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" placeholder='Comment "DECK" to get the full setup' />
+              <label for="gif-cta" class="block text-xs font-semibold text-[var(--muted-foreground)] mb-1">Footer Link Pill</label>
+              <input id="gif-cta" type="text" value="https://www.linkedin.com/in/afrina-m/" class="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] p-2 text-sm" placeholder="https://www.linkedin.com/in/afrina-m/" />
             </div>
           </div>
 
@@ -1944,9 +1944,9 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           brand: (v('gif-kicker') || 'BUILT WITH ANTIGRAVITY').toUpperCase().slice(0, 60),
           title: v('gif-headline') || 'The {Enterprise Deck} Factory',
           subtitle: v('gif-subtitle') || '1 orchestrator for 14 AI workers. Rough notes → board-ready Slides in 6 minutes.',
-          cta: v('gif-cta') || 'Comment "SETUP" to get the full setup',
-          author: 'Afrina M', initials: 'AM',
-          authorLine: '15+ yrs building product · Gemini & AI agents @ Google',
+          cta: v('gif-cta') || 'https://www.linkedin.com/in/afrina-m/',
+          author: 'Afrina M - AI PM @ Google', initials: 'AM',
+          authorLine: 'Follow along for Build with Antigravity Series',
           hub: parsed.hub, stations: parsed.stations,
           theme: resolvedLook().theme
         };
@@ -1983,7 +1983,8 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           brand: (v('gif-kicker') || 'AI PM CHEAT SHEET').toUpperCase().slice(0, 60),
           title: v('gif-headline') || 'Same {5 decisions}.||Five different answers.',
           subtitle: v('gif-subtitle') || '',
-          cta: v('gif-cta') || 'Save this 🩵 · Full breakdown in the post',
+          cta: v('gif-cta') || 'https://www.linkedin.com/in/afrina-m/',
+          authorLine: 'Afrina M - AI PM @ Google | Follow along for Build with Antigravity Series',
           ...MATRIX.parseSpec(v('gif-steps'))
         };
       }
@@ -2106,11 +2107,15 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           }
         });
 
+        const ctaUrl = (document.getElementById('gif-cta').value || 'https://www.linkedin.com/in/afrina-m/').trim();
         ctx.fillStyle = '#161920';
-        ctx.fillRect(48, h - 86, w - 96, 44);
+        ctx.fillRect(48, h - 90, w - 96, 52);
         ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 17px monospace';
-        ctx.fillText('AFRINA M · 15+ YRS BUILDING PRODUCT · GEMINI & AGENTS @ GOOGLE', 66, h - 58);
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText('Afrina M - AI PM @ Google | Follow along for Build with Antigravity Series', 64, h - 67);
+        ctx.fillStyle = '#FFD60A';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText(ctaUrl, 64, h - 47);
       }
 
       function loadGifPreset(key) {
@@ -2137,7 +2142,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           set('gif-kicker', pr.kicker);
           set('gif-headline', pr.headline);
           set('gif-subtitle', (fp && fp.subtitle) || '');
-          set('gif-cta', (fp && fp.cta) || 'Save this 🩵 · Full breakdown in the post');
+          set('gif-cta', (fp && fp.cta) || 'https://www.linkedin.com/in/afrina-m/');
           set('gif-steps', [
             `COLS: ${pr.headline.replace(/[{}]/g, '')} #0866FF`,
             'CORNER: The playbook',
@@ -2151,6 +2156,8 @@ Building AI products people actually adopt, or navigating your next move? Let's 
           if (extras) {
             set('gif-subtitle', extras.subtitle);
             set('gif-cta', extras.cta);
+          } else {
+            set('gif-cta', 'https://www.linkedin.com/in/afrina-m/');
           }
         }
         gifAnimFrame = 0;
@@ -2473,7 +2480,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             document.getElementById('gif-kicker').value = 'BUILT WITH ANTIGRAVITY · LIVE BUILD';
             document.getElementById('gif-headline').value = 'The {Live Build} Factory';
             document.getElementById('gif-subtitle').value = `1 orchestrator, 12 AI workers. ${pain.slice(0, 70)}`;
-            document.getElementById('gif-cta').value = 'Comment "BUILD" to get the full setup';
+            document.getElementById('gif-cta').value = 'https://www.linkedin.com/in/afrina-m/';
             document.getElementById('gif-steps').value = [
               'HUB: Build Orchestrator | turns rough notes into a shipped, reviewed deliverable | Antigravity, Gemini, MCP, Drive, Slides, GitHub',
               `Bottleneck | ${pain} | Drive, Gmail, Meet, Slack, Sheets, Jira, Docs, Notion | Notes, Email, Calls, Tickets, CSV, Docs, Slack, Figma`,
@@ -2486,7 +2493,7 @@ Building AI products people actually adopt, or navigating your next move? Let's 
             document.getElementById('gif-kicker').value = 'BUILT WITH ANTIGRAVITY · LIVE BUILD';
             document.getElementById('gif-headline').value = 'Before the build.||{After the build.}';
             document.getElementById('gif-subtitle').value = pain.slice(0, 110);
-            document.getElementById('gif-cta').value = 'Comment "BUILD" to get the full setup';
+            document.getElementById('gif-cta').value = 'https://www.linkedin.com/in/afrina-m/';
             document.getElementById('gif-steps').value = [
               'COLS: Today (manual) #E5484D | With the Antigravity build #0E9F6E',
               'CORNER: What changed',
