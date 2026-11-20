@@ -41,7 +41,7 @@ jobs:
           git config user.email "signal50-scout@users.noreply.github.com"
           git add data/outliers.json
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
-          OK=$(node -e "const d=require('./data/outliers.json');console.log(d.summary.ok+'/'+d.summary.creators+' ok · '+d.summary.outliers+' outliers · '+d.summary.authwalled+' authwalled')")
+          OK=$(node -e "const d=require('./data/outliers.json');console.log(d.summary.ok+'/'+d.summary.creators+' ok · '+d.summary.outliers+' outliers · '+d.summary.stale+' stale · '+d.summary.failed+' failed')")
           git commit -m "scout: refresh outliers ($OK)"
           git pull --rebase origin main
           git push

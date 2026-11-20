@@ -111,11 +111,24 @@ async function fetchHarvest(handle, maxPosts = 100) {
   const all = [];
   for (let page = 1; page <= 5 && all.length < maxPosts; page++) {
     const url = `https://api.harvestapi.io/linkedin/profile-posts?profile=${encodeURIComponent(handle)}&page=${page}`;
-    const res = await fetch(url, { headers: { 'X-API-Key': HARVEST_KEY, accept: 'application/json' } });
+    let res = null, lastErr = null;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        res = await fetch(url, { headers: { 'X-API-Key': HARVEST_KEY, accept: 'application/json' }, signal: AbortSignal.timeout(30000) });
+        if (res.status >= 500 && attempt < 3) { await sleep(1500 * attempt); continue; }
+        lastErr = null;
+        break;
+      } catch (e) {
+        lastErr = e;
+        if (attempt < 3) await sleep(1500 * attempt);
+      }
+    }
+    if (lastErr || !res) return { status: all.length ? 'ok' : `harvest_net_${(lastErr && (lastErr.cause?.code || lastErr.name)) || 'error'}`, posts: all };
     if (res.status === 401 || res.status === 403) return { status: 'harvest_unauthorized', posts: [] };
     if (res.status === 402 || res.status === 429) return { status: `harvest_${res.status === 402 ? 'no_credits' : 'rate_limited'}`, posts: all };
     if (!res.ok) return { status: `harvest_http_${res.status}`, posts: all };
-    const data = await res.json();
+    let data;
+    try { data = await res.json(); } catch (e) { return { status: all.length ? 'ok' : 'harvest_bad_json', posts: all }; }
     const els = data.elements || data.posts || data.items || data.data || [];
     if (!Array.isArray(els) || !els.length) break;
     for (const e of els) {
