@@ -53,7 +53,7 @@ async function fetchActivity(handle) {
   const MAX = 5;
   for (let attempt = 1; attempt <= MAX; attempt++) {
     try {
-      const res = await fetch(url, { headers: { 'user-agent': UA, 'accept-language': 'en-US,en;q=0.9', accept: 'text/html,application/xhtml+xml' }, redirect: 'follow' });
+      const res = await fetch(url, { headers: { 'user-agent': UA, 'accept-language': 'en-US,en;q=0.9', accept: 'text/html,application/xhtml+xml' }, redirect: 'follow', signal: AbortSignal.timeout(30000) });
       const html = await res.text();
       const walled = res.status === 999 || res.status === 429 || /\/authwall|checkpoint\/challenge|\/uas\/login/.test(res.url) || (html.length < 40000 && /authwall|Sign in to LinkedIn/i.test(html));
       if (res.status === 404) return { status: 'not_found', html: '' };
@@ -111,24 +111,34 @@ async function fetchHarvest(handle, maxPosts = 100) {
   const all = [];
   for (let page = 1; page <= 5 && all.length < maxPosts; page++) {
     const url = `https://api.harvestapi.io/linkedin/profile-posts?profile=${encodeURIComponent(handle)}&page=${page}`;
-    let res = null, lastErr = null;
+    let data = null, fatalStatus = null, lastErr = null;
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
-        res = await fetch(url, { headers: { 'X-API-Key': HARVEST_KEY, accept: 'application/json' }, signal: AbortSignal.timeout(30000) });
-        if (res.status >= 500 && attempt < 3) { await sleep(1500 * attempt); continue; }
+        const res = await fetch(url, { headers: { 'X-API-Key': HARVEST_KEY, accept: 'application/json' }, signal: AbortSignal.timeout(30000) });
+        if (res.status === 401 || res.status === 403) { fatalStatus = 'harvest_unauthorized'; break; }
+        if (res.status === 402) { fatalStatus = 'harvest_no_credits'; break; }
+        if ((res.status === 429 || res.status >= 500) && attempt < 3) {
+          lastErr = new Error(`HTTP ${res.status}`);
+          await sleep(1500 * attempt + Math.random() * 500);
+          continue;
+        }
+        if (res.status === 429) { fatalStatus = 'harvest_rate_limited'; break; }
+        if (!res.ok) { fatalStatus = `harvest_http_${res.status}`; break; }
+        // Read + parse inside the retry loop because undici ECONNRESET often fires mid-body stream
+        data = await res.json();
         lastErr = null;
         break;
       } catch (e) {
         lastErr = e;
-        if (attempt < 3) await sleep(1500 * attempt);
+        if (attempt < 3) await sleep(1500 * attempt + Math.random() * 500);
       }
     }
-    if (lastErr || !res) return { status: all.length ? 'ok' : `harvest_net_${(lastErr && (lastErr.cause?.code || lastErr.name)) || 'error'}`, posts: all };
-    if (res.status === 401 || res.status === 403) return { status: 'harvest_unauthorized', posts: [] };
-    if (res.status === 402 || res.status === 429) return { status: `harvest_${res.status === 402 ? 'no_credits' : 'rate_limited'}`, posts: all };
-    if (!res.ok) return { status: `harvest_http_${res.status}`, posts: all };
-    let data;
-    try { data = await res.json(); } catch (e) { return { status: all.length ? 'ok' : 'harvest_bad_json', posts: all }; }
+    if (fatalStatus === 'harvest_unauthorized') return { status: 'harvest_unauthorized', posts: [] };
+    if (fatalStatus) return { status: all.length ? 'ok' : fatalStatus, posts: all };
+    if (lastErr || !data) {
+      const code = (lastErr && (lastErr.cause?.code || lastErr.name)) || 'error';
+      return { status: all.length ? 'ok' : `harvest_net_${code}`, posts: all };
+    }
     const els = data.elements || data.posts || data.items || data.data || [];
     if (!Array.isArray(els) || !els.length) break;
     for (const e of els) {
@@ -189,28 +199,35 @@ async function main() {
   for (const c of targets) {
     process.stdout.write(`• ${c.name} (${c.handle}) … `);
     let status = 'skipped', posts = [], source = null, followers = null;
-    if (HARVEST_KEY) {
-      const r = await fetchHarvest(c.handle);
-      status = r.status; posts = r.posts; source = 'harvestapi';
-      if (status === 'harvest_unauthorized') { console.log('HARVEST KEY REJECTED — aborting'); process.exit(2); }
-    }
-    if (status !== 'ok' && publicUsed < PUBLIC_MAX) {
-      publicUsed++;
-      const r = await fetchActivity(c.handle);
-      if (r.status === 'ok') { status = 'ok'; posts = parsePosts(r.html, c.handle); source = 'public'; followers = (/([\d,\.]+[KkMm]?)\s+followers/.exec(r.html) || [])[1] || null; }
-      else status = status === 'skipped' ? r.status : `${status}+${r.status}`;
-      await sleep(DELAY + Math.random() * 1500);
-    }
-    if (status !== 'ok') {
-      console.log(status.toUpperCase());
+    try {
+      if (HARVEST_KEY) {
+        const r = await fetchHarvest(c.handle);
+        status = r.status; posts = r.posts; source = 'harvestapi';
+        if (status === 'harvest_unauthorized') { console.log('HARVEST KEY REJECTED — aborting'); process.exit(2); }
+      }
+      if (status !== 'ok' && publicUsed < PUBLIC_MAX) {
+        publicUsed++;
+        const r = await fetchActivity(c.handle);
+        if (r.status === 'ok') { status = 'ok'; posts = parsePosts(r.html, c.handle); source = 'public'; followers = (/([\d,\.]+[KkMm]?)\s+followers/.exec(r.html) || [])[1] || null; }
+        else status = status === 'skipped' ? r.status : `${status}+${r.status}`;
+        await sleep(DELAY + Math.random() * 1500);
+      }
+      if (status !== 'ok') {
+        console.log(status.toUpperCase());
+        const prev = previous[c.handle];
+        creators.push(prev && prev.posts?.length ? { ...prev, status: `stale:${status}` } : { ...c, status, source, n: 0, median: 0, mad: 0, posts: [] });
+        continue;
+      }
+      const scored = score({ ...c, status: 'ok', source, followers: followers || previous[c.handle]?.followers || null, scoutedAt: new Date().toISOString() }, posts);
+      const o = scored.posts.filter(p => p.tier?.startsWith('OUTLIER')).length;
+      console.log(`${source} · ${scored.postsFetched} posts · baseline n=${scored.n} median=${scored.median} MAD=${scored.mad} · ${o ? `★ ${o} OUTLIER` : 'no outlier'}`);
+      creators.push(scored);
+    } catch (err) {
+      const code = err?.cause?.code || err?.name || 'error';
+      console.log(`ERROR (${code}: ${err?.message || err})`);
       const prev = previous[c.handle];
-      creators.push(prev && prev.posts?.length ? { ...prev, status: `stale:${status}` } : { ...c, status, source, n: 0, median: 0, mad: 0, posts: [] });
-      continue;
+      creators.push(prev && prev.posts?.length ? { ...prev, status: `stale:err_${code}` } : { ...c, status: `err_${code}`, source, n: 0, median: 0, mad: 0, posts: [] });
     }
-    const scored = score({ ...c, status: 'ok', source, followers: followers || previous[c.handle]?.followers || null, scoutedAt: new Date().toISOString() }, posts);
-    const o = scored.posts.filter(p => p.tier?.startsWith('OUTLIER')).length;
-    console.log(`${source} · ${scored.postsFetched} posts · baseline n=${scored.n} median=${scored.median} MAD=${scored.mad} · ${o ? `★ ${o} OUTLIER` : 'no outlier'}`);
-    creators.push(scored);
   }
   const outliers = creators.flatMap(c => (c.posts || []).filter(p => p.tier).map(p => ({ creator: c.name, handle: c.handle, ring: c.ring, role: c.role || '', followers: c.followers, baselineMedian: c.median, baselineMad: c.mad, baselineN: c.n, source: c.source, ...p })))
     .sort((a, b) => (b.tier.startsWith('OUTLIER') - a.tier.startsWith('OUTLIER')) || (b.mult - a.mult));
