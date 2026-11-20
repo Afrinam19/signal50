@@ -33,7 +33,7 @@ const DELAY = Number(args['delay-ms'] || 2500);
 const HARVEST_KEY = process.env.HARVEST_API_KEY || '';
 // On cloud runners, unauthenticated LinkedIn guest scraping always hits HTTP 429/999; skip it when HarvestAPI is active.
 const PUBLIC_MAX = args['public-max'] != null ? Number(args['public-max']) : (HARVEST_KEY ? 0 : 5);
-const CONCURRENCY = Math.max(1, Number(args.concurrency || (HARVEST_KEY ? 4 : 1)));
+const CONCURRENCY = Math.max(1, Number(args.concurrency || (HARVEST_KEY ? 2 : 1)));
 const MAX_MINUTES = Number(args['max-minutes'] || 18);
 const ONLY = args.only ? String(args.only).split(',').map(s => s.trim()) : null;
 
@@ -117,7 +117,7 @@ async function fetchHarvest(handle, maxPosts = 100) {
     const url = `https://api.harvestapi.io/linkedin/profile-posts?profile=${encodeURIComponent(handle)}&page=${page}`;
     // Don't burn 90s retrying trailing pages once we already have a strong statistical baseline (>= 25 posts).
     const maxAttempts = page === 1 ? 3 : (all.length >= 25 ? 1 : 2);
-    const timeoutMs = page === 1 ? 25000 : 20000;
+    const timeoutMs = page === 1 ? 45000 : 25000;
     let data = null, fatalStatus = null, lastErr = null;
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
