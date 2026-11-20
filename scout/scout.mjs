@@ -30,9 +30,12 @@ const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..')
 const args = Object.fromEntries(process.argv.slice(2).map((a, i, arr) => a.startsWith('--') ? [a.slice(2), arr[i + 1] && !arr[i + 1].startsWith('--') ? arr[i + 1] : true] : []).filter(Boolean));
 const OUT = path.resolve(ROOT, args.out || 'data/outliers.json');
 const DELAY = Number(args['delay-ms'] || 2500);
-const PUBLIC_MAX = Number(args['public-max'] ?? 5);
-const ONLY = args.only ? String(args.only).split(',').map(s => s.trim()) : null;
 const HARVEST_KEY = process.env.HARVEST_API_KEY || '';
+// On cloud runners, unauthenticated LinkedIn guest scraping always hits HTTP 429/999; skip it when HarvestAPI is active.
+const PUBLIC_MAX = args['public-max'] != null ? Number(args['public-max']) : (HARVEST_KEY ? 0 : 5);
+const CONCURRENCY = Math.max(1, Number(args.concurrency || (HARVEST_KEY ? 4 : 1)));
+const MAX_MINUTES = Number(args['max-minutes'] || 18);
+const ONLY = args.only ? String(args.only).split(',').map(s => s.trim()) : null;
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
 const GATES = { mult: 3.0, z: 2.5, watch: 1.5, minN: 4 };
@@ -109,17 +112,21 @@ const classify = text => ANNOUNCE_RE.test((text || '').slice(0, 400)) ? 'announc
 /** HarvestAPI profile-posts → normalised post records (same shape as parsePosts). Field names mapped defensively. */
 async function fetchHarvest(handle, maxPosts = 100) {
   const all = [];
+  const seenIds = new Set();
   for (let page = 1; page <= 5 && all.length < maxPosts; page++) {
     const url = `https://api.harvestapi.io/linkedin/profile-posts?profile=${encodeURIComponent(handle)}&page=${page}`;
+    // Don't burn 90s retrying trailing pages once we already have a strong statistical baseline (>= 25 posts).
+    const maxAttempts = page === 1 ? 3 : (all.length >= 25 ? 1 : 2);
+    const timeoutMs = page === 1 ? 25000 : 20000;
     let data = null, fatalStatus = null, lastErr = null;
-    for (let attempt = 1; attempt <= 3; attempt++) {
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
-        const res = await fetch(url, { headers: { 'X-API-Key': HARVEST_KEY, accept: 'application/json' }, signal: AbortSignal.timeout(30000) });
+        const res = await fetch(url, { headers: { 'X-API-Key': HARVEST_KEY, accept: 'application/json' }, signal: AbortSignal.timeout(timeoutMs) });
         if (res.status === 401 || res.status === 403) { fatalStatus = 'harvest_unauthorized'; break; }
         if (res.status === 402) { fatalStatus = 'harvest_no_credits'; break; }
-        if ((res.status === 429 || res.status >= 500) && attempt < 3) {
+        if ((res.status === 429 || res.status >= 500) && attempt < maxAttempts) {
           lastErr = new Error(`HTTP ${res.status}`);
-          await sleep(1500 * attempt + Math.random() * 500);
+          await sleep(1200 * attempt + Math.random() * 600);
           continue;
         }
         if (res.status === 429) { fatalStatus = 'harvest_rate_limited'; break; }
@@ -130,7 +137,7 @@ async function fetchHarvest(handle, maxPosts = 100) {
         break;
       } catch (e) {
         lastErr = e;
-        if (attempt < 3) await sleep(1500 * attempt + Math.random() * 500);
+        if (attempt < maxAttempts) await sleep(1200 * attempt + Math.random() * 600);
       }
     }
     if (fatalStatus === 'harvest_unauthorized') return { status: 'harvest_unauthorized', posts: [] };
@@ -141,6 +148,7 @@ async function fetchHarvest(handle, maxPosts = 100) {
     }
     const els = data.elements || data.posts || data.items || data.data || [];
     if (!Array.isArray(els) || !els.length) break;
+    let added = 0;
     for (const e of els) {
       const eng = e.engagement || e.socialActivity || e.stats || {};
       const reactions = Number(eng.likes ?? eng.reactions ?? eng.numLikes ?? e.likes ?? e.reactions ?? e.numLikes ?? 0);
@@ -152,15 +160,20 @@ async function fetchHarvest(handle, maxPosts = 100) {
       let at = ts ? new Date(typeof ts === 'number' && ts < 1e12 ? ts * 1000 : ts) : null;
       const idm = /activity[-:](\d{15,})/.exec(url) || /(\d{15,})/.exec(String(e.id || e.urn || ''));
       if ((!at || isNaN(at)) && idm) at = postedAt(idm[1]);
+      const id = idm ? idm[1] : String(e.id || url);
+      if (id && seenIds.has(id)) continue;
+      if (id) seenIds.add(id);
       const authorHandle = String(e.author?.publicIdentifier || e.author?.username || e.author?.linkedinUrl || e.author?.url || '').split('/in/').pop().replace(/\/.*$/, '').toLowerCase();
       const isRepost = Boolean(e.repost || e.resharedPost || e.isRepost || /reposted|reshare/i.test(e.type || e.postType || ''));
       const isOwn = !isRepost && (!authorHandle || authorHandle === handle.toLowerCase());
       const media = e.document || e.postDocument ? 'document' : (e.video || e.postVideo ? 'video' : (Array.isArray(e.postImages) && e.postImages.length || e.image || e.postImage ? 'image' : (e.article ? 'article' : 'text')));
-      all.push({ id: idm ? idm[1] : String(e.id || url), url, author: authorHandle || handle, isOwn, reactions, comments, reposts, postedAt: at && !isNaN(at) ? at.toISOString() : null, ageHours: at && !isNaN(at) ? +((Date.now() - at.getTime()) / 3.6e6).toFixed(1) : null, text: text.slice(0, 700), hook: text.split('\n').filter(Boolean).slice(0, 2).join(' / ').slice(0, 210), ctaGated: CTA_RE.test(text), media });
+      all.push({ id, url, author: authorHandle || handle, isOwn, reactions, comments, reposts, postedAt: at && !isNaN(at) ? at.toISOString() : null, ageHours: at && !isNaN(at) ? +((Date.now() - at.getTime()) / 3.6e6).toFixed(1) : null, text: text.slice(0, 700), hook: text.split('\n').filter(Boolean).slice(0, 2).join(' / ').slice(0, 210), ctaGated: CTA_RE.test(text), media });
+      added++;
     }
+    if (!added) break;
     const totalPages = Number(data.pagination?.totalPages ?? data.totalPages ?? 1);
     if (page >= totalPages) break;
-    await sleep(400);
+    await sleep(300);
   }
   return { status: all.length ? 'ok' : 'no_posts', posts: all };
 }
@@ -189,21 +202,34 @@ function score(creator, posts) {
 }
 
 async function main() {
+  const startedAt = Date.now();
+  const deadlineMs = startedAt + MAX_MINUTES * 60 * 1000;
   const watchlist = JSON.parse(await readFile(path.join(ROOT, 'data/watchlist.json'), 'utf8'));
   const targets = watchlist.filter(c => !ONLY || ONLY.includes(c.handle));
   let previous = {};
   try { previous = Object.fromEntries((JSON.parse(await readFile(OUT, 'utf8')).creators || []).map(c => [c.handle, c])); } catch {}
-  const creators = [];
+  const creators = new Array(targets.length);
   let publicUsed = 0;
-  console.log(`Scouting ${targets.length} creators · source: ${HARVEST_KEY ? 'HarvestAPI (primary) + public fallback' : `public pages only (capped at ${PUBLIC_MAX}; set HARVEST_API_KEY for full coverage)`}`);
-  for (const c of targets) {
-    process.stdout.write(`• ${c.name} (${c.handle}) … `);
+  let nextIdx = 0;
+  let unauthorized = false;
+  console.log(`Scouting ${targets.length} creators · concurrency=${CONCURRENCY} · budget=${MAX_MINUTES}m · source: ${HARVEST_KEY ? `HarvestAPI (primary${PUBLIC_MAX ? ` + public fallback ≤${PUBLIC_MAX}` : ''})` : `public pages only (capped at ${PUBLIC_MAX}; set HARVEST_API_KEY for full coverage)`}`);
+
+  async function processOne(c) {
+    if (Date.now() >= deadlineMs) {
+      console.log(`• ${c.name} (${c.handle}) … TIME_BUDGET_REACHED (kept cached)`);
+      const prev = previous[c.handle];
+      return prev && prev.posts?.length ? { ...prev, status: 'stale:time_budget' } : { ...c, status: 'time_budget', source: null, n: 0, median: 0, mad: 0, posts: [] };
+    }
     let status = 'skipped', posts = [], source = null, followers = null;
     try {
       if (HARVEST_KEY) {
         const r = await fetchHarvest(c.handle);
         status = r.status; posts = r.posts; source = 'harvestapi';
-        if (status === 'harvest_unauthorized') { console.log('HARVEST KEY REJECTED — aborting'); process.exit(2); }
+        if (status === 'harvest_unauthorized') {
+          unauthorized = true;
+          console.log(`• ${c.name} (${c.handle}) … HARVEST KEY REJECTED — aborting`);
+          process.exit(2);
+        }
       }
       if (status !== 'ok' && publicUsed < PUBLIC_MAX) {
         publicUsed++;
@@ -213,22 +239,31 @@ async function main() {
         await sleep(DELAY + Math.random() * 1500);
       }
       if (status !== 'ok') {
-        console.log(status.toUpperCase());
+        console.log(`• ${c.name} (${c.handle}) … ${status.toUpperCase()}`);
         const prev = previous[c.handle];
-        creators.push(prev && prev.posts?.length ? { ...prev, status: `stale:${status}` } : { ...c, status, source, n: 0, median: 0, mad: 0, posts: [] });
-        continue;
+        return prev && prev.posts?.length ? { ...prev, status: `stale:${status}` } : { ...c, status, source, n: 0, median: 0, mad: 0, posts: [] };
       }
       const scored = score({ ...c, status: 'ok', source, followers: followers || previous[c.handle]?.followers || null, scoutedAt: new Date().toISOString() }, posts);
       const o = scored.posts.filter(p => p.tier?.startsWith('OUTLIER')).length;
-      console.log(`${source} · ${scored.postsFetched} posts · baseline n=${scored.n} median=${scored.median} MAD=${scored.mad} · ${o ? `★ ${o} OUTLIER` : 'no outlier'}`);
-      creators.push(scored);
+      console.log(`• ${c.name} (${c.handle}) … ${source} · ${scored.postsFetched} posts · baseline n=${scored.n} median=${scored.median} MAD=${scored.mad} · ${o ? `★ ${o} OUTLIER` : 'no outlier'}`);
+      return scored;
     } catch (err) {
       const code = err?.cause?.code || err?.name || 'error';
-      console.log(`ERROR (${code}: ${err?.message || err})`);
+      console.log(`• ${c.name} (${c.handle}) … ERROR (${code}: ${err?.message || err})`);
       const prev = previous[c.handle];
-      creators.push(prev && prev.posts?.length ? { ...prev, status: `stale:err_${code}` } : { ...c, status: `err_${code}`, source, n: 0, median: 0, mad: 0, posts: [] });
+      return prev && prev.posts?.length ? { ...prev, status: `stale:err_${code}` } : { ...c, status: `err_${code}`, source, n: 0, median: 0, mad: 0, posts: [] };
     }
   }
+
+  const workers = Array.from({ length: Math.min(CONCURRENCY, targets.length) }, async () => {
+    while (!unauthorized) {
+      const idx = nextIdx++;
+      if (idx >= targets.length) break;
+      creators[idx] = await processOne(targets[idx]);
+    }
+  });
+  await Promise.all(workers);
+
   const outliers = creators.flatMap(c => (c.posts || []).filter(p => p.tier).map(p => ({ creator: c.name, handle: c.handle, ring: c.ring, role: c.role || '', followers: c.followers, baselineMedian: c.median, baselineMad: c.mad, baselineN: c.n, source: c.source, ...p })))
     .sort((a, b) => (b.tier.startsWith('OUTLIER') - a.tier.startsWith('OUTLIER')) || (b.mult - a.mult));
   const out = {
@@ -239,7 +274,8 @@ async function main() {
   };
   await mkdir(path.dirname(OUT), { recursive: true });
   await writeFile(OUT, JSON.stringify(out, null, 2));
-  console.log(`\n✔ ${OUT}\n  ${out.summary.ok}/${creators.length} refreshed · ${out.summary.stale} stale · ${out.summary.outliers} OUTLIER (${out.summary.playbookOutliers} reusable) · ${out.summary.watch} WATCH`);
+  const elapsedS = Math.round((Date.now() - startedAt) / 1000);
+  console.log(`\n✔ ${OUT} (${elapsedS}s)\n  ${out.summary.ok}/${creators.length} refreshed · ${out.summary.stale} stale · ${out.summary.outliers} OUTLIER (${out.summary.playbookOutliers} reusable) · ${out.summary.watch} WATCH`);
   for (const o of outliers.slice(0, 15)) console.log(`  ${o.tier.padEnd(13)} ${String(o.mult).padStart(6)}x z=${String(o.z).padStart(6)}  ${(o.type === 'announcement' ? '[ann] ' : '')}${o.creator}: ${o.hook.slice(0, 70)}`);
 }
 main().catch(e => { console.error(e); process.exit(1); });
